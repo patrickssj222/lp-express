@@ -7,8 +7,6 @@ var mysql = require("mysql");
 var cors = require('cors');
 var bodyParser = require('body-parser')
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
 
 var app = express();
 
@@ -41,8 +39,14 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 app.use(bodyParser.json());
+
+
+var indexRouter = require('./routes/index');
+var usersRouter = require('./routes/users');
+var constantsRouter = require('./routes/constants');
 app.use('/', indexRouter);
 app.use('/api/users', usersRouter);
+app.use('/api/constants', constantsRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
