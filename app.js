@@ -45,10 +45,12 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var constantsRouter = require('./routes/constants');
 var customersRouter = require('./routes/customers');
+var businessRouter = require('./routes/business');
 app.use('/', indexRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/constants', constantsRouter);
 app.use('/api/customers', customersRouter);
+app.use('/api/business',businessRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
