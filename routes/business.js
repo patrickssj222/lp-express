@@ -25,4 +25,57 @@ router.post('/one/', function(req, res, next) {
         }
     });
 });
+
+router.post('/update/', function(req, res, next) {
+    let body = req.body;
+    let query = "UPDATE business SET ";
+    Object.keys(body).forEach((key)=>{
+        if(key!=="id"){
+            query = query + key + " = '"+body[key]+"',";
+        }
+    });
+    query = query.slice(0,-1);
+    query = query + "WHERE id = "+body.id+";";
+    console.log(query);
+    res.locals.pool.query(query , function (error, results, fields) {
+        if(error){
+            console.log(error);
+            res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
+            //If there is error, we send the error in the error section with 500 status
+        } else {
+            res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
+            //If there is no error, all is good and response is 200OK.
+        }
+    });
+});
+
+router.post('/payment_transaction/add/', function(req, res, next) {
+    let body = req.body;
+    res.locals.pool.query("INSERT INTO payment_transaction(payment_method, amount, business_id) " +
+        "VALUES ('"+body.payment_method+"','"+body.amount+"','"+body.id+"');",function (error, results, fields) {
+        if(error){
+            res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
+            //If there is error, we send the error in the error section with 500 status
+        } else {
+            res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
+            //If there is no error, all is good and response is 200OK.
+        }
+    });
+});
+
+router.post('/payment_transaction/all/', function(req, res, next) {
+    let body = req.body;
+    res.locals.pool.query("SELECT payment_transaction.*, business.total_fee " +
+        "FROM business INNER JOIN payment_transaction " +
+        "ON payment_transaction.business_id = business.id " +
+        "WHERE business.id = "+body.id+"" , function (error, results, fields) {
+        if(error){
+            res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
+            //If there is error, we send the error in the error section with 500 status
+        } else {
+            res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
+            //If there is no error, all is good and response is 200OK.
+        }
+    });
+});
 module.exports = router;
