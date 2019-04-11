@@ -26,9 +26,100 @@ router.post('/business/', function(req, res, next) {
     });
 });
 
+router.post('/add/one/', function(req,res,next){
+    let data = req.body;
+    const today = new Date();
+    const dateTime = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate()+' '+today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    const query = "INSERT INTO customer(" +
+        "name, " +
+        "phone, " +
+        "dob, " +
+        "thumb_img, " +
+        "city, " +
+        "province, " +
+        "region, " +
+        "visa_due, " +
+        "uci, " +
+        "passport_due, " +
+        "passport_number, " +
+        "user, " +
+        "landing_time, " +
+        "landing_location, " +
+        "last_landing_time, " +
+        "last_landing_location," +
+        "current_location, " +
+        "marital_status, " +
+        "work_status, " +
+        "reject_record, " +
+        "criminal_record, " +
+        "education_status, " +
+        "contact_name, " +
+        "contact_phone, " +
+        "contact_relationship, " +
+        "visa_type, " +
+        "email, " +
+        "chinese_id, " +
+        "gender, " +
+        "visa_submit_time, " +
+        "passport_submit_time, " +
+        "visa_progress, " +
+        "passport_progress, " +
+        "wenan, " +
+        "chinese_phone" +
+        ") " +
+        "VALUES (" +
+        "'"+data.name+"'," +
+        "'"+data.phone+"'," +
+        "'"+data.dob+"'," +
+        "'"+data.thumb_img+"'," +
+        "'"+data.city+"'," +
+        "'"+data.province+"'," +
+        "'"+data.region+"'," +
+        "'"+data.visa_due+"'," +
+        "'"+data.uci+"'," +
+        "'"+data.passport_due+"'," +
+        "'"+data.passport_number+"'," +
+        "'"+data.user+"', " +
+        "'"+data.landing_time+"', " +
+        "'"+data.landing_location+"', " +
+        "'"+data.landing_time+"', " +
+        "'"+data.landing_location+"', " +
+        "'"+data.landing_location+"', " +
+        "'',"+
+        "'',"+
+        "'',"+
+        "'',"+
+        "'',"+
+        "'"+data.contact_name+"'," +
+        "'"+data.contact_phone+"'," +
+        "'"+data.contact_relationship+"'," +
+        "'"+data.visa_type+"', " +
+        "'"+data.email+"', " +
+        "'"+data.chinese_id+"', " +
+        "'"+data.gender+"', " +
+        "'"+data.visa_submit_time+"', " +
+        "'"+data.passport_submit_time+"', " +
+        "'"+data.visa_progress+"', " +
+        "'"+data.passport_progress+"', " +
+        "'"+data.wenan+"'," +
+        "'"+data.chinese_phone+"');";
+    res.locals.pool.query(query, function (error, results, fields) {
+        console.log(query);
+        if(error){
+            console.log(error);
+            res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
+            //If there is error, we send the error in the error section with 500 status
+        } else {
+            console.log(">>>>");
+            res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
+            //If there is no error, all is good and response is 200OK.
+        }
+    });
+});
+
+
 router.post('/update/one/', function(req,res,next){
     let data = req.body;
-    console.log(data);
     res.locals.pool.query("UPDATE customer SET " +
         "phone = '"+data.phone+"', " +
         "dob = '"+data.dob+"', " +

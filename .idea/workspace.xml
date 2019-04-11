@@ -2,9 +2,20 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="40da1a12-a0c4-4831-98fc-1b8bb76fd4e8" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/client" beforeDir="false" afterPath="$PROJECT_DIR$/client" afterDir="false" />
+
+
+
+
+
+      <change beforePath="$PROJECT_DIR$/client/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/App.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/Saga/request.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/Saga/request.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/component/Form/Business/BusinessDetail.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/component/Form/Business/BusinessDetail.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/component/Form/Customer/AddCustomer.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/component/Form/Customer/AddCustomer.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/component/Navigation/Navigation.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/component/Navigation/Navigation.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/store/action.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/store/action.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/customers.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/customers.js" afterDir="false" />
+
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -16,6 +27,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
+<<<<<<< HEAD
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/client/src/Saga/request.js">
@@ -118,6 +130,140 @@
         </entry>
       </file>
     </leaf>
+=======
+    <splitter split-orientation="vertical" split-proportion="0.26455027">
+      <split-first>
+        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/client/src/component/Form/Business/BusinessDetail.js">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="292">
+                  <caret line="69" column="26" selection-start-line="69" selection-start-column="26" selection-end-line="69" selection-end-column="26" />
+                  <folding>
+                    <element signature="e#0#41#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/client/src/component/Form/Business/BusinessDetail.css">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="135">
+                  <caret line="9" column="25" selection-start-line="9" selection-start-column="25" selection-end-line="9" selection-end-column="25" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/client/src/component/Form/Input/Input.js">
+              <provider selected="true" editor-type-id="text-editor" />
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/client/src/component/Form/Customer/AddCustomer.js">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="39">
+                  <caret line="120" column="53" selection-start-line="120" selection-start-column="53" selection-end-line="120" selection-end-column="53" />
+                  <folding>
+                    <element signature="e#0#41#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/client/src/store/action.js">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="135">
+                  <caret line="9" column="55" selection-start-line="9" selection-start-column="55" selection-end-line="9" selection-end-column="55" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/client/src/Saga/request.js">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="-93">
+                  <caret line="120" column="80" selection-start-line="120" selection-start-column="80" selection-end-line="120" selection-end-column="80" />
+                  <folding>
+                    <element signature="e#0#47#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/client/src/component/Form/Price_Constants/Price_Constants.js">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="412">
+                  <caret line="102" column="22" selection-start-line="102" selection-end-line="103" />
+                  <folding>
+                    <element signature="e#0#40#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/client/src/App.js">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="262">
+                  <caret line="57" column="22" selection-start-line="57" selection-start-column="22" selection-end-line="57" selection-end-column="22" />
+                  <folding>
+                    <element signature="e#0#41#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/client/src/component/Navigation/Navigation.js">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="218">
+                  <caret line="106" column="33" selection-start-line="106" selection-start-column="33" selection-end-line="106" selection-end-column="33" />
+                  <folding>
+                    <element signature="e#0#40#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/routes/customers.js">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="-795">
+                  <caret line="105" column="26" selection-start-line="105" selection-start-column="26" selection-end-line="105" selection-end-column="26" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-first>
+      <split-second>
+        <leaf>
+          <file pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/routes/customers.js">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="126">
+                  <caret line="108" column="31" selection-start-line="108" selection-start-column="31" selection-end-line="108" selection-end-column="31" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/package.json">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="75">
+                  <caret line="5" column="21" selection-start-line="5" selection-start-column="21" selection-end-line="5" selection-end-column="21" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-second>
+    </splitter>
+>>>>>>> c8b9f8661b3ad73e9bea3f1f5c5fd253c0587536
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -130,15 +276,17 @@
     <findStrings>
       <find>scroll</find>
       <find>this.state.</find>
+      <find>`</find>
     </findStrings>
     <replaceStrings>
       <replace />
       <replace>this.state.detail</replace>
       <replace>this.state.detail.</replace>
+      <replace>'</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/client" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -175,14 +323,15 @@
         <option value="$PROJECT_DIR$/client/src/component/Form/VisaApplication_2/VisaApplication_2.js" />
         <option value="$PROJECT_DIR$/client/src/component/Form/VisaApplication_2/Section/Sales.js" />
         <option value="$PROJECT_DIR$/client/src/component/Form/Customer/CustomerDetail.css" />
-        <option value="$PROJECT_DIR$/routes/customers.js" />
         <option value="$PROJECT_DIR$/client/src/component/Form/Customer/CustomerDetail.js" />
-        <option value="$PROJECT_DIR$/client/src/component/Form/Customer/AddCustomer.js" />
         <option value="$PROJECT_DIR$/app.js" />
         <option value="$PROJECT_DIR$/client/src/store/reducer.js" />
         <option value="$PROJECT_DIR$/client/src/component/Form/Visa/Visa.js" />
+<<<<<<< HEAD
         <option value="$PROJECT_DIR$/client/src/component/Navigation/Navigation.js" />
         <option value="$PROJECT_DIR$/client/src/store/action.js" />
+=======
+>>>>>>> c8b9f8661b3ad73e9bea3f1f5c5fd253c0587536
         <option value="$PROJECT_DIR$/client/src/component/Form/Form.css" />
         <option value="$PROJECT_DIR$/client/src/component/Form/Customer/Customer.js" />
         <option value="$PROJECT_DIR$/client/src/component/Form/Business/Business.js" />
@@ -193,13 +342,20 @@
         <option value="$PROJECT_DIR$/client/src/App.js" />
         <option value="$PROJECT_DIR$/client/src/Saga/request.js" />
         <option value="$PROJECT_DIR$/client/src/component/Form/Business/BusinessDetail.js" />
+        <option value="$PROJECT_DIR$/client/src/store/action.js" />
+        <option value="$PROJECT_DIR$/client/src/component/Navigation/Navigation.js" />
+        <option value="$PROJECT_DIR$/client/src/App.js" />
+        <option value="$PROJECT_DIR$/client/src/Saga/request.js" />
+        <option value="$PROJECT_DIR$/client/src/component/Form/Customer/AddCustomer.js" />
+        <option value="$PROJECT_DIR$/package.json" />
+        <option value="$PROJECT_DIR$/routes/customers.js" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="y" value="27" />
-    <option name="width" value="1910" />
-    <option name="height" value="1053" />
+    <option name="y" value="4" />
+    <option name="width" value="1920" />
+    <option name="height" value="1076" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="1" id="Add" />
@@ -249,15 +405,6 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="component" type="462c0819:PsiDirectoryNode" />
               <item name="Form" type="462c0819:PsiDirectoryNode" />
-              <item name="Business" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="lp-express" type="b2602c69:ProjectViewProjectNode" />
-              <item name="lp-express" type="462c0819:PsiDirectoryNode" />
-              <item name="client" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="component" type="462c0819:PsiDirectoryNode" />
-              <item name="Form" type="462c0819:PsiDirectoryNode" />
               <item name="Customer" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -275,7 +422,43 @@
               <item name="client" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="component" type="462c0819:PsiDirectoryNode" />
+<<<<<<< HEAD
               <item name="PopUp" type="462c0819:PsiDirectoryNode" />
+=======
+              <item name="Form" type="462c0819:PsiDirectoryNode" />
+              <item name="Input" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="lp-express" type="b2602c69:ProjectViewProjectNode" />
+              <item name="lp-express" type="462c0819:PsiDirectoryNode" />
+              <item name="client" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="component" type="462c0819:PsiDirectoryNode" />
+              <item name="LogIn" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="lp-express" type="b2602c69:ProjectViewProjectNode" />
+              <item name="lp-express" type="462c0819:PsiDirectoryNode" />
+              <item name="client" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="component" type="462c0819:PsiDirectoryNode" />
+              <item name="Navigation" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="lp-express" type="b2602c69:ProjectViewProjectNode" />
+              <item name="lp-express" type="462c0819:PsiDirectoryNode" />
+              <item name="client" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="component" type="462c0819:PsiDirectoryNode" />
+              <item name="PopUp" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="lp-express" type="b2602c69:ProjectViewProjectNode" />
+              <item name="lp-express" type="462c0819:PsiDirectoryNode" />
+              <item name="client" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="img" type="462c0819:PsiDirectoryNode" />
+>>>>>>> c8b9f8661b3ad73e9bea3f1f5c5fd253c0587536
             </path>
             <path>
               <item name="lp-express" type="b2602c69:ProjectViewProjectNode" />
@@ -305,7 +488,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../br-report" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -370,12 +553,16 @@
       <workItem from="1553370897643" duration="15100000" />
       <workItem from="1553700890182" duration="1945000" />
       <workItem from="1553720041355" duration="7763000" />
-      <workItem from="1554392765966" duration="16150000" />
+      <workItem from="1554392765966" duration="30830000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
+<<<<<<< HEAD
     <option name="totallyTimeSpent" value="121919000" />
+=======
+    <option name="totallyTimeSpent" value="130739000" />
+>>>>>>> c8b9f8661b3ad73e9bea3f1f5c5fd253c0587536
   </component>
   <component name="ToolWindowManager">
     <frame x="67" y="25" width="1853" height="1055" extended-state="6" />
@@ -395,7 +582,11 @@
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" />
       <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.50053364" side_tool="true" weight="0.31954497" />
+<<<<<<< HEAD
       <window_info anchor="bottom" id="Terminal" order="10" sideWeight="0.4994664" visible="true" weight="0.32127193" />
+=======
+      <window_info anchor="bottom" id="Terminal" order="10" sideWeight="0.4994664" visible="true" weight="0.36276597" />
+>>>>>>> c8b9f8661b3ad73e9bea3f1f5c5fd253c0587536
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -426,6 +617,30 @@
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/routes/customers.js</url>
+          <line>105</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/client/src/component/Form/Customer/AddCustomer.js</url>
+          <line>16</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/client/src/component/Form/Customer/AddCustomer.js</url>
+          <line>42</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/client/npm-debug.log" />
     <entry file="file://$PROJECT_DIR$/routes/index.js">
@@ -438,13 +653,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="390">
           <caret line="26" selection-start-line="26" selection-end-line="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/package.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="19" selection-start-line="19" selection-end-line="19" />
         </state>
       </provider>
     </entry>
@@ -576,6 +784,7 @@
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/client/src/component/Navigation/Navigation.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1620">
@@ -601,6 +810,9 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/client/src/component/Form/VisaApplication_2/VisaApplication_2.js">
+=======
+    <entry file="file://$PROJECT_DIR$/client/src/component/Form/Customer/Customer.js">
+>>>>>>> c8b9f8661b3ad73e9bea3f1f5c5fd253c0587536
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="292">
           <caret line="23" column="15" lean-forward="true" selection-start-line="23" selection-start-column="15" selection-end-line="23" selection-end-column="15" />
@@ -610,6 +822,7 @@
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/client/src/component/Form/Price_Constants/Price_Constants.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="966">
@@ -621,12 +834,16 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/client/src/component/Form/Form.css">
+=======
+    <entry file="file://$PROJECT_DIR$/client/src/component/Form/Customer/CustomerDetail.css">
+>>>>>>> c8b9f8661b3ad73e9bea3f1f5c5fd253c0587536
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1530">
           <caret line="102" column="22" selection-start-line="102" selection-start-column="22" selection-end-line="102" selection-end-column="22" />
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/client/src/component/Form/Input/Input.js">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -644,6 +861,9 @@
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/client/src/component/Form/VisaApplication_2/Section/Reception.js">
+=======
+    <entry file="file://$PROJECT_DIR$/client/src/component/Form/Business/Business.js">
+>>>>>>> c8b9f8661b3ad73e9bea3f1f5c5fd253c0587536
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1706">
           <caret line="131" column="50" lean-forward="true" selection-start-line="131" selection-start-column="50" selection-end-line="131" selection-end-column="50" />
@@ -694,6 +914,7 @@
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/client/src/component/Form/Customer/Customer.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-711">
@@ -705,6 +926,9 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/client/src/component/Form/Business/Business.js">
+=======
+    <entry file="file://$PROJECT_DIR$/client/src/component/Form/Form.css">
+>>>>>>> c8b9f8661b3ad73e9bea3f1f5c5fd253c0587536
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-780" />
       </provider>
@@ -716,6 +940,7 @@
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/client/src/store/reducer.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="322">
@@ -724,6 +949,9 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/client/src/component/PopUp/SuccessPopUp.js">
+=======
+    <entry file="file://$PROJECT_DIR$/client/src/component/Form/DropDown/DropDown.js">
+>>>>>>> c8b9f8661b3ad73e9bea3f1f5c5fd253c0587536
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="120">
           <caret line="8" column="8" selection-start-line="8" selection-start-column="8" selection-end-line="10" selection-end-column="47" />
@@ -760,17 +988,103 @@
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/client/src/component/Form/DropDown/DropDown.js">
+=======
+    <entry file="file://$PROJECT_DIR$/client/src/component/Form/Business/BusinessDetail.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="292">
+          <caret line="69" column="26" selection-start-line="69" selection-start-column="26" selection-end-line="69" selection-end-column="26" />
+          <folding>
+            <element signature="e#0#41#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/src/component/Form/Business/BusinessDetail.css">
+>>>>>>> c8b9f8661b3ad73e9bea3f1f5c5fd253c0587536
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="253">
           <caret line="11" column="26" lean-forward="true" selection-start-line="11" selection-start-column="26" selection-end-line="11" selection-end-column="26" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/client/src/component/Form/Business/BusinessDetail.js">
+    <entry file="file://$PROJECT_DIR$/client/src/component/Form/Price_Constants/Price_Constants.js">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="251">
           <caret line="112" column="38" selection-start-line="112" selection-start-column="38" selection-end-line="112" selection-end-column="38" />
+=======
+        <state relative-caret-position="412">
+          <caret line="102" column="22" selection-start-line="102" selection-end-line="103" />
+          <folding>
+            <element signature="e#0#40#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/src/component/Form/Input/Input.js">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/src/store/action.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="9" column="55" selection-start-line="9" selection-start-column="55" selection-end-line="9" selection-end-column="55" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/src/component/Navigation/Navigation.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="218">
+          <caret line="106" column="33" selection-start-line="106" selection-start-column="33" selection-end-line="106" selection-end-column="33" />
+          <folding>
+            <element signature="e#0#40#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/src/App.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="262">
+          <caret line="57" column="22" selection-start-line="57" selection-start-column="22" selection-end-line="57" selection-end-column="22" />
+          <folding>
+            <element signature="e#0#41#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/src/Saga/request.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-93">
+          <caret line="120" column="80" selection-start-line="120" selection-start-column="80" selection-end-line="120" selection-end-column="80" />
+          <folding>
+            <element signature="e#0#47#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/src/component/Form/Customer/AddCustomer.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="39">
+          <caret line="120" column="53" selection-start-line="120" selection-start-column="53" selection-end-line="120" selection-end-column="53" />
+          <folding>
+            <element signature="e#0#41#0" expanded="true" />
+          </folding>
+>>>>>>> c8b9f8661b3ad73e9bea3f1f5c5fd253c0587536
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/package.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="5" column="21" selection-start-line="5" selection-start-column="21" selection-end-line="5" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/routes/customers.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="126">
+          <caret line="108" column="31" selection-start-line="108" selection-start-column="31" selection-end-line="108" selection-end-column="31" />
         </state>
       </provider>
     </entry>
