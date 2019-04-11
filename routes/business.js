@@ -63,13 +63,16 @@ router.post('/payment_transaction/add/', function(req, res, next) {
     });
 });
 
-router.post('/payment_transaction/all/', function(req, res, next) {
+router.post('/payment_transaction/one/', function(req, res, next) {
     let body = req.body;
-    res.locals.pool.query("SELECT payment_transaction.*, business.total_fee " +
-        "FROM business INNER JOIN payment_transaction " +
-        "ON payment_transaction.business_id = business.id " +
-        "WHERE business.id = "+body.id+"" , function (error, results, fields) {
+    const query = "SELECT p.*, b.total_fee " +
+        "FROM payment_transaction p INNER JOIN business b " +
+        "ON b.id = p.business_id " +
+        "WHERE b.id = "+body.id+";";
+    res.locals.pool.query( query, function (error, results, fields) {
         if(error){
+            console.log(query);
+            console.log(error);
             res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
             //If there is error, we send the error in the error section with 500 status
         } else {
