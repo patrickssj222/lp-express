@@ -68,7 +68,8 @@ router.post('/payment_transaction/one/', function(req, res, next) {
     const query = "SELECT p.*, b.total_fee " +
         "FROM payment_transaction p INNER JOIN business b " +
         "ON b.id = p.business_id " +
-        "WHERE b.id = "+body.id+";";
+        "WHERE b.id = "+body.id+" " +
+        "ORDER BY p.payment_date ASC;";
     res.locals.pool.query( query, function (error, results, fields) {
         if(error){
             console.log(query);
