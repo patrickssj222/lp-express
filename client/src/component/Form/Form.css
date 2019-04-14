@@ -1,0 +1,114 @@
+.form-wrapper{
+    display:flex;
+    flex-direction: column;
+    border: gray;
+    height:auto;
+    padding:80px 80px 40px 60px !important;
+    overflow: scroll;
+}
+
+.form-wrapper .row{
+    margin-top: 20px;
+    margin-bottom: 20px;
+    display:flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+}
+.form-wrapper .section-wrapper{
+    display:flex;
+    flex-direction: column;
+}
+
+.form-wrapper .section-wrapper .section-header{
+    margin-bottom: 10px;
+    border-bottom: 1px solid gray;
+}
+.form-wrapper .select-group, .form-wrapper .input-group{
+    display:flex;
+    flex-direction: row;
+    align-items: baseline;
+    padding-left: 20px;
+    padding-right: 20px;
+    width:auto;
+}
+
+.form-wrapper .footer{
+    display:flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+.form-wrapper .form-confirmation small{
+    margin-left: 20px;
+}
+.form-wrapper .form-confirmation button{
+    margin-left: 20px;
+    -webkit-box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.75);
+    box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.75);
+}
+
+.form-wrapper select{
+    width:auto;
+    min-width: 100px;
+    height:auto;
+    margin-left: 20px;
+}
+
+.form-wrapper input{
+    width:auto;
+    min-width: 100px;
+    margin-left: 20px;
+}
+
+.mdb-editable{
+    background: transparent;
+    border: none;
+}
+
+.form-wrapper .dataTables_wrapper .row{
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.form-wrapper .dataTables_wrapper .dataTables_paginate, .form-wrapper .dataTables_wrapper .dataTables_filter{
+    display:flex;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: flex-end;
+}
+.form-wrapper .dataTables_wrapper p{
+    margin-bottom: 0;
+}
+
+.form-wrapper .dataTables_wrapper .clickable{
+    cursor: pointer;
+}
+
+.form-wrapper .dataTables_filter label{
+    display:flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+.form-wrapper .table{
+    width:100%;
+    height:auto;
+}
+
+.dataTable tr{
+    cursor:pointer;
+}
+.dataTable td{
+    vertical-align: center;
+}
+.form-wrapper .table td, .form-wrapper .table th{
+    white-space: nowrap;
+}
+.form-wrapper .table input{
+    width:100%;
+    min-width: 50px;
+    margin-left: 0;
+}

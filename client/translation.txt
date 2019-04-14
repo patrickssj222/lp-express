@@ -1,0 +1,4 @@
+小签 = temporary resident visa
+大签 = study permit
+签证 = visa
+工签 = work permit
