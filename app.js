@@ -20,17 +20,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'client/build')));
 //production mode
-if(process.env.NODE_ENV === 'production') {
-    app.use(express.static(path.join(__dirname, 'client/build')));
-    //
-    app.get('*', (req, res) => {
-        res.sendfile(path.join(__dirname = 'client/build/index.html'));
-    })
-}
-//build mode
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname+'/client/public/index.html'));
-})
+
 
 //By Pass CORS
 app.use(cors());
@@ -63,7 +53,13 @@ app.use('/api/users', usersRouter);
 app.use('/api/constants', constantsRouter);
 app.use('/api/customers', customersRouter);
 app.use('/api/business',businessRouter);
-
+if(process.env.NODE_ENV === 'production') {
+    app.use(express.static(path.join(__dirname, 'client/build')));
+    //
+    app.get('*', (req, res) => {
+        res.sendfile(path.join(__dirname = 'client/build/index.html'));
+    })
+}
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));

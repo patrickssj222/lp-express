@@ -6,7 +6,7 @@ function* logIn(action){
     try{
         const response = yield call (axios, {
             method: 'POST',
-            url: 'http://localhost:3000/api/users',
+            url: '/api/users',
             data:{
                 user: action.username,
                 password: action.password
@@ -32,7 +32,7 @@ function* getPriceConstants(){
     try{
         const response = yield call (axios, {
             method: 'POST',
-            url: 'http://localhost:3000/api/constants/price',
+            url: '/api/constants/price',
         });
         if(response.status>=200 && response.status<300){
             const result = response.data.response;
@@ -53,7 +53,7 @@ function* updatePriceConstants(action){
     try{
         const response = yield call (axios, {
             method: 'POST',
-            url: 'http://localhost:3000/api/constants/price/update',
+            url: '/api/constants/price/update',
             data:action.constants,
         });
         if(response.status>=200 && response.status<300){
@@ -75,7 +75,7 @@ function* getCustomers(){
     try{
         const response = yield call (axios, {
             method: 'POST',
-            url: 'http://localhost:3000/api/customers/all',
+            url: '/api/customers/all',
         });
         if(response.status>=200 && response.status<300){
             const result = response.data.response;
@@ -98,7 +98,7 @@ function* addCustomers(action){
         try{
             const response = yield call (axios, {
                 method: 'POST',
-                url: 'http://localhost:3000/api/customers/add/one',
+                url: '/api/customers/add/one',
                 data:action.customer,
             });
             if(response.status>=200 && response.status<300){
@@ -126,7 +126,7 @@ function* updateCustomers(action){
     try{
         const response = yield call (axios, {
             method: 'POST',
-            url: 'http://localhost:3000/api/customers/update/one',
+            url: '/api/customers/update/one',
             data:action.customer,
         });
         if(response.status>=200 && response.status<300){
@@ -148,7 +148,7 @@ function* getBusiness(){
     try{
         const response = yield call (axios, {
             method: 'POST',
-            url: 'http://localhost:3000/api/business/all',
+            url: '/api/business/all',
         });
         if(response.status>=200 && response.status<300){
             const result = response.data.response;
@@ -169,7 +169,7 @@ function* updateBusiness(action){
     try{
         const response = yield call (axios, {
             method: 'POST',
-            url: 'http://localhost:3000/api/business/update/',
+            url: '/api/business/update/',
             data:action.business,
         });
         if(response.status>=200 && response.status<300){
@@ -191,7 +191,7 @@ function* getBusinessDetail(action){
     try{
         const response = yield call (axios, {
             method: 'POST',
-            url: 'http://localhost:3000/api/business/one',
+            url: '/api/business/one',
             data:{
                 id:action.id
             }
@@ -223,7 +223,7 @@ function* getBusinessPayment(action){
     try{
         const response = yield call (axios, {
             method: 'POST',
-            url: 'http://localhost:3000/api/business/payment_transaction/one',
+            url: '/api/business/payment_transaction/one',
             data:{
                 id:action.id
             }
@@ -249,7 +249,7 @@ function* addBusinessPayment(action){
     try{
         const response = yield call (axios, {
             method: 'POST',
-            url: 'http://localhost:3000/api/business/payment_transaction/add',
+            url: '/api/business/payment_transaction/add',
             data:{
                 id:action.id,
                 payment_info: action.payment_info
@@ -275,7 +275,7 @@ function* deleteBusinessPayment(action){
     try{
         const response = yield call (axios, {
             method: 'POST',
-            url: 'http://localhost:3000/api/business/payment_transaction/delete',
+            url: '/api/business/payment_transaction/delete',
             data:{
                 id:action.id,
             }
