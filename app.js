@@ -5,8 +5,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var mysql = require("mysql");
 var cors = require('cors');
-var bodyParser = require('body-parser')
-const port = process.env.PORT || 5000;
+var bodyParser = require('body-parser');
 
 
 var app = express();
@@ -81,8 +80,9 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
+/*const port = process.env.PORT || 5000;
 app.listen(port, (req, res) => {
     console.log( `server listening on port: ${port}`);
-});
+});*/
 
 module.exports = app;
