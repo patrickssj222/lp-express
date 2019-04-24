@@ -26,6 +26,37 @@ router.post('/one/', function(req, res, next) {
     });
 });
 
+router.post('/add/', function(req, res, next) {
+    let body = req.body;
+    let query = "INSERT INTO business (";
+    Object.keys(body).forEach((key)=>{
+        if(key!=="id"){
+            query = query + key + ",";
+        }
+    });
+    query = query.slice(0,-1);
+    query = query + ") VALUES (";
+    Object.keys(body).forEach((key)=>{
+        if(key!=="id"){
+            query = query + "'"+ body[key] + "',";
+        }
+    });
+    query = query.slice(0,-1);
+    query = query + ");";
+
+    console.log(query);
+    res.locals.pool.query(query , function (error, results, fields) {
+        if(error){
+            console.log(error);
+            res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
+            //If there is error, we send the error in the error section with 500 status
+        } else {
+            res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
+            //If there is no error, all is good and response is 200OK.
+        }
+    });
+});
+
 router.post('/update/', function(req, res, next) {
     let body = req.body;
     let query = "UPDATE business SET ";
