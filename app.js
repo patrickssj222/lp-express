@@ -5,7 +5,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var mysql = require("mysql");
 var cors = require('cors');
-var bodyParser = require('body-parser')
+var bodyParser = require('body-parser');
 
 
 var app = express();
@@ -18,7 +18,9 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'client/build')));
+//production mode
+
 
 //By Pass CORS
 app.use(cors());
@@ -51,7 +53,13 @@ app.use('/api/users', usersRouter);
 app.use('/api/constants', constantsRouter);
 app.use('/api/customers', customersRouter);
 app.use('/api/business',businessRouter);
-
+if(process.env.NODE_ENV === 'production') {
+    app.use(express.static(path.join(__dirname, 'client/build')));
+    //
+    app.get('*', (req, res) => {
+        res.sendfile(path.join(__dirname = 'client/build/index.html'));
+    })
+}
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
@@ -68,5 +76,9 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
+/*const port = process.env.PORT || 5000;
+app.listen(port, (req, res) => {
+    console.log( `server listening on port: ${port}`);
+});*/
 
 module.exports = app;

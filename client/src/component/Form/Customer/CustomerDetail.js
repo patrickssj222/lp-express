@@ -46,7 +46,7 @@ class CustomerDetail extends Component{
         try{
             axios({
                 method: 'POST',
-                url: 'http://localhost:3000/api/customers/business',
+                url: '/api/customers/business',
                 data:{
                     id:this.state.detail.id
                 }

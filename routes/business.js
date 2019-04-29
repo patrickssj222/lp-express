@@ -43,7 +43,6 @@ router.post('/add/', function(req, res, next) {
     });
     query = query.slice(0,-1);
     query = query + ");";
-
     console.log(query);
     res.locals.pool.query(query , function (error, results, fields) {
         if(error){
