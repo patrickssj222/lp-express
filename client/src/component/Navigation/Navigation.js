@@ -99,9 +99,6 @@ class Navigation extends Component {
                                         <li>
                                             <a href="#" onClick={this.props.switchView.bind(this,"Customer",null)}>客户列表</a>
                                         </li>
-                                        <li>
-                                            <a href="#" onClick={this.props.switchView.bind(this,"AddCustomer",null)}>添加客户</a>
-                                        </li>
                                     </ul>
                                 </div>
                             </li>

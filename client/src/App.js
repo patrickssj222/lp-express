@@ -18,6 +18,7 @@ import CustomerDetail from "./component/Form/Customer/CustomerDetail";
 import Business from "./component/Form/Business/Business";
 import BusinessDetail from "./component/Form/Business/BusinessDetail";
 import AddCustomer from "./component/Form/Customer/AddCustomer";
+import AddBusiness from "./component/Form/Business/AddBusiness";
 
 library.add(faIgloo);
 
@@ -44,6 +45,9 @@ class App extends Component {
         }
         let view = null;
         switch(this.props.view.component){
+            case "AddBusiness":
+                view = <AddBusiness payload={this.props.view.payload}/>;
+                break;
             case "VisaApplication_2":
                 view = <VisaApplication_2 payload={this.props.view.payload}/>;
                 break;

@@ -19,3 +19,4 @@ export const UPDATE_CUSTOMERS = 'UPDATE_CUSTOMERS';
 export const POP_UP = 'POP_UP';
 export const REMOVE_POP_UP = 'REMOVE_POP_UP';
 export const SWITCH_VIEW = 'SWITCH_VIEW';
+export const SAGA_ADD_BUSINESS = 'SAGA_ADD_BUSINESS';

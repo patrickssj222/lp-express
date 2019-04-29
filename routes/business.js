@@ -28,15 +28,24 @@ router.post('/one/', function(req, res, next) {
 
 router.post('/add/', function(req, res, next) {
     let body = req.body;
-    let query = "INSERT INTO business VALUES(";
+    let query = "INSERT INTO business (";
+    Object.keys(body).forEach((key)=>{
+        if(key!=="id") {
+            query = query + key + ",";
+        }
+    });
+
+    query = query.slice(0,-1);
+    query = query + ")";
+    query = query+ " VALUES(";
     Object.keys(body).forEach((key)=>{
         if(key!=="id"){
-            query = "'"+body[key]+"',";
+            query = query+"'"+body[key]+"',";
         }
     });
     query = query.slice(0,-1);
     query = query + ");";
-    console.log(query);
+    console.log("QUERY!! :",query);
     res.locals.pool.query(query , function (error, results, fields) {
         if(error){
             console.log(error);

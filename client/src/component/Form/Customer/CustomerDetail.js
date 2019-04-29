@@ -43,6 +43,8 @@ class CustomerDetail extends Component{
         this.handleSubmit = this.handleSubmit.bind(this);
     }
     componentWillMount() {
+        console.log("customerlist", this.props.customer);
+        console.log("index", this.props.payload.index);
         try{
             axios({
                 method: 'POST',
@@ -78,11 +80,13 @@ class CustomerDetail extends Component{
     handleSubmit(e){
         this.props.updateCustomer(this.state.detail);
     }
+    handleNewBusiness(e){
+        this.props.updateView("AddBusiness", {customer_id:this.state.detail.id, customer_name:this.state.detail.name, index:this.props.payload.index});
+    }
     render(){
         let rows = [];
         if(this.state.business!=null){
             rows = this.state.business.map((item)=>{
-                console.log(item);
                 return({
                     subservice_name:item.subservice_name,
                     progress:item.progress,
@@ -91,12 +95,10 @@ class CustomerDetail extends Component{
                 })
             })
         }
-        console.log("rows", rows);
         const data = {
             columns:this.columns,
             rows:rows
         };
-        console.log("detail:",this.state.detail);
         return(
             <div className={"form-wrapper content-wrapper customer-detail"}>
                 <div className={"section-wrapper"}>
@@ -302,6 +304,11 @@ class CustomerDetail extends Component{
                     <div className={"section-header"}>
                         <h3>对应业务</h3>
                     </div>
+                    <div className={"footer"}>
+                        <div className={"form-confirmation button-group"}>
+                            <button className={"btn btn-primary"} onClick={this.handleNewBusiness.bind(this)}>添加业务</button>
+                        </div>
+                    </div>
                     <div className={"section-body"}>
                         <MDBDataTable
                             bordered
@@ -311,6 +318,7 @@ class CustomerDetail extends Component{
                         />
                     </div>
                 </div>
+
             </div>
         );
     }
@@ -325,6 +333,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch =>{
     return{
         updateCustomer:(customer)=>dispatch({type:actionTypes.SAGA_UPDATE_CUSTOMERS,customer: customer}),
+        updateView:(component, payload)=>dispatch({type:actionTypes.SWITCH_VIEW, component:component, payload:payload})
     }
 };
 export default connect(mapStateToProps, mapDispatchToProps)(CustomerDetail);
