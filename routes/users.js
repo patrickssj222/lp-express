@@ -6,7 +6,7 @@ var router = express.Router();
 router.post('/', function(req, res, next) {
     let data = req.body;
     console.log("data:",data);
-    res.locals.pool.query("SELECT * FROM user WHERE account = '"+ data.user + "' AND password = '"+ data.password + "'" , function (error, results, fields) {
+    res.locals.pool.query("SELECT * FROM user WHERE username = '"+ data.user + "' AND password = '"+ data.password + "'" , function (error, results, fields) {
         if(error){
             res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
             //If there is error, we send the error in the error section with 500 status

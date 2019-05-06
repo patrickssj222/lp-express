@@ -26,10 +26,10 @@ app.use(express.static(path.join(__dirname, 'client/build')));
 app.use(cors());
 //Database connection
 var db_config = {
-    host     : '23.229.194.226',
-    user     : 'remote_access',
-    password : 'Lp_147896325',
-    database: 'lp_base',
+    host     : '35.190.171.252',
+    user     : 'admin',
+    password : 'tgyhUJ22',
+    database: 'lp_database',
 };
 
 app.use(function(req, res, next){
