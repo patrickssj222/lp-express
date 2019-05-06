@@ -14,8 +14,56 @@ class addBusiness extends Component{
         super(props);
         this.state={
             detail:{
-                business_type:"",
-
+                amount: "",
+                amount_accept: "",
+                amount_date: "",
+                amount_detail: "",
+                business_level: "",
+                business_type: "",
+                case_close_time: "",
+                certify: "",
+                certify_time: "",
+                contact_with_schools: "",
+                create_time: "",
+                customer_name: "",
+                edit_name: "",
+                expire_time_passport: "",
+                expire_time_visa: "",
+                explain_fee: "",
+                export_to: "",
+                extra_progress: "",
+                goverment_fee_change_reason: "",
+                government_fee: "",
+                government_fee_payment_method: "",
+                in_progress: "",
+                info_collector: "",
+                is_export: "",
+                is_payoff: "",
+                is_remind: "",
+                make_file_date: "",
+                misc_fee: "",
+                non_refundable: "",
+                post_fee: "",
+                post_fee_change_reason: "",
+                post_fee_payment_method: "",
+                progress: "",
+                recertify: "",
+                recertify_time: "",
+                referee: "",
+                refundable: "",
+                remind: "",
+                service_fee: "",
+                service_fee_change_reason: "",
+                service_level: "",
+                special_detail: "",
+                student_id: "",
+                submit_time_passport: "",
+                submit_time_visa: "",
+                subservice_name: "",
+                total_fee: "",
+                update_time: "",
+                user: "",
+                wenan: "",
             },
             payment:null,
             constants:null,
@@ -23,16 +71,18 @@ class addBusiness extends Component{
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleNewPaymentInfoChange = this.handleNewPaymentInfoChange.bind(this);
-        this.handleNewPaymentButton = this.handleNewPaymentButton.bind(this);
-        this.handleAddPayment = this.handleAddPayment.bind(this);
     }
     componentWillMount() {
         this.props.getPriceConstants();
     }
     componentWillReceiveProps(nextProps, nextContext) {
+        console.log("Triggered", nextProps);
         this.setState({
-            constants:nextProps.constants,
+            detail:{
+                ...this.state.detail,
+                customer_name:nextProps.payload.customer_name,
+                student_id: nextProps.payload.customer_id
+            }
         })
     }
 
@@ -43,7 +93,7 @@ class addBusiness extends Component{
             case "government_fee_payment_method":
                 if(value==="公司信用卡"){
                     toChange = {
-                        government_fee: this.state.constants.fee[0].government_fee
+                        government_fee: this.props.constants.fee[0].government_fee
                     };
                 }
                 else if(value==="客人信用卡"){
@@ -60,7 +110,7 @@ class addBusiness extends Component{
             case "post_fee_payment_method":
                 if(value==="公司邮寄"){
                     toChange = {
-                        post_fee: this.state.constants.fee[0].misc_fee
+                        post_fee: this.props.constants.fee[0].misc_fee
                     };
                 }
                 else if(value==="客人邮寄"){
@@ -115,112 +165,18 @@ class addBusiness extends Component{
         });
     }
     handleSubmit(e){
-        this.props.updateBusiness(this.state.detail);
-    }
-    handleNewPaymentButton(e){
-        this.setState({new_payment:{amount:"", payment_method: "", comment:""}})
-    }
-    handleNewPaymentInfoChange(e){
-        const { name, value } = e.target;
-        this.setState({new_payment:{[name]:value}});
-    }
-    handleAddPayment(e){
-        this.props.addPayment(this.state.detail.id, this.state.new_payment);
+        this.props.addNewBusiness(this.state.detail, this.props.payload.index);
     }
     render(){
-        if(this.state.detail===null || this.state.constants.fee===null){
+        console.log(this.state);
+        if(this.state.detail===null || this.props.constants.fee===null){
             return(<div/>);
         }
-        let subservice_option = this.state.constants.fee.map((f)=>{
+        let subservice_option = this.props.constants.fee.map((f)=>{
             return f.name;
         });
         subservice_option.unshift("");
         let remaining_payment = this.state.detail.total_fee;
-        let payment_section = null;
-
-        const payment_columns = [
-            {
-                label: '缴费',
-                field: 'amount',
-                sort: 'asc',
-
-            },
-            {
-                label: '缴费方式',
-                field: 'payment_method',
-                sort: 'asc',
-            },
-            {
-                label: '缴费时间',
-                field: 'payment_date',
-                sort: 'asc',
-            },
-            {
-                label: '备注',
-                field: 'comment',
-                sort: 'asc',
-            },
-            {
-                label: '',
-                field: 'delete',
-            }
-        ];
-        let payment_rows = null;
-        if(this.state.payment!=null){
-            this.state.payment.forEach((payment)=>{
-                remaining_payment = remaining_payment - payment.amount;
-            });
-            payment_rows = this.state.payment.map((payment, index)=>{
-                return({
-                    amount: payment.amount,
-                    payment_method: payment.payment_method,
-                    payment_date: payment.payment_date,
-                    comment: payment.comment,
-                    delete: <button className={"btn btn-danger"} onClick={this.props.deletePayment.bind(this, payment.id, this.state.detail.id)}>删除</button>
-                });
-            })
-        }
-        const new_payment_button = this.state.new_payment==null?<button className={"btn btn-primary"} onClick={this.handleNewPaymentButton.bind(this)}>添加缴款</button>:null;
-        let new_payment_section = null;
-        if(this.state.new_payment!=null){
-            new_payment_section = <table className={"business-detail-table"} >
-                <tbody>
-                <tr>
-                    <td>
-                        <Input
-                            label={"缴费"}
-                            name={"amount"}
-                            value={this.state.new_payment.amount}
-                            step={".01"}
-                            type={"number"}
-                            handleChange={this.handleNewPaymentInfoChange}
-                        />
-                    </td>
-                    <td>
-                        <Input
-                            label={"缴费方式"}
-                            name={"payment_method"}
-                            value={this.state.new_payment.payment_method}
-                            type={"text"}
-                            handleChange={this.handleNewPaymentInfoChange}
-                        />
-                    </td>
-                    <td>
-                        <Input
-                            label={"备注"}
-                            name={"comment"}
-                            value={this.state.new_payment.comment}
-                            type={"text"}
-                            handleChange={this.handleNewPaymentInfoChange}
-                        />
-                    </td>
-                    <td>
-                        <button className={"btn btn-primary"} onClick={this.handleAddPayment.bind(this)}>确认添加</button>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        }
         return(
             <div className={"form-wrapper content-wrapper business-detail"}>
                 <div className={"section-wrapper"}>
@@ -271,7 +227,7 @@ class addBusiness extends Component{
                                 <td>
                                     <Input
                                         label={"签证政府费"}
-                                        value={this.state.constants.fee[0].government_fee}
+                                        value={this.props.constants.fee[0].government_fee}
                                         type={"number"}
                                         step={".01"}
                                         handleChange={this.handleChange}
@@ -305,7 +261,7 @@ class addBusiness extends Component{
                                 <td>
                                     <Input
                                         label={"邮寄费"}
-                                        value={this.state.constants.fee[0].misc_fee}
+                                        value={this.props.constants.fee[0].misc_fee}
                                         type={"number"}
                                         step={".01"}
                                         handleChange={this.handleChange}
@@ -376,37 +332,6 @@ class addBusiness extends Component{
                 </div>
                 <div className={"section-wrapper"}>
                     <div className={"section-header"}>
-                        <h3>收款操作</h3>
-                    </div>
-                    <div className={"section-body"}>
-                        <MDBDataTable
-                            striped
-                            bordered
-                            small
-                            data={{columns: payment_columns, rows: payment_rows}}
-                            entries={10}
-                            paging={false}
-                            responsive={true}
-                            searching={false}
-                        />
-                        {new_payment_section}
-                        <div className={"payment-footer"}>
-                            <Input
-                                label={"余款"}
-                                value={remaining_payment}
-                                name={"remaining_payment"}
-                                type={"number"}
-                                step={".01"}
-                                handleChange={this.handleChange}
-                                disabled={true}
-                            />
-                            {new_payment_button}
-                        </div>
-                    </div>
-                </div>
-
-                <div className={"section-wrapper"}>
-                    <div className={"section-header"}>
                         <h3>文案操作</h3>
                         <small>负责文案:{this.state.detail.wenan}</small>
                     </div>
@@ -473,8 +398,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch =>{
     return{
         getPriceConstants:()=>dispatch({type:actionTypes.SAGA_GET_PRICE_CONSTANTS}),
-        deletePayment:(id, business_id)=>dispatch({type:actionTypes.SAGA_DELETE_PAYMENT_TRANSACTION,id:id, business_id:business_id}),
-        addPayment:(id, payment_info)=>dispatch({type:actionTypes.SAGA_ADD_PAYMENT_TRANSACTION,id:id, payment_info:payment_info}),
+        addNewBusiness:(detail,customer_id)=>dispatch({type:actionTypes.SAGA_ADD_BUSINESS, detail:detail, customer_id:customer_id})
+
     }
 };
 export default connect(mapStateToProps, mapDispatchToProps)(addBusiness);

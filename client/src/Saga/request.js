@@ -298,6 +298,29 @@ function* deleteBusinessPayment(action){
     }
 }
 
+function* addBusiness(action){
+    yield put({type:actionTypes.POP_UP, status:"loading", message:["正在添加新业务..."],onExit:null});
+    try{
+        const response = yield call (axios, {
+            method: 'POST',
+            url: '/api/business/add',
+            data:action.detail
+        });
+        if(response.status>=200 && response.status<300){
+            yield put({type:actionTypes.SWITCH_VIEW, component:"CustomerDetail", payload:{index:action.customer_id}});
+            yield put({type:actionTypes.REMOVE_POP_UP});
+        }
+        else{
+            yield put({type:actionTypes.REMOVE_POP_UP});
+            yield put({type:actionTypes.POP_UP, status:"failure", message:["Error: "+response.status],onExit:null});
+
+        }
+    }
+    catch(e){
+        console.log(e);
+    }
+}
+
 function* initBusinessDetail(action){
     yield call(getPriceConstants);
     yield call(getBusinessDetail,action);
@@ -317,5 +340,6 @@ export function* watchSagaRequests() {
     yield takeEvery(actionTypes.SAGA_GET_BUSINESS_DETAIL, initBusinessDetail);
     yield takeEvery(actionTypes.SAGA_ADD_PAYMENT_TRANSACTION, addBusinessPayment);
     yield takeEvery(actionTypes.SAGA_DELETE_PAYMENT_TRANSACTION, deleteBusinessPayment);
+    yield takeEvery(actionTypes.SAGA_ADD_BUSINESS, addBusiness);
 }
 

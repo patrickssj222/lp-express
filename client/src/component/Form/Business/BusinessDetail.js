@@ -128,6 +128,7 @@ class BusinessDetail extends Component{
         this.props.addPayment(this.state.detail.id, this.state.new_payment);
     }
     render(){
+        console.log(this.state);
         if(this.state.detail===null || this.state.constants.fee===null){
             return(<div/>);
         }

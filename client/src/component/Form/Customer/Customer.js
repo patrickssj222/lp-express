@@ -12,6 +12,10 @@ class Customer extends Component{
         this.props.getCustomers();
     }
 
+    handleNewCustomer(e){
+        this.props.switchView("AddCustomer");
+    }
+
     render(){
         const columns = [
             {
@@ -60,6 +64,11 @@ class Customer extends Component{
                         <h3>客户列表</h3>
                     </div>
                     <hr className={"style1"}/>
+                    <div className={"footer"}>
+                        <div className={"form-confirmation button-group"}>
+                            <button className={"btn btn-primary"} onClick={this.handleNewCustomer.bind(this)}>添加客户</button>
+                        </div>
+                    </div>
                     <div className={"section-body"}>
                         <MDBDataTable
                             striped
