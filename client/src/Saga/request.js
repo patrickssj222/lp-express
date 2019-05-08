@@ -12,14 +12,14 @@ function* logIn(action){
                 password: action.password
             },
         });
-        if(response.status>=200 && response.status<300){
+        if(response.data.status>=200 && response.data.status<300){
             const result = response.data.response;
             if(result.length===1){
                 yield put({type:actionTypes.LOG_IN,user:result[0]});
             }
         }
         else{
-            console.log("Error " + response.status);
+            console.log("Error " + response.data.status);
         }
     }
     catch(e){
@@ -34,12 +34,12 @@ function* getPriceConstants(){
             method: 'POST',
             url: '/api/constants/price',
         });
-        if(response.status>=200 && response.status<300){
+        if(response.data.status>=200 && response.data.status<300){
             const result = response.data.response;
             yield put({type:actionTypes.UPDATE_PRICE_CONSTANTS,constants:result});
         }
         else{
-            console.log("Error " + response.status);
+            console.log("Error " + response.data.status);
         }
     }
     catch(e){
@@ -56,13 +56,13 @@ function* updatePriceConstants(action){
             url: '/api/constants/price/update',
             data:action.constants,
         });
-        if(response.status>=200 && response.status<300){
+        if(response.data.status>=200 && response.data.status<300){
             yield put({type:actionTypes.REMOVE_POP_UP});
             yield put({type:actionTypes.POP_UP, status:"success", message:["成功更新基础价格常量"],onExit:null});
         }
         else{
             yield put({type:actionTypes.REMOVE_POP_UP});
-            yield put({type:actionTypes.POP_UP, status:"failure", message:["Error: "+response.status],onExit:null});
+            yield put({type:actionTypes.POP_UP, status:"failure", message:["Error: "+response.data.status],onExit:null});
         }
     }
     catch(e){
@@ -77,14 +77,14 @@ function* getCustomers(){
             method: 'POST',
             url: '/api/customers/all',
         });
-        if(response.status>=200 && response.status<300){
+        if(response.data.status>=200 && response.data.status<300){
             const result = response.data.response;
             yield put({type:actionTypes.UPDATE_CUSTOMERS, customer:result});
             yield put({type:actionTypes.REMOVE_POP_UP});
         }
         else{
             yield put({type:actionTypes.REMOVE_POP_UP});
-            yield put({type:actionTypes.POP_UP, status:"failure", message:["Error: "+response.status],onExit:"Reinitialize"});
+            yield put({type:actionTypes.POP_UP, status:"failure", message:["Error: "+response.data.status],onExit:"Reinitialize"});
         }
     }
     catch(e){
@@ -101,13 +101,13 @@ function* addCustomers(action){
                 url: '/api/customers/add/one',
                 data:action.customer,
             });
-            if(response.status>=200 && response.status<300){
+            if(response.data.status>=200 && response.data.status<300){
                 yield put({type:actionTypes.REMOVE_POP_UP});
                 yield put({type:actionTypes.POP_UP, status:"success", message:["成功添加新客户"],onExit:null});
             }
             else{
                 yield put({type:actionTypes.REMOVE_POP_UP});
-                yield put({type:actionTypes.POP_UP, status:"failure", message:["Error: "+response.status],onExit:null});
+                yield put({type:actionTypes.POP_UP, status:"failure", message:["Error: "+response.data.status],onExit:null});
             }
         }
         catch(e){
@@ -129,13 +129,14 @@ function* updateCustomers(action){
             url: '/api/customers/update/one',
             data:action.customer,
         });
-        if(response.status>=200 && response.status<300){
+        console.log(response)
+        if(response.data.status>=200 && response.data.status<300){
             yield put({type:actionTypes.REMOVE_POP_UP});
             yield put({type:actionTypes.POP_UP, status:"success", message:["成功更新客户信息"],onExit:null});
         }
         else{
             yield put({type:actionTypes.REMOVE_POP_UP});
-            yield put({type:actionTypes.POP_UP, status:"failure", message:["Error: "+response.status],onExit:null});
+            yield put({type:actionTypes.POP_UP, status:"failure", message:["Error: "+response.data.status],onExit:null});
         }
     }
     catch(e){
@@ -150,14 +151,14 @@ function* getBusiness(){
             method: 'POST',
             url: '/api/business/all',
         });
-        if(response.status>=200 && response.status<300){
+        if(response.data.status>=200 && response.data.status<300){
             const result = response.data.response;
             yield put({type:actionTypes.UPDATE_BUSINESS, business:result});
             yield put({type:actionTypes.REMOVE_POP_UP});
         }
         else{
             yield put({type:actionTypes.REMOVE_POP_UP});
-            yield put({type:actionTypes.POP_UP, status:"failure", message:["Error: "+response.status],onExit:"Reinitialize"});
+            yield put({type:actionTypes.POP_UP, status:"failure", message:["Error: "+response.data.status],onExit:"Reinitialize"});
         }
     }
     catch(e){
@@ -172,13 +173,13 @@ function* updateBusiness(action){
             url: '/api/business/update/',
             data:action.business,
         });
-        if(response.status>=200 && response.status<300){
+        if(response.data.status>=200 && response.data.status<300){
             yield put({type:actionTypes.REMOVE_POP_UP});
             yield put({type:actionTypes.POP_UP, status:"success", message:["成功更新业务信息"],onExit:null});
         }
         else{
             yield put({type:actionTypes.REMOVE_POP_UP});
-            yield put({type:actionTypes.POP_UP, status:"failure", message:["Error: "+response.status],onExit:null});
+            yield put({type:actionTypes.POP_UP, status:"failure", message:["Error: "+response.data.status],onExit:null});
         }
     }
     catch(e){
@@ -196,7 +197,7 @@ function* getBusinessDetail(action){
                 id:action.id
             }
         });
-        if(response.status>=200 && response.status<300){
+        if(response.data.status>=200 && response.data.status<300){
             const result = response.data.response[0];
             const keys = Object.keys(result);
             keys.forEach((key)=>{
@@ -209,7 +210,7 @@ function* getBusinessDetail(action){
         }
         else{
             yield put({type:actionTypes.REMOVE_POP_UP});
-            yield put({type:actionTypes.POP_UP, status:"failure", message:["Error: "+response.status],onExit:null});
+            yield put({type:actionTypes.POP_UP, status:"failure", message:["Error: "+response.data.status],onExit:null});
 
         }
     }
@@ -228,14 +229,14 @@ function* getBusinessPayment(action){
                 id:action.id
             }
         });
-        if(response.status>=200 && response.status<300){
+        if(response.data.status>=200 && response.data.status<300){
             const result = response.data.response;
             yield put({type:actionTypes.UPDATE_BUSINESS_PAYMENT, business_payment:result});
             yield put({type:actionTypes.REMOVE_POP_UP});
         }
         else{
             yield put({type:actionTypes.REMOVE_POP_UP});
-            yield put({type:actionTypes.POP_UP, status:"failure", message:["Error: "+response.status],onExit:null});
+            yield put({type:actionTypes.POP_UP, status:"failure", message:["Error: "+response.data.status],onExit:null});
 
         }
     }
@@ -255,13 +256,13 @@ function* addBusinessPayment(action){
                 payment_info: action.payment_info
             }
         });
-        if(response.status>=200 && response.status<300){
+        if(response.data.status>=200 && response.data.status<300){
             yield call(getBusinessPayment, action);
             yield put({type:actionTypes.REMOVE_POP_UP});
         }
         else{
             yield put({type:actionTypes.REMOVE_POP_UP});
-            yield put({type:actionTypes.POP_UP, status:"failure", message:["Error: "+response.status],onExit:null});
+            yield put({type:actionTypes.POP_UP, status:"failure", message:["Error: "+response.data.status],onExit:null});
 
         }
     }
@@ -280,7 +281,7 @@ function* deleteBusinessPayment(action){
                 id:action.id,
             }
         });
-        if(response.status>=200 && response.status<300){
+        if(response.data.status>=200 && response.data.status<300){
             const payload = {
                 id: action.business_id
             };
@@ -289,7 +290,7 @@ function* deleteBusinessPayment(action){
         }
         else{
             yield put({type:actionTypes.REMOVE_POP_UP});
-            yield put({type:actionTypes.POP_UP, status:"failure", message:["Error: "+response.status],onExit:null});
+            yield put({type:actionTypes.POP_UP, status:"failure", message:["Error: "+response.data.status],onExit:null});
 
         }
     }
@@ -306,13 +307,13 @@ function* addBusiness(action){
             url: '/api/business/add',
             data:action.detail
         });
-        if(response.status>=200 && response.status<300){
+        if(response.data.status>=200 && response.data.status<300){
             yield put({type:actionTypes.SWITCH_VIEW, component:"CustomerDetail", payload:{index:action.customer_id}});
             yield put({type:actionTypes.REMOVE_POP_UP});
         }
         else{
             yield put({type:actionTypes.REMOVE_POP_UP});
-            yield put({type:actionTypes.POP_UP, status:"failure", message:["Error: "+response.status],onExit:null});
+            yield put({type:actionTypes.POP_UP, status:"failure", message:["Error: "+response.data.status],onExit:null});
 
         }
     }

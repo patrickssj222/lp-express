@@ -29,10 +29,12 @@ class AddCustomer extends Component{
                 first_landing_date:"",
                 first_landing_location:"",
                 used_name:"",
+                emergency_contact:[],
             },
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleContactChange = this.handleContactChange.bind(this);
     }
 
 
@@ -49,6 +51,38 @@ class AddCustomer extends Component{
     handleSubmit(e){
         this.props.addCustomer(this.state.detail);
     }
+    handleContactChange(e, index){
+        const { name, value } = e.target;
+        console.log(name, index);
+        this.setState((prevState) => {
+            let new_contacts = prevState.detail.emergency_contact;
+            new_contacts[index][name] = value;
+            return ({
+                ...prevState,
+                detail:{
+                    ...prevState.detail,
+                    emergency_contact:new_contacts
+                }
+            })
+        });
+    }
+    handleNewContact(e){
+        this.setState((prevState) => ({
+            ...prevState,
+            detail:{
+                ...prevState.detail,
+                emergency_contact:[
+                    ...prevState.detail.emergency_contact,
+                    {
+                        name:"",
+                        relationship:"",
+                        phone:""
+                    }
+                ]
+            }
+        }));
+    }
+
     render(){
         return(
             <div className={"form-wrapper content-wrapper customer-detail"}>
@@ -247,37 +281,55 @@ class AddCustomer extends Component{
                 <div className={"section-wrapper"}>
                     <div className={"section-header"}>
                         <h3>紧急联系人信息</h3>
+                        <button className={"btn btn-primary"} onClick={this.handleNewContact.bind(this)}>添加联系人</button>
                     </div>
                     <div className={"section-body"}>
-                        <div className={"row"}>
-                            <Input
-                                label={"姓名"}
-                                name={"contact_name"}
-                                value={this.state.detail.contact_name}
-                                type={"text"}
-                                handleChange={this.handleChange}
-                            />
-                            <Input
-                                label={"关系"}
-                                name={"contact_relationship"}
-                                value={this.state.detail.contact_relationship}
-                                type={"text"}
-                                handleChange={this.handleChange}
-                            />
-                            <Input
-                                label={"电话"}
-                                name={"contact_phone"}
-                                value={this.state.detail.contact_phone}
-                                type={"tel"}
-                                handleChange={this.handleChange}
-                            />
-                        </div>
+                        <table className={"business-detail-table"}>
+                            <thead/>
+                            <tbody>
+                            {
+                                this.state.detail.emergency_contact.map((contact, index)=>{
+                                    return (
+                                        <tr key={index}>
+                                            <td>
+                                                <Input
+                                                    label={"姓名"}
+                                                    name={"name"}
+                                                    value={this.state.detail.emergency_contact[index].name}
+                                                    type={"text"}
+                                                    handleChange={(event)=>this.handleContactChange(event,index)}
+                                                />
+                                            </td>
+                                            <td>
+                                                <Input
+                                                    label={"关系"}
+                                                    name={"relationship"}
+                                                    value={this.state.detail.emergency_contact[index].relationship}
+                                                    type={"text"}
+                                                    handleChange={(event)=>this.handleContactChange(event,index)}
+                                                />
+                                            </td>
+                                            <td>
+                                                <Input
+                                                    label={"电话"}
+                                                    name={"phone"}
+                                                    value={this.state.detail.emergency_contact[index].phone}
+                                                    type={"tel"}
+                                                    handleChange={(event)=>this.handleContactChange(event,index)}
+                                                />
+                                            </td>
+                                        </tr>
+                                    )
+                                })
+                            }
+                            </tbody>
+                        </table>
                     </div>
                 </div>
                 <div className={"footer"}>
                     <div className={"form-confirmation button-group"}>
                         <small>完成值: {Math.round(this.state.total_completion/this.state.max_total*100)}%</small>
-                        <button className={"btn btn-primary"} onClick={this.handleSubmit.bind(this)}>添加</button>
+                        <button className={"btn btn-primary"} onClick={this.handleSubmit.bind(this)}>添加客户</button>
                     </div>
                 </div>
             </div>

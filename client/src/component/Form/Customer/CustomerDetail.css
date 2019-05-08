@@ -24,3 +24,10 @@
 .customer-detail .section-wrapper{
     margin-bottom: 50px;
 }
+
+.customer-detail .section-wrapper .section-header{
+    display:flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-bottom: 10px;
+}

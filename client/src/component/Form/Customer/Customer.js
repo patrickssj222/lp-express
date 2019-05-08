@@ -17,6 +17,7 @@ class Customer extends Component{
     }
 
     render(){
+        console.log(this.props.customer);
         const columns = [
             {
                 label: '姓名',
