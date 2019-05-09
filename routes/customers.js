@@ -7,6 +7,20 @@ router.post('/all/', function(req, res, next) {
             res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
             //If there is error, we send the error in the error section with 500 status
         } else {
+            console.log(results);
+            res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
+            //If there is no error, all is good and response is 200OK.
+        }
+    });
+});
+
+router.post('/contact/', function(req, res, next) {
+    let body = req.body;
+    res.locals.pool.query("SELECT * FROM customer_emergency_contact WHERE customer_id = "+body.id+"" , function (error, results, fields) {
+        if(error){
+            res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
+            //If there is error, we send the error in the error section with 500 status
+        } else {
             res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
             //If there is no error, all is good and response is 200OK.
         }
@@ -85,7 +99,7 @@ router.post('/update/one/', function(req,res,next){
     let body = req.body;
     let query = "UPDATE customer SET ";
     Object.keys(body).forEach((key)=>{
-        if(key!=="id" && key!=="creation_time"){
+        if(key!=="id" && key!=="creation_time" && key!=="emergency_contact"){
             query = query + key + " = '"+body[key]+"',";
         }
     });
@@ -98,8 +112,66 @@ router.post('/update/one/', function(req,res,next){
             res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
             //If there is error, we send the error in the error section with 500 status
         } else {
+            body.emergency_contact.forEach((contact)=>{
+                query = "";
+                query = query + "UPDATE customer_emergency_contact SET ";
+                Object.keys(contact).forEach((key)=>{
+                    if(key!=="id"){
+                        query = query + key + " = '"+contact[key]+"',";
+                    }
+                });
+                query = query.slice(0,-1);
+                query = query + " WHERE id = "+contact.id+";";
+                res.locals.pool.query(query, function (error, results, fields) {
+                    if(error){
+                        console.log(error);
+                        res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
+                        //If there is error, we send the error in the error section with 500 status
+                    }
+                });
+            });
             res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
             //If there is no error, all is good and response is 200OK.
+        }
+    });
+});
+
+router.post('/geo/china/', function(req, res, next) {
+    let body = req.body;
+    let value = {};
+    res.locals.pool.query("SELECT * FROM province;" , function (error, results, fields) {
+        if(error){
+            res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
+            //If there is error, we send the error in the error section with 500 status
+        } else {
+            value.province ={};
+            results.forEach((p)=>{
+                value[p.id] = p;
+                value[p.id].city = {};
+            });
+            res.locals.pool.query("SELECT * FROM city;" , function (error, results, fields) {
+                if(error){
+                    res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
+                    //If there is error, we send the error in the error section with 500 status
+                } else {
+                    results.forEach((c)=>{
+                        value[c.province_id].city[c.id] = c;
+                        value[c.province_id].city[c.id].area = {};
+                    });
+                    res.locals.pool.query("SELECT * FROM area;" , function (error, results, fields) {
+                        if(error){
+                            res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
+                            //If there is error, we send the error in the error section with 500 status
+                        } else {
+                            results.forEach((a)=>{
+                                value[a.province_id].city[a.city_id].area[a.id] = a;
+                            });
+                            res.send(JSON.stringify({"status": 200, "error": null, "response": value}));
+                            //If there is no error, all is good and response is 200OK.
+                        }
+                    });
+                }
+            });
         }
     });
 });

@@ -30,13 +30,20 @@ class AddCustomer extends Component{
                 first_landing_location:"",
                 used_name:"",
                 emergency_contact:[],
+                city:"",
+                area:"",
+                province:"",
             },
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleContactChange = this.handleContactChange.bind(this);
     }
-
+    componentWillMount() {
+        if(this.props.china_geo==null){
+            this.props.getChinaGeo();
+        }
+    }
 
     handleChange(e){
         const { name, value } = e.target;
@@ -84,6 +91,44 @@ class AddCustomer extends Component{
     }
 
     render(){
+        const findNested = (obj, key, value)=> {
+            // Base case
+            if (obj[key] === value) {
+                console.log("FOUND VALUE", value);
+                return obj;
+            } else {
+                for (let i = 0, len = Object.keys(obj).length; i < len; i++) {
+                    const next_obj = obj[Object.keys(obj)[i]];
+                    if (typeof next_obj == 'object') {
+                        let found = findNested(next_obj, key, value);
+                        if (found) {
+                            // If the object was found in the recursive call, bubble it up.
+                            return found;
+                        }
+                    }
+                }
+            }
+        };
+        let province_option = [];
+        let area_option = [];
+        let city_option = [];
+        if(this.props.china_geo!=null){
+            province_option = Object.keys(this.props.china_geo).map((key)=>{
+                return this.props.china_geo[key].name;
+            });
+            if(this.state.detail.province !== ""){
+                const selected_prov = findNested(this.props.china_geo, "name", this.state.detail.province);
+                city_option = Object.keys(selected_prov.city).map(key=>{return selected_prov.city[key].name});
+                if(this.state.detail.city !== ""){
+                    const selected_city = findNested(selected_prov.city, "name", this.state.detail.city);
+                    console.log(selected_city);
+                    area_option = Object.keys(selected_city.area).map(key=>{return selected_city.area[key].name});
+                }
+            }
+        }
+        province_option.unshift("");
+        area_option.unshift("");
+        city_option.unshift("");
         return(
             <div className={"form-wrapper content-wrapper customer-detail"}>
                 <div className={"section-wrapper"}>
@@ -160,13 +205,28 @@ class AddCustomer extends Component{
                             <tbody>
                             <tr>
                                 <td>
-                                    城市
+                                    <DropDown label={"省份："}
+                                              name={"province"}
+                                              value={this.state.detail.province}
+                                              options={province_option}
+                                              handleChange={this.handleChange}
+                                    />
                                 </td>
                                 <td>
-                                    区域
+                                    <DropDown label={"城市："}
+                                              name={"city"}
+                                              value={this.state.detail.city}
+                                              options={city_option}
+                                              handleChange={this.handleChange}
+                                    />
                                 </td>
                                 <td>
-                                    省份
+                                    <DropDown label={"区域："}
+                                              name={"area"}
+                                              value={this.state.detail.area}
+                                              options={area_option}
+                                              handleChange={this.handleChange}
+                                    />
                                 </td>
                             </tr>
                             </tbody>
@@ -339,12 +399,14 @@ class AddCustomer extends Component{
 const mapStateToProps = state => {
     return{
         user:state.user,
+        china_geo:state.china_geo,
     };
 };
 
 const mapDispatchToProps = dispatch =>{
     return{
         addCustomer:(customer)=>dispatch({type:actionTypes.SAGA_ADD_CUSTOMERS,customer: customer}),
+        getChinaGeo:()=>dispatch({type:actionTypes.SAGA_GET_CHINA_GEO})
     }
 };
 export default connect(mapStateToProps, mapDispatchToProps)(AddCustomer);

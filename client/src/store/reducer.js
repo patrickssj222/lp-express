@@ -14,6 +14,8 @@ const initialState = {
     business:null,
     business_detail:null,
     business_payment:null,
+    china_geo:null,
+
 };
 
 const reducer = (store = initialState, action) => {
@@ -80,6 +82,11 @@ const reducer = (store = initialState, action) => {
             return{
                 ...store,
                 business_payment:action.business_payment
+            };
+        case actionTypes.UPDATE_CHINA_GEO:
+            return{
+                ...store,
+                china_geo: action.china_geo
             };
         default:
             return store;

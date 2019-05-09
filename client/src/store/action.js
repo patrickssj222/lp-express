@@ -20,3 +20,5 @@ export const POP_UP = 'POP_UP';
 export const REMOVE_POP_UP = 'REMOVE_POP_UP';
 export const SWITCH_VIEW = 'SWITCH_VIEW';
 export const SAGA_ADD_BUSINESS = 'SAGA_ADD_BUSINESS';
+export const SAGA_GET_CHINA_GEO = "SAGA_GET_CHINA_GEO";
+export const UPDATE_CHINA_GEO = "UPDATE_CHINA_GEO";
