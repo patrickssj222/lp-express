@@ -30,11 +30,17 @@ class AddCustomer extends Component{
                 first_landing_location:"",
                 used_name:"",
                 emergency_contact:[],
-                city:"",
+                city_id:"",
             },
+            china_geo:{
+                city:"",
+                province:"",
+                region:""
+            }
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleCityChange = this.handleCityChange.bind(this);
         this.handleContactChange = this.handleContactChange.bind(this);
     }
     componentWillMount() {
@@ -49,6 +55,40 @@ class AddCustomer extends Component{
             ...prevState,
             detail:{
                 ...prevState.detail,
+                [name]:value,
+            }
+        }));
+    }
+    findNested (obj, key, value){
+        // Base case
+        if (obj[key] === value) {
+            console.log("FOUND VALUE", value);
+            return obj;
+        } else {
+            for (let i = 0, len = Object.keys(obj).length; i < len; i++) {
+                const next_obj = obj[Object.keys(obj)[i]];
+                if (typeof next_obj == 'object') {
+                    let found = this.findNested(next_obj, key, value);
+                    if (found) {
+                        // If the object was found in the recursive call, bubble it up.
+                        return found;
+                    }
+                }
+            }
+        }
+    };
+
+    handleCityChange(e){
+        const { name, value } = e.target;
+        const city_info = this.findNested(this.props.china_geo,"name",value);
+        this.setState((prevState) => ({
+            ...prevState,
+            detail:{
+                ...prevState.detail,
+                city_id: city_info.id
+            },
+            china_geo:{
+                ...prevState.china_geo,
                 [name]:value,
             }
         }));
@@ -89,29 +129,11 @@ class AddCustomer extends Component{
     }
 
     render(){
-        const findNested = (obj, key, value)=> {
-            // Base case
-            if (obj[key] === value) {
-                console.log("FOUND VALUE", value);
-                return obj;
-            } else {
-                for (let i = 0, len = Object.keys(obj).length; i < len; i++) {
-                    const next_obj = obj[Object.keys(obj)[i]];
-                    if (typeof next_obj == 'object') {
-                        let found = findNested(next_obj, key, value);
-                        if (found) {
-                            // If the object was found in the recursive call, bubble it up.
-                            return found;
-                        }
-                    }
-                }
-            }
-        };
-
+        console.log(this.state);
         let region_value = "";
         let province_value = "";
-        if(this.props.china_geo!=null && this.state.detail.city!==""){
-            const city_info = findNested(this.props.china_geo,"name",this.state.detail.city);
+        if(this.props.china_geo!=null && this.state.china_geo.city!==""){
+            const city_info = this.findNested(this.props.china_geo,"name",this.state.china_geo.city);
             const region_info = this.props.china_geo[city_info.region_id];
             region_value = region_info.name;
             const province_info = region_info.province[city_info.province_id];
@@ -195,9 +217,9 @@ class AddCustomer extends Component{
                                 <td>
                                     <Input label={"城市："}
                                            name={"city"}
-                                           value={this.state.detail.city}
+                                           value={this.state.china_geo.city}
                                            type={"text"}
-                                           handleChange={this.handleChange}
+                                           handleChange={this.handleCityChange}
                                     />
                                 </td>
                                 <td>
@@ -205,7 +227,7 @@ class AddCustomer extends Component{
                                            value={province_value}
                                            type={"text"}
                                            disabled={true}
-                                           handleChange={this.handleChange}
+                                           handleChange={this.handleCityChange}
                                     />
                                 </td>
 
@@ -214,7 +236,7 @@ class AddCustomer extends Component{
                                            value={region_value}
                                            type={"text"}
                                            disabled={true}
-                                           handleChange={this.handleChange}
+                                           handleChange={this.handleCityChange}
                                     />
                                 </td>
                             </tr>
