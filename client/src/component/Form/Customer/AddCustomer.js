@@ -31,8 +31,6 @@ class AddCustomer extends Component{
                 used_name:"",
                 emergency_contact:[],
                 city:"",
-                area:"",
-                province:"",
             },
         };
         this.handleChange = this.handleChange.bind(this);
@@ -109,26 +107,16 @@ class AddCustomer extends Component{
                 }
             }
         };
-        let province_option = [];
-        let area_option = [];
-        let city_option = [];
-        if(this.props.china_geo!=null){
-            province_option = Object.keys(this.props.china_geo).map((key)=>{
-                return this.props.china_geo[key].name;
-            });
-            if(this.state.detail.province !== ""){
-                const selected_prov = findNested(this.props.china_geo, "name", this.state.detail.province);
-                city_option = Object.keys(selected_prov.city).map(key=>{return selected_prov.city[key].name});
-                if(this.state.detail.city !== ""){
-                    const selected_city = findNested(selected_prov.city, "name", this.state.detail.city);
-                    console.log(selected_city);
-                    area_option = Object.keys(selected_city.area).map(key=>{return selected_city.area[key].name});
-                }
-            }
+
+        let region_value = "";
+        let province_value = "";
+        if(this.props.china_geo!=null && this.state.detail.city!==""){
+            const city_info = findNested(this.props.china_geo,"name",this.state.detail.city);
+            const region_info = this.props.china_geo[city_info.region_id];
+            region_value = region_info.name;
+            const province_info = region_info.province[city_info.province_id];
+            province_value = province_info.name;
         }
-        province_option.unshift("");
-        area_option.unshift("");
-        city_option.unshift("");
         return(
             <div className={"form-wrapper content-wrapper customer-detail"}>
                 <div className={"section-wrapper"}>
@@ -205,27 +193,28 @@ class AddCustomer extends Component{
                             <tbody>
                             <tr>
                                 <td>
-                                    <DropDown label={"省份："}
-                                              name={"province"}
-                                              value={this.state.detail.province}
-                                              options={province_option}
-                                              handleChange={this.handleChange}
+                                    <Input label={"城市："}
+                                           name={"city"}
+                                           value={this.state.detail.city}
+                                           type={"text"}
+                                           handleChange={this.handleChange}
                                     />
                                 </td>
                                 <td>
-                                    <DropDown label={"城市："}
-                                              name={"city"}
-                                              value={this.state.detail.city}
-                                              options={city_option}
-                                              handleChange={this.handleChange}
+                                    <Input label={"省份："}
+                                           value={province_value}
+                                           type={"text"}
+                                           disabled={true}
+                                           handleChange={this.handleChange}
                                     />
                                 </td>
+
                                 <td>
-                                    <DropDown label={"区域："}
-                                              name={"area"}
-                                              value={this.state.detail.area}
-                                              options={area_option}
-                                              handleChange={this.handleChange}
+                                    <Input label={"区域："}
+                                           value={region_value}
+                                           type={"text"}
+                                           disabled={true}
+                                           handleChange={this.handleChange}
                                     />
                                 </td>
                             </tr>
