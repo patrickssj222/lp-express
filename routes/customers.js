@@ -176,4 +176,15 @@ router.post('/geo/china/', function(req, res, next) {
     });
 });
 
+router.post('/city/china/', function(req, res, next) {
+    let body = req.body;
+    res.locals.pool.query("SELECT * FROM city WHERE id = "+body.id+";" , function (error, results, fields) {
+        if(error){
+            res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
+        }else{
+            res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
+        }
+    });
+});
+
 module.exports = router;

@@ -85,7 +85,7 @@ class AddCustomer extends Component{
             ...prevState,
             detail:{
                 ...prevState.detail,
-                city_id: city_info.id
+                city_id: city_info?city_info.id:""
             },
             china_geo:{
                 ...prevState.china_geo,
@@ -134,10 +134,14 @@ class AddCustomer extends Component{
         let province_value = "";
         if(this.props.china_geo!=null && this.state.china_geo.city!==""){
             const city_info = this.findNested(this.props.china_geo,"name",this.state.china_geo.city);
-            const region_info = this.props.china_geo[city_info.region_id];
-            region_value = region_info.name;
-            const province_info = region_info.province[city_info.province_id];
-            province_value = province_info.name;
+            if(city_info){
+                const region_info = this.props.china_geo[city_info.region_id];
+                region_value = region_info?region_info.name:"";
+                if(region_info){
+                    const province_info = region_info.province[city_info.province_id];
+                    province_value = province_info?province_info.name:"";
+                }
+            }
         }
         return(
             <div className={"form-wrapper content-wrapper customer-detail"}>

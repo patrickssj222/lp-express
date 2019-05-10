@@ -14,7 +14,12 @@ class CustomerDetail extends Component{
         super(props);
         this.state={
             detail:this.props.customer[this.props.payload.index],
-            business:null
+            business:null,
+            china_geo:{
+                city:"",
+                province:"",
+                region:""
+            }
         };
         this.columns = [
             {
@@ -41,8 +46,10 @@ class CustomerDetail extends Component{
         ];
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleCityChange = this.handleCityChange.bind(this);
         this.handleContactChange = this.handleContactChange.bind(this);
     }
+
     componentWillMount() {
         console.log("customerlist", this.props.customer);
         console.log("index", this.props.payload.index);
@@ -97,6 +104,9 @@ class CustomerDetail extends Component{
         if(this.props.china_geo==null){
             this.props.getChinaGeo();
         }
+
+
+
     }
 
     handleChange(e){
@@ -148,7 +158,86 @@ class CustomerDetail extends Component{
         }));
     }
 
+    initCity(){
+        try{
+            axios({
+                method: 'POST',
+                url: '/api/customers/city/china',
+                data:{
+                    id:this.state.detail.city_id
+                }
+            }).then(response=>{
+                if(response.data.status>=200 && response.data.status<300){
+                    const result = response.data.response;
+                    console.log(result);
+                    this.setState((prevState) => ({
+                        ...prevState,
+                        china_geo:{
+                            ...prevState.china_geo,
+                            city:result[0].name
+                        }
+                    }));
+                }
+                else{
+                }
+
+            });
+
+        }
+        catch(e){
+            console.log(e);
+        }
+    }
+    handleCityChange(e){
+        const { name, value } = e.target;
+        const city_info = this.findNested(this.props.china_geo,"name",value);
+        this.setState((prevState) => ({
+            ...prevState,
+            detail:{
+                ...prevState.detail,
+                city_id: city_info?city_info.id:""
+            },
+            china_geo:{
+                ...prevState.china_geo,
+                [name]:value,
+            }
+        }));
+    }
+    findNested (obj, key, value){
+        // Base case
+        if (obj[key] === value) {
+            return obj;
+        } else {
+            for (let i = 0, len = Object.keys(obj).length; i < len; i++) {
+                const next_obj = obj[Object.keys(obj)[i]];
+                if (typeof next_obj == 'object') {
+                    let found = this.findNested(next_obj, key, value);
+                    if (found) {
+                        // If the object was found in the recursive call, bubble it up.
+                        return found;
+                    }
+                }
+            }
+        }
+    };
     render(){
+        console.log(this.state);
+        if(this.props.china_geo!=null && this.state.china_geo.city === ""){
+            this.initCity();
+        }
+        let region_value = "";
+        let province_value = "";
+        if(this.props.china_geo!=null && this.state.china_geo.city!==""){
+            const city_info = this.findNested(this.props.china_geo,"name",this.state.china_geo.city);
+            if(city_info){
+                const region_info = this.props.china_geo[city_info.region_id];
+                region_value = region_info?region_info.name:"";
+                if(region_info){
+                    const province_info = region_info.province[city_info.province_id];
+                    province_value = province_info?province_info.name:"";
+                }
+            }
+        }
         let rows = [];
         if(this.state.business!=null){
             rows = this.state.business.map((item)=>{
@@ -240,13 +329,29 @@ class CustomerDetail extends Component{
                             <tbody>
                             <tr>
                                 <td>
-                                    城市
+                                    <Input label={"城市："}
+                                           name={"city"}
+                                           value={this.state.china_geo.city}
+                                           type={"text"}
+                                           handleChange={this.handleCityChange}
+                                    />
                                 </td>
                                 <td>
-                                    区域
+                                    <Input label={"省份："}
+                                           value={province_value}
+                                           type={"text"}
+                                           disabled={true}
+                                           handleChange={this.handleCityChange}
+                                    />
                                 </td>
+
                                 <td>
-                                    省份
+                                    <Input label={"区域："}
+                                           value={region_value}
+                                           type={"text"}
+                                           disabled={true}
+                                           handleChange={this.handleCityChange}
+                                    />
                                 </td>
                             </tr>
                             </tbody>
