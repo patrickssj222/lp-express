@@ -6,7 +6,7 @@ var logger = require('morgan');
 var mysql = require("mysql");
 var cors = require('cors');
 var bodyParser = require('body-parser');
-
+require('dotenv').config();
 
 var app = express();
 
@@ -25,12 +25,15 @@ app.use(express.static(path.join(__dirname, 'client/build')));
 //By Pass CORS
 app.use(cors());
 //Database connection
+console.log(process.env.SQL_USER);
 var db_config = {
-    host     : '35.190.171.252',
-    user     : 'admin',
-    password : 'tgyhUJ22',
-    database: 'lp_database',
+    user: process.env.SQL_USER,
+    database: process.env.SQL_DATABASE,
+    password: process.env.SQL_PASSWORD
 };
+if (process.env.INSTANCE_CONNECTION_NAME) {
+    db_config.socketPath = `/cloudsql/${process.env.INSTANCE_CONNECTION_NAME}`;
+}
 
 app.use(function(req, res, next){
     res.locals.pool = mysql.createPool(db_config);

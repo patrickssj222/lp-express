@@ -7,7 +7,8 @@
     "server": "nodemon ./bin/www",
     "heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build",
     "client": "cd client && npm start",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "build": "cd client && npm run build"
   },
   "dependencies": {
     "body-parser": "^1.18.3",
@@ -15,6 +16,7 @@
     "cookie-parser": "~1.4.3",
     "cors": "^2.8.5",
     "debug": "~2.6.9",
+    "dotenv": "^8.0.0",
     "express": "~4.16.0",
     "http-errors": "~1.6.2",
     "jade": "~1.11.0",
