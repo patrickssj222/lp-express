@@ -28,6 +28,12 @@ class Price_Constants extends Component{
     render(){
         const columns = [
             {
+                label: '具体业务',
+                field: 'name',
+                sort: 'asc',
+
+            },
+            {
                 label: '业务类别',
                 field: 'name',
                 sort: 'asc',
@@ -55,6 +61,7 @@ class Price_Constants extends Component{
             rows = Object.keys(fee).map((index)=>{
                 return({
                     name: fee[index].name,
+                    type:fee[index].type,
                     service_fee: <input className={"mdb-editable"} type={"number"} step={".01"} name={"service_fee"} onChange={this.handleChange.bind(this,index)} value={fee[index].service_fee!=null?fee[index].service_fee:""}/>,
                     government_fee: <input className={"mdb-editable"} type={"number"} step={".01"} name={"government_fee"} onChange={this.handleChange.bind(this,index)} value={fee[index].government_fee!=null?fee[index].government_fee:""}/>,
                     misc_fee: <input className={"mdb-editable"} type={"number"} step={".01"} name={"misc_fee"} onChange={this.handleChange.bind(this,index)} value={fee[index].misc_fee!=null?fee[index].misc_fee:""}/>

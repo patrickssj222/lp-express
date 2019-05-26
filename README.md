@@ -36,4 +36,6 @@ INSTANCE_CONNECTION_NAME=lp-tool:us-east1:lp-admin-database
 Local Proxy SQL Connection
 ```$xslt
 Refer to: https://cloud.google.com/appengine/docs/flexible/nodejs/using-cloud-sql
+
+./cloud_sql_proxy -dir=/cloudsql &
 ```

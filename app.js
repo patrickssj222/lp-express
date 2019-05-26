@@ -25,7 +25,7 @@ app.use(express.static(path.join(__dirname, 'client/build')));
 //By Pass CORS
 app.use(cors());
 //Database connection
-console.log(process.env.SQL_USER);
+console.log(process.env.INSTANCE_CONNECTION_NAME);
 var db_config = {
     user: process.env.SQL_USER,
     database: process.env.SQL_DATABASE,
