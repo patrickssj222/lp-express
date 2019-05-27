@@ -38,7 +38,9 @@ router.post('/add/', function(req, res, next) {
     query = query + ") VALUES (";
     Object.keys(body).forEach((key)=>{
         if(key!=="id"){
-            query = query + "'"+ body[key] + "',";
+            const value = body[key]==null||body[key]===""?null:"'"+ body[key] + "'";
+            console.log(key,": ",value);
+            query = query + value+",";
         }
     });
     query = query.slice(0,-1);

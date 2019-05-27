@@ -5,8 +5,7 @@ import './BusinessDetail.css';
 import Input from "../Input/Input";
 import connect from "react-redux/es/connect/connect";
 import * as actionTypes from "../../../store/action";
-import axios from "axios";
-import {MDBDataTable} from "mdbreact";
+import findObject from "../../../utility/findObject";
 
 
 class addBusiness extends Component{
@@ -14,175 +13,199 @@ class addBusiness extends Component{
         super(props);
         this.state={
             detail:{
-                amount: "",
-                amount_accept: "",
-                amount_date: "",
-                amount_detail: "",
-                business_level: "",
-                business_type: "",
-                case_close_time: "",
-                certify: "",
-                certify_time: "",
-                contact_with_schools: "",
-                create_time: "",
-                customer_name: "",
-                edit_name: "",
-                expire_time_passport: "",
-                expire_time_visa: "",
-                explain_fee: "",
-                export_to: "",
-                extra_progress: "",
-                goverment_fee_change_reason: "",
-                government_fee: "",
+                customer_id: "",
+                service_constants_id:null,
+                other_fee: 0,
+                total_fee: 0,
+                misc_fee_payment_method: "",
                 government_fee_payment_method: "",
-                in_progress: "",
-                info_collector: "",
-                is_export: "",
-                is_payoff: "",
-                is_remind: "",
-                make_file_date: "",
-                misc_fee: "",
-                non_refundable: "",
-                post_fee: "",
-                post_fee_change_reason: "",
-                post_fee_payment_method: "",
-                progress: "",
-                recertify: "",
-                recertify_time: "",
-                referee: "",
-                refundable: "",
-                remind: "",
-                service_fee: "",
-                service_fee_change_reason: "",
-                service_level: "",
-                special_detail: "",
-                student_id: "",
-                submit_time_passport: "",
-                submit_time_visa: "",
-                subservice_name: "",
-                total_fee: "",
-                update_time: "",
-                user: "",
-                wenan: "",
+                government_fee:"",
+                misc_fee:"",
+                progress:"收集材料",
+                visa_submit_date:"",
+                visa_expire_date:"",
+                service_level: "普通",
             },
-            payment:null,
-            constants:null,
-            new_payment:null,
+            service_type:"",
+            service_name:"",
+            service:null,
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleServiceTypeChange = this.handleServiceTypeChange.bind(this);
+        this.handleServiceChange = this.handleServiceChange.bind(this);
+        this.handleGovernmentPaymentMethodChange = this.handleGovernmentPaymentMethodChange.bind(this);
+        this.handleMiscPaymentMethodChange = this.handleMiscPaymentMethodChange.bind(this);
+        this.handleOtherFeeChange = this.handleOtherFeeChange.bind(this);
     }
     componentWillMount() {
         this.props.getPriceConstants();
     }
     componentWillReceiveProps(nextProps, nextContext) {
         console.log("Triggered", nextProps);
+        const customer = findObject(this.props.customer,"id",nextProps.payload.customer_id)[0];
+        console.log("found customer",customer);
         this.setState({
             detail:{
                 ...this.state.detail,
-                customer_name:nextProps.payload.customer_name,
-                student_id: nextProps.payload.customer_id
-            }
+                customer_id: nextProps.payload.customer_id
+            },
+            customer:customer
         })
     }
-
-    handleChange(e){
+    handleServiceTypeChange(e){
         const { name, value } = e.target;
-        let toChange = null;
-        switch(name){
-            case "government_fee_payment_method":
-                if(value==="公司信用卡"){
-                    toChange = {
-                        government_fee: this.props.constants.fee[0].government_fee
-                    };
-                }
-                else if(value==="客人信用卡"){
-                    toChange = {
-                        government_fee: 0
-                    };
-                }
-                else{
-                    toChange = {
-                        government_fee: ""
-                    };
-                }
-                break;
-            case "post_fee_payment_method":
-                if(value==="公司邮寄"){
-                    toChange = {
-                        post_fee: this.props.constants.fee[0].misc_fee
-                    };
-                }
-                else if(value==="客人邮寄"){
-                    toChange = {
-                        post_fee: 0
-                    };
-                }
-                else{
-                    toChange = {
-                        post_fee: ""
-                    };
-                }
-                break;
-        }
-
         this.setState((prevState) => {
-            let total_value_change = 0;
-            if (toChange!=null){
-                const toChangeKey = Object.keys(toChange);
-                const toChangeValue = Object.values(toChange);
-                console.log(toChangeKey, toChangeValue, prevState);
-                if(toChangeValue[0]!=="" && prevState.detail[toChangeKey[0]]!==""){
-                    total_value_change = prevState.detail[toChangeKey[0]]-toChangeValue[0];
-                    console.log(total_value_change);
-                }
-                else if(toChangeValue[0]!==""){
-                    total_value_change = 0 - toChangeValue[0];
-                }
-                else if(prevState.detail[toChangeKey[0]]!==""){
-                    total_value_change = prevState.detail[toChangeKey[0]] - 0;
-                }
-                else{
-                    total_value_change = 0;
-                }
+            return{
+                ...prevState,
+                [name]:value,
+                service_name:""
             }
+        });
+    }
 
-            const total_fee = (this.state.detail.government_fee===""?0:this.state.detail.government_fee) +
-                (this.state.detail.post_fee===""?0:this.state.detail.post_fee) +
-                (this.state.detail.service_fee===""?0:this.state.detail.service_fee) +
-                (this.state.detail.misc_fee===""?0:this.state.detail.misc_fee) - total_value_change;
-            return (
-                {
+    handleServiceChange(e){
+        const { name, value } = e.target;
+        const service = findObject(this.props.constants.fee,"name",value)[0];
+        this.setState((prevState) => {
+            return{
+                ...prevState,
+                [name]:value,
+                detail:{
+                    ...prevState.detail,
+                    service_constants_id: service.id,
+                    misc_fee_payment_method: "公司邮寄",
+                    government_fee_payment_method: "公司信用卡",
+                    other_fee:0,
+                    service_level:"普通",
+                    total_fee:service.service_fee+service.government_fee+service.misc_fee,
+                    government_fee:service.government_fee,
+                    misc_fee:service.misc_fee,
+                },
+                service:service,
+            }
+        });
+    }
+
+    handleGovernmentPaymentMethodChange(e){
+        const { name, value } = e.target;
+        if(value === "公司信用卡"){
+            this.setState((prevState) => {
+                const parsedValue = parseFloat(prevState.detail.other_fee);
+                return{
                     ...prevState,
                     detail:{
                         ...prevState.detail,
-                        ...toChange,
                         [name]:value,
-                        total_fee: total_fee
-                    }
+                        total_fee:prevState.service.service_fee+prevState.service.government_fee+prevState.detail.misc_fee+parsedValue,
+                        government_fee:prevState.service.government_fee,
+                    },
                 }
-            )
+            });
+        }
+        else{
+            this.setState((prevState) => {
+                const parsedValue = parseFloat(prevState.detail.other_fee);
+                return{
+                    ...prevState,
+                    detail:{
+                        ...prevState.detail,
+                        [name]:value,
+                        total_fee:prevState.service.service_fee+prevState.detail.misc_fee+parsedValue,
+                        government_fee:0,
+                    },
+                }
+            });
+        }
+    }
+    handleMiscPaymentMethodChange(e){
+        const { name, value } = e.target;
+        if(value === "公司邮寄"){
+            this.setState((prevState) => {
+                const parsedValue = parseFloat(prevState.detail.other_fee);
+                return{
+                    ...prevState,
+                    detail:{
+                        ...prevState.detail,
+                        [name]:value,
+                        total_fee:prevState.service.service_fee+prevState.detail.government_fee+prevState.service.misc_fee+parsedValue,
+                        misc_fee:prevState.service.misc_fee,
+                    },
+                }
+            });
+        }
+        else{
+            this.setState((prevState) => {
+                const parsedValue = parseFloat(prevState.detail.other_fee);
+                return{
+                    ...prevState,
+                    detail:{
+                        ...prevState.detail,
+                        [name]:value,
+                        total_fee:prevState.service.service_fee+prevState.detail.government_fee+parsedValue,
+                        misc_fee:0,
+                    },
+                }
+            });
+        }
+    }
+    handleOtherFeeChange(e){
+        const { name, value } = e.target;
+        const parsedValue = parseFloat(value);
+        this.setState((prevState) => {
+            return{
+                ...prevState,
+                detail:{
+                    ...prevState.detail,
+                    [name]:value,
+                    total_fee:prevState.service.service_fee+prevState.detail.government_fee+prevState.detail.misc_fee+(parsedValue?parsedValue:0),
+                }
+            }
+        });
+    }
+    handleChange(e){
+        const { name, value } = e.target;
+        this.setState((prevState) => {
+            return{
+                ...prevState,
+                detail:{
+                    ...prevState.detail,
+                    [name]:value,
+                }
+            }
         });
     }
     handleSubmit(e){
+        console.log("Adding business: ", this.state.detail);
         this.props.addNewBusiness(this.state.detail, this.props.payload.index);
     }
     render(){
-        console.log(this.state);
         if(this.state.detail===null || this.props.constants.fee===null){
             return(<div/>);
         }
-        let subservice_option = this.props.constants.fee.map((f)=>{
-            return f.name;
+
+        //业务类别
+        let service_type_option = [""];
+        this.props.constants.fee.forEach((element)=>{
+            if(!(service_type_option.includes(element.type))){
+                service_type_option.push(element.type);
+            }
         });
-        subservice_option.unshift("");
-        let remaining_payment = this.state.detail.total_fee;
+        //具体业务
+        let service_option = [""];
+        if(this.state.service_type && this.state.service_type!==""){
+            console.log("found constants", findObject(this.props.constants.fee,"type",this.state.service_type));
+            service_option = findObject(this.props.constants.fee,"type",this.state.service_type).map((f)=>{
+                return f.name;
+            });
+            service_option.unshift("");
+        }
         return(
             <div className={"form-wrapper content-wrapper business-detail"}>
                 <div className={"section-wrapper"}>
                     <div className={"section-header"}>
                         <h3>业务信息</h3>
-                        <small>客户姓名:{this.state.detail.customer_name}</small>
+                        <small>客户姓名:{this.state.customer?this.state.customer.name:"加载中..."}</small>
                     </div>
                     <div className={"section-body"}>
                         <table className={"business-detail-table"}>
@@ -192,23 +215,21 @@ class addBusiness extends Component{
                                 <td>
                                     <DropDown
                                         label={"签证类别"}
-                                        value={this.state.detail.business_type}
-                                        name={"business_type"}
-                                        options={
-                                            ["","签证相关","学校申请","中国文件相关"]
-                                        }
-                                        handleChange={this.handleChange}
+                                        value={this.state.service_type}
+                                        name={"service_type"}
+                                        options={service_type_option}
+                                        handleChange={this.handleServiceTypeChange}
                                     />
                                 </td>
                                 <td>
                                     <DropDown
                                         label={"具体业务"}
-                                        value={this.state.detail.subservice_name}
-                                        name={"subservice_name"}
+                                        value={this.state.service_name}
+                                        name={"service_name"}
                                         options={
-                                            subservice_option
+                                            service_option
                                         }
-                                        handleChange={this.handleChange}
+                                        handleChange={this.handleServiceChange}
                                     />
                                 </td>
                                 <td>
@@ -217,7 +238,7 @@ class addBusiness extends Component{
                                         value={this.state.detail.service_level}
                                         name={"service_level"}
                                         options={
-                                            ["","普通","特殊"]
+                                            ["普通","特殊"]
                                         }
                                         handleChange={this.handleChange}
                                     />
@@ -227,7 +248,7 @@ class addBusiness extends Component{
                                 <td>
                                     <Input
                                         label={"签证政府费"}
-                                        value={this.props.constants.fee[0].government_fee}
+                                        value={this.state.service?this.state.service.government_fee:""}
                                         type={"number"}
                                         step={".01"}
                                         handleChange={this.handleChange}
@@ -240,9 +261,9 @@ class addBusiness extends Component{
                                         value={this.state.detail.government_fee_payment_method}
                                         name={"government_fee_payment_method"}
                                         options={
-                                            ["","公司信用卡","客人信用卡"]
+                                            this.state.detail.service_constants_id?["公司信用卡","客人信用卡"]:[""]
                                         }
-                                        handleChange={this.handleChange}
+                                        handleChange={this.handleGovernmentPaymentMethodChange}
                                     />
                                 </td>
                                 <td>
@@ -260,8 +281,8 @@ class addBusiness extends Component{
                             <tr>
                                 <td>
                                     <Input
-                                        label={"邮寄费"}
-                                        value={this.props.constants.fee[0].misc_fee}
+                                        label={"邮寄/指模费"}
+                                        value={this.state.service?this.state.service.misc_fee:""}
                                         type={"number"}
                                         step={".01"}
                                         handleChange={this.handleChange}
@@ -271,19 +292,18 @@ class addBusiness extends Component{
                                 <td>
                                     <DropDown
                                         label={"邮寄方式"}
-                                        value={this.state.detail.post_fee_payment_method}
-                                        name={"post_fee_payment_method"}
+                                        value={this.state.detail.misc_fee_payment_method}
+                                        name={"misc_fee_payment_method"}
                                         options={
-                                            ["", "公司邮寄", "客人邮寄"]
+                                            this.state.detail.service_constants_id?["公司邮寄","客人邮寄"]:[""]
                                         }
-                                        handleChange={this.handleChange}
+                                        handleChange={this.handleMiscPaymentMethodChange}
                                     />
                                 </td>
                                 <td>
                                     <Input
                                         label={"公司收费"}
-                                        name={"mailing_company_fee"}
-                                        value={this.state.detail.post_fee}
+                                        value={this.state.detail.misc_fee}
                                         type={"number"}
                                         step={".01"}
                                         handleChange={this.handleChange}
@@ -296,7 +316,7 @@ class addBusiness extends Component{
                                     <Input
                                         label={"服务费"}
                                         name={"service_fee"}
-                                        value={this.state.detail.service_fee}
+                                        value={this.state.service?this.state.service.service_fee:""}
                                         type={"number"}
                                         step={".01"}
                                         handleChange={this.handleChange}
@@ -306,12 +326,12 @@ class addBusiness extends Component{
                                 <td>
                                     <Input
                                         label={"其他"}
-                                        name={"misc_fee"}
-                                        value={this.state.detail.misc_fee}
+                                        name={"other_fee"}
+                                        value={this.state.detail.other_fee}
                                         type={"number"}
                                         step={".01"}
-                                        handleChange={this.handleChange}
-                                        disabled={true}
+                                        handleChange={this.handleOtherFeeChange}
+                                        disabled={this.state.detail.service_level==="普通"}
                                     />
                                 </td>
                                 <td>
@@ -346,7 +366,7 @@ class addBusiness extends Component{
                                         value={this.state.detail.progress}
                                         name={"progress"}
                                         options={
-                                            ["","收集材料","申请递交","签证获批","签证被拒"]
+                                            ["收集材料","申请递交","签证获批","签证被拒"]
                                         }
                                         handleChange={this.handleChange}
                                     />
@@ -354,8 +374,8 @@ class addBusiness extends Component{
                                 <td>
                                     <Input
                                         label={"递交日期"}
-                                        value={this.state.detail.submit_time_visa}
-                                        name={"submit_time_visa"}
+                                        value={this.state.detail.visa_submit_date}
+                                        name={"visa_submit_date"}
                                         type={"date"}
                                         handleChange={this.handleChange}
                                     />
@@ -363,8 +383,8 @@ class addBusiness extends Component{
                                 <td>
                                     <Input
                                         label={"签证获批至"}
-                                        value={this.state.detail.expire_time_visa}
-                                        name={"expire_time_visa"}
+                                        value={this.state.detail.visa_expire_date}
+                                        name={"visa_expire_date"}
                                         type={"date"}
                                         handleChange={this.handleChange}
                                     />
@@ -378,7 +398,7 @@ class addBusiness extends Component{
                     <div className={"form-confirmation button-group"}>
                         <small>完成值: {Math.round(this.state.total_completion/this.state.max_total*100)}%</small>
                         <small>目前状态:{this.state.confirmed?"已认证":"未认证"}</small>
-                        <button className={"btn btn-primary"} onClick={this.handleSubmit.bind(this)}>业务员认证</button>
+                        <button className={"btn btn-primary"} onClick={this.handleSubmit.bind(this)}>添加业务</button>
                     </div>
                 </div>
             </div>
@@ -390,8 +410,6 @@ const mapStateToProps = state => {
         user:state.user,
         customer:state.customer,
         constants:state.constants,
-        business_detail:state.business_detail,
-        business_payment:state.business_payment,
     };
 };
 
@@ -399,7 +417,6 @@ const mapDispatchToProps = dispatch =>{
     return{
         getPriceConstants:()=>dispatch({type:actionTypes.SAGA_GET_PRICE_CONSTANTS}),
         addNewBusiness:(detail,customer_id)=>dispatch({type:actionTypes.SAGA_ADD_BUSINESS, detail:detail, customer_id:customer_id})
-
     }
 };
 export default connect(mapStateToProps, mapDispatchToProps)(addBusiness);
