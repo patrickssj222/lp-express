@@ -48,7 +48,8 @@ class addBusiness extends Component{
         this.setState({
             detail:{
                 ...this.state.detail,
-                customer_id: nextProps.payload.customer_id
+                customer_id: nextProps.payload.customer_id,
+                customer_name:customer.name
             },
             customer:customer
         })

@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 router.post('/all/', function(req, res, next) {
-    res.locals.pool.query("SELECT * FROM business" , function (error, results, fields) {
+    res.locals.pool.query("SELECT b.*, s.type AS service_type, s.name AS service_name FROM business b INNER JOIN service_constants s ON b.service_constants_id = s.id" , function (error, results, fields) {
         if(error){
             res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
             //If there is error, we send the error in the error section with 500 status
@@ -15,7 +15,7 @@ router.post('/all/', function(req, res, next) {
 
 router.post('/one/', function(req, res, next) {
     let body = req.body;
-    res.locals.pool.query("SELECT * FROM business WHERE id = "+body.id+"" , function (error, results, fields) {
+    res.locals.pool.query("SELECT b.*, s.type AS service_type, s.name AS service_name FROM business b INNER JOIN service_constants s ON b.service_constants_id = s.id WHERE id = "+body.id+"" , function (error, results, fields) {
         if(error){
             res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
             //If there is error, we send the error in the error section with 500 status

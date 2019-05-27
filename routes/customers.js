@@ -7,7 +7,6 @@ router.post('/all/', function(req, res, next) {
             res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
             //If there is error, we send the error in the error section with 500 status
         } else {
-            console.log(results);
             res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
             //If there is no error, all is good and response is 200OK.
         }
@@ -29,13 +28,13 @@ router.post('/contact/', function(req, res, next) {
 
 router.post('/business/', function(req, res, next) {
     let body = req.body;
-    res.locals.pool.query("SELECT * FROM business WHERE student_id = "+body.id+"" , function (error, results, fields) {
+    res.locals.pool.query("SELECT b.*, s.type AS service_type, s.name AS service_name FROM business b INNER JOIN service_constants s ON b.service_constants_id = s.id WHERE customer_id = "+body.id+"" , function (error, results, fields) {
+        console.log("Result", results);
         if(error){
             res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
             //If there is error, we send the error in the error section with 500 status
         } else {
             res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
-            //If there is no error, all is good and response is 200OK.
         }
     });
 });
@@ -58,9 +57,7 @@ router.post('/add/one/', function(req,res,next){
     query = query.slice(0,-1);
     query = query + "); ";
     res.locals.pool.query(query, function (error, results, fields) {
-        console.log(query);
         if(error){
-            console.log(error);
             res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
             //If there is error, we send the error in the error section with 500 status
         } else {

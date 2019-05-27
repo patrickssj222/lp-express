@@ -24,7 +24,7 @@ class CustomerDetail extends Component{
         this.columns = [
             {
                 label: '具体业务',
-                field: 'subservice_name',
+                field: 'service_name',
                 sort: 'asc',
 
             },
@@ -37,12 +37,12 @@ class CustomerDetail extends Component{
                 label: '负责文案',
                 field: 'wenan',
                 sort: 'asc',
-            },
+            }/*,
             {
                 label: '余款',
                 field: 'amount',
                 sort: 'asc',
-            },
+            }*/,
         ];
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -51,8 +51,6 @@ class CustomerDetail extends Component{
     }
 
     componentWillMount() {
-        console.log("customerlist", this.props.customer);
-        console.log("index", this.props.payload.index);
         try{
             axios({
                 method: 'POST',
@@ -62,7 +60,6 @@ class CustomerDetail extends Component{
                 }
             }).then(response=>{
                 if(response.data.status>=200 && response.data.status<300){
-
                     const result = response.data.response;
                     this.setState({business:result});
                 }
@@ -128,7 +125,6 @@ class CustomerDetail extends Component{
 
     handleContactChange(e, index){
         const { name, value } = e.target;
-        console.log(name, index);
         this.setState((prevState) => {
             let new_contacts = prevState.detail.emergency_contact;
             new_contacts[index][name] = value;
@@ -169,7 +165,6 @@ class CustomerDetail extends Component{
             }).then(response=>{
                 if(response.data.status>=200 && response.data.status<300){
                     const result = response.data.response;
-                    console.log(result);
                     this.setState((prevState) => ({
                         ...prevState,
                         china_geo:{
@@ -221,7 +216,7 @@ class CustomerDetail extends Component{
         }
     };
     render(){
-        console.log(this.state);
+        console.log("state",this.state);
         if(this.props.china_geo!=null && this.state.china_geo.city === ""){
             this.initCity();
         }
@@ -242,10 +237,10 @@ class CustomerDetail extends Component{
         if(this.state.business!=null){
             rows = this.state.business.map((item)=>{
                 return({
-                    subservice_name:item.subservice_name,
+                    service_name:item.service_name,
                     progress:item.progress,
-                    wenan:item.wenan,
-                    amount:item.amount
+                    wenan:item.wenan,/*
+                    amount:item.amount*/
                 })
             })
         }

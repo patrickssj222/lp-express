@@ -22,17 +22,17 @@ class Business extends Component{
             },
             {
                 label: '业务类别',
-                field: 'business_type',
+                field: 'service_type',
                 sort: 'asc',
             },
             {
                 label: '具体业务',
-                field: 'subservice_name',
+                field: 'service_name',
                 sort: 'asc',
             },
             {
-                label: '服务费用',
-                field: 'service_fee',
+                label: '总共费用',
+                field: 'total_fee',
                 sort: 'asc',
             },
             {
@@ -52,9 +52,9 @@ class Business extends Component{
             rows = Object.keys(business).map((index)=>{
                 return({
                     customer_name: business[index].customer_name,
-                    business_type: business[index].business_type!=null?business[index].business_type:"",
-                    subservice_name: business[index].subservice_name!=null?business[index].subservice_name:"",
-                    service_fee: business[index].service_fee!=null?business[index].service_fee:"",
+                    service_type: business[index].service_type!=null?business[index].service_type:"",
+                    service_name: business[index].service_name!=null?business[index].service_name:"",
+                    total_fee: business[index].total_fee!=null?business[index].total_fee:"",
                     progress: business[index].progress!=null?business[index].progress:"",
                     wenan: business[index].wenan!=null?business[index].wenan:"",
                     clickEvent: this.props.switchView.bind(this,"BusinessDetail",{id: business[index].id})
