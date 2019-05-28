@@ -193,7 +193,15 @@ class BusinessDetail extends Component{
     }
     handleNewPaymentInfoChange(e){
         const { name, value } = e.target;
-        this.setState({new_payment:{[name]:value}});
+        this.setState((prevState) => {
+            return{
+                ...prevState,
+                new_payment:{
+                    ...prevState.new_payment,
+                    [name]:value
+                }
+            }
+        });
     }
     handleAddPayment(e){
         this.props.addPayment(this.state.detail.id, this.state.new_payment);
