@@ -198,10 +198,10 @@ function* getBusinessDetail(action){
             }
         });
         if(response.data.status>=200 && response.data.status<300){
-            const result = response.data.response[0];
+            let result = response.data.response[0];
             const keys = Object.keys(result);
             keys.forEach((key)=>{
-                if(result[key] == null){
+                if(result[key]==null){
                     result[key] = "";
                 }
             });

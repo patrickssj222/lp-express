@@ -42,7 +42,6 @@ class addBusiness extends Component{
         this.props.getPriceConstants();
     }
     componentWillReceiveProps(nextProps, nextContext) {
-        console.log("Triggered", nextProps);
         const customer = findObject(this.props.customer,"id",nextProps.payload.customer_id)[0];
         console.log("found customer",customer);
         this.setState({
@@ -64,7 +63,6 @@ class addBusiness extends Component{
             }
         });
     }
-
     handleServiceChange(e){
         const { name, value } = e.target;
         const service = findObject(this.props.constants.fee,"name",value)[0];
@@ -87,7 +85,6 @@ class addBusiness extends Component{
             }
         });
     }
-
     handleGovernmentPaymentMethodChange(e){
         const { name, value } = e.target;
         if(value === "公司信用卡"){
