@@ -7,6 +7,8 @@ import connect from "react-redux/es/connect/connect";
 import * as actionTypes from "../../../store/action";
 import axios from "axios";
 import {MDBDataTable} from "mdbreact";
+import CustomFormatInput from "../Input/CustomFormatInput";
+import PhoneInput from "../Input/PhoneInput";
 
 
 class CustomerDetail extends Component{
@@ -48,6 +50,7 @@ class CustomerDetail extends Component{
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleCityChange = this.handleCityChange.bind(this);
         this.handleContactChange = this.handleContactChange.bind(this);
+        this.handleSpecialChange = this.handleSpecialChange.bind(this);
     }
 
     componentWillMount() {
@@ -108,6 +111,16 @@ class CustomerDetail extends Component{
 
     handleChange(e){
         const { name, value } = e.target;
+        this.setState((prevState) => ({
+            ...prevState,
+            detail:{
+                ...prevState.detail,
+                [name]:value,
+            }
+        }));
+    }
+    handleSpecialChange(name,value){
+        console.log("name", name, "value", value);
         this.setState((prevState) => ({
             ...prevState,
             detail:{
@@ -276,17 +289,27 @@ class CustomerDetail extends Component{
                                     />
                                 </td>
                                 <td>
-                                    <Input label={"出生日期："}
-                                           name={"dob"}
-                                           value={this.state.detail.dob.replace(/\//g, '-')}
-                                           type={"date"}
-                                           handleChange={this.handleChange}
+                                    <CustomFormatInput
+                                        className={"form-control"}
+                                        label={"出生日期："}
+                                        name={"dob"}
+                                        value={this.state.detail.dob.replace(/\//g, '-')}
+                                        format={[
+                                            {char: /\d/, repeat:4},
+                                            { exactly: "-" },
+                                            {char: /\d/, repeat:2},
+                                            { exactly: "-" },
+                                            {char: /\d/, repeat:2},
+                                            { exactly: "-" },
+                                        ]}
+                                        placeholder={"YYYY-MM-DD"}
+                                        handleChange={this.handleSpecialChange}
                                     />
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    <Input label={"曾用命："}
+                                    <Input label={"曾用名："}
                                            name={"used_name"}
                                            value={this.state.detail.used_name}
                                            type={"text"}
@@ -302,11 +325,10 @@ class CustomerDetail extends Component{
                                     />
                                 </td>
                                 <td>
-                                    <Input label={"电话："}
-                                           name={"phone"}
-                                           value={this.state.detail.phone}
-                                           type={"tel"}
-                                           handleChange={this.handleChange}
+                                    <PhoneInput label={"电话："}
+                                                name={"phone"}
+                                                value={this.state.detail.phone}
+                                                handleChange={this.handleChange}
                                     />
                                 </td>
                             </tr>
@@ -371,11 +393,23 @@ class CustomerDetail extends Component{
                                     />
                                 </td>
                                 <td>
-                                    <Input label={"身份证号码："}
-                                           name={"identification_number"}
-                                           value={this.state.detail.identification_number}
-                                           type={"text"}
-                                           handleChange={this.handleChange}
+                                    <CustomFormatInput
+                                        label={"身份证号码："}
+                                        name={"identification_number"}
+                                        value={this.state.detail.identification_number}
+                                        format={[
+                                            {char: /\d/, repeat:3},
+                                            { exactly: "-" },
+                                            {char: /\d/, repeat:3},
+                                            { exactly: "-" },
+                                            {char: /\d/, repeat:4},
+                                            { exactly: "-" },
+                                            {char: /\d/, repeat:4},
+                                            { exactly: "-" },
+                                            {char: /\d/, repeat:4},
+                                        ]}
+                                        placeholder={"XXX-XXX-XXXX-XXXX-XXXX"}
+                                        handleChange={this.handleSpecialChange}
                                     />
                                 </td>
                                 <td>
@@ -398,11 +432,20 @@ class CustomerDetail extends Component{
                                     />
                                 </td>
                                 <td>
-                                    <Input label={"护照到期日："}
-                                           name={"passport_due"}
-                                           value={this.state.detail.passport_due.replace(/\//g, '-')}
-                                           type={"date"}
-                                           handleChange={this.handleChange}
+                                    <CustomFormatInput
+                                        label={"护照到期日："}
+                                        name={"passport_due"}
+                                        value={this.state.detail.passport_due.replace(/\//g, '-')}
+                                        format={[
+                                            {char: /\d/, repeat:4},
+                                            { exactly: "-" },
+                                            {char: /\d/, repeat:2},
+                                            { exactly: "-" },
+                                            {char: /\d/, repeat:2},
+                                            { exactly: "-" },
+                                        ]}
+                                        placeholder={"YYYY-MM-DD"}
+                                        handleChange={this.handleSpecialChange}
                                     />
                                 </td>
                             </tr>
@@ -416,11 +459,20 @@ class CustomerDetail extends Component{
                                     />
                                 </td>
                                 <td>
-                                    <Input label={"签证到期日："}
-                                           name={"visa_due"}
-                                           value={this.state.detail.visa_due.replace(/\//g, '-')}
-                                           type={"date"}
-                                           handleChange={this.handleChange}
+                                    <CustomFormatInput
+                                        label={"签证到期日："}
+                                        name={"visa_due"}
+                                        value={this.state.detail.visa_due.replace(/\//g, '-')}
+                                        format={[
+                                            {char: /\d/, repeat:4},
+                                            { exactly: "-" },
+                                            {char: /\d/, repeat:2},
+                                            { exactly: "-" },
+                                            {char: /\d/, repeat:2},
+                                            { exactly: "-" },
+                                        ]}
+                                        placeholder={"YYYY-MM-DD"}
+                                        handleChange={this.handleSpecialChange}
                                     />
                                 </td>
                             </tr>
@@ -438,11 +490,20 @@ class CustomerDetail extends Component{
                             <tbody>
                             <tr>
                                 <td>
-                                    <Input label={"第一次登录时间："}
-                                           name={"first_landing_date"}
-                                           value={this.state.detail.first_landing_date.replace(/\//g, '-')}
-                                           type={"date"}
-                                           handleChange={this.handleChange}
+                                    <CustomFormatInput
+                                        label={"第一次登录时间："}
+                                        name={"first_landing_date"}
+                                        value={this.state.detail.first_landing_date.replace(/\//g, '-')}
+                                        format={[
+                                            {char: /\d/, repeat:4},
+                                            { exactly: "-" },
+                                            {char: /\d/, repeat:2},
+                                            { exactly: "-" },
+                                            {char: /\d/, repeat:2},
+                                            { exactly: "-" },
+                                        ]}
+                                        placeholder={"YYYY-MM-DD"}
+                                        handleChange={this.handleSpecialChange}
                                     />
                                 </td>
                                 <td>
