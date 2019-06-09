@@ -31,6 +31,7 @@ class AddCustomer extends Component{
                 used_name:"",
                 emergency_contact:[],
                 city_id:"",
+                birth_place:"",
             },
             china_geo:{
                 city:"",
@@ -47,6 +48,15 @@ class AddCustomer extends Component{
     componentWillMount() {
         if(this.props.china_geo==null){
             this.props.getChinaGeo();
+        }
+        if(this.props.user){
+            this.setState((prevState) => ({
+                ...prevState,
+                detail:{
+                    ...prevState.detail,
+                    created_by:this.props.user.id
+                }
+            }));
         }
     }
 
@@ -225,6 +235,24 @@ class AddCustomer extends Component{
                                         />
                                     </td>
                                 </tr>
+                                <tr>
+                                    <td>
+                                        <Input label={"国籍："}
+                                               name={"citizenship"}
+                                               value={this.state.detail.citizenship}
+                                               type={"text"}
+                                               handleChange={this.handleChange}
+                                        />
+                                    </td>
+                                    <td>
+                                        <Input label={"出生地："}
+                                               name={"birth_place"}
+                                               value={this.state.detail.birth_place}
+                                               type={"text"}
+                                               handleChange={this.handleChange}
+                                        />
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -277,14 +305,6 @@ class AddCustomer extends Component{
                             <thead/>
                             <tbody>
                             <tr>
-                                <td>
-                                    <Input label={"国籍："}
-                                           name={"citizenship"}
-                                           value={this.state.detail.citizenship}
-                                           type={"text"}
-                                           handleChange={this.handleChange}
-                                    />
-                                </td>
                                 <td>
                                     <CustomFormatInput
                                         label={"身份证号码："}
@@ -344,7 +364,7 @@ class AddCustomer extends Component{
                             </tr>
                             <tr>
                                 <td>
-                                    <Input label={"签证类型："}
+                                    <Input label={"在加身份："}
                                            name={"visa_type"}
                                            value={this.state.detail.visa_type}
                                            type={"text"}

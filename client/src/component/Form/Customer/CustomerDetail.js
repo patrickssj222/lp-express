@@ -332,6 +332,24 @@ class CustomerDetail extends Component{
                                     />
                                 </td>
                             </tr>
+                            <tr>
+                                <td>
+                                    <Input label={"国籍："}
+                                           name={"citizenship"}
+                                           value={this.state.detail.citizenship}
+                                           type={"text"}
+                                           handleChange={this.handleChange}
+                                    />
+                                </td>
+                                <td>
+                                    <Input label={"出生地："}
+                                           name={"birth_place"}
+                                           value={this.state.detail.birth_place}
+                                           type={"text"}
+                                           handleChange={this.handleChange}
+                                    />
+                                </td>
+                            </tr>
                             </tbody>
                         </table>
                     </div>
@@ -384,14 +402,6 @@ class CustomerDetail extends Component{
                             <thead/>
                             <tbody>
                             <tr>
-                                <td>
-                                    <Input label={"国籍："}
-                                           name={"citizenship"}
-                                           value={this.state.detail.citizenship}
-                                           type={"text"}
-                                           handleChange={this.handleChange}
-                                    />
-                                </td>
                                 <td>
                                     <CustomFormatInput
                                         label={"身份证号码："}
@@ -451,7 +461,7 @@ class CustomerDetail extends Component{
                             </tr>
                             <tr>
                                 <td>
-                                    <Input label={"签证类型："}
+                                    <Input label={"在加身份："}
                                            name={"visa_type"}
                                            value={this.state.detail.visa_type}
                                            type={"text"}
