@@ -150,6 +150,19 @@ class Navigation extends Component {
                                     </ul>
                                 </div>
                             </li>
+                            <li className="sidebar-dropdown">
+                                <a href="#">
+                                    <i className={"fas fa-tools"}/>
+                                    <span>管理</span>
+                                </a>
+                                <div className="sidebar-submenu">
+                                    <ul>
+                                        <li>
+                                            <a href="#" onClick={this.props.switchView.bind(this,"UserAdministration",null)}>用户管理</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
                         </ul>
                     </div>
                 </div>

@@ -51,7 +51,12 @@ router.post('/add/one/', function(req,res,next){
     query = query + ") VALUES (";
     Object.keys(body).forEach((key)=>{
         if(key!=="id" && key!=="emergency_contact"){
-            query = query + "'"+ body[key] + "',";
+            if(body[key]===""||body[key]==="null"||body[key]===null){
+                query = query + "null,";
+            }
+            else{
+                query = query + "'"+ body[key] + "',";
+            }
         }
     });
     query = query.slice(0,-1);
@@ -97,7 +102,14 @@ router.post('/update/one/', function(req,res,next){
     let query = "UPDATE customer SET ";
     Object.keys(body).forEach((key)=>{
         if(key!=="id" && key!=="creation_time" && key!=="emergency_contact"){
-            query = query + key + " = '"+body[key]+"',";
+            if(key!=="id" && key!=="emergency_contact"){
+                if(body[key]===""||body[key]==="null"||body[key]===null){
+                    query = query + key + " = null,";
+                }
+                else{
+                    query = query + key + " = '"+body[key]+"',";
+                }
+            }
         }
     });
     query = query.slice(0,-1);

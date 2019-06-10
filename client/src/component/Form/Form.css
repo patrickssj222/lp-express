@@ -133,3 +133,15 @@
 
     border-radius: .25rem!important;
 }
+
+.blue-text{
+    color:dodgerblue;
+}
+
+.orange-text{
+    color:orange;
+}
+
+.red-text{
+    color:red;
+}

@@ -203,7 +203,6 @@ class AddCustomer extends Component{
                                                 {char: /\d/, repeat:2},
                                                 { exactly: "-" },
                                                 {char: /\d/, repeat:2},
-                                                { exactly: "-" },
                                             ]}
                                             placeholder={"YYYY-MM-DD"}
                                             handleChange={this.handleSpecialChange}
@@ -355,7 +354,6 @@ class AddCustomer extends Component{
                                             {char: /\d/, repeat:2},
                                             { exactly: "-" },
                                             {char: /\d/, repeat:2},
-                                            { exactly: "-" },
                                         ]}
                                         placeholder={"YYYY-MM-DD"}
                                         handleChange={this.handleSpecialChange}
@@ -382,7 +380,6 @@ class AddCustomer extends Component{
                                             {char: /\d/, repeat:2},
                                             { exactly: "-" },
                                             {char: /\d/, repeat:2},
-                                            { exactly: "-" },
                                         ]}
                                         placeholder={"YYYY-MM-DD"}
                                         handleChange={this.handleSpecialChange}
@@ -413,7 +410,6 @@ class AddCustomer extends Component{
                                             {char: /\d/, repeat:2},
                                             { exactly: "-" },
                                             {char: /\d/, repeat:2},
-                                            { exactly: "-" },
                                         ]}
                                         placeholder={"YYYY-MM-DD"}
                                         handleChange={this.handleSpecialChange}
