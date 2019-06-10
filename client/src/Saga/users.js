@@ -33,6 +33,7 @@ function* addUser(action){
             data:action.user
         });
         if(response.data.status>=200 && response.data.status<300){
+            yield getAllUsers();
             yield put({type:actionTypes.REMOVE_POP_UP});
         }
         else{
@@ -56,6 +57,7 @@ function* deleteUser(action){
             }
         });
         if(response.data.status>=200 && response.data.status<300){
+            yield getAllUsers();
             yield put({type:actionTypes.REMOVE_POP_UP});
         }
         else{

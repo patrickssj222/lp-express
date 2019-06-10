@@ -3,15 +3,47 @@ import connect from "react-redux/es/connect/connect";
 import * as actionTypes from '../../../store/action';
 import { MDBDataTable } from "mdbreact";
 import "../Form.css";
+import Input from "../Input/Input";
+import DropDown from "../DropDown/DropDown";
 class Price_Constants extends Component{
     constructor(props){
         super(props);
+        this.state={
+            add:false
+        }
     }
 
     componentWillMount() {
         this.props.getAllUsers();
     }
-
+    handleChange(e){
+        const { name, value } = e.target;
+        this.setState((prevState) => ({
+            ...prevState,
+            new_user:{
+                ...prevState.new_user,
+                [name]:value,
+            }
+        }));
+    }
+    handleAdd(){
+        this.setState({
+            add:true,
+            new_user:{
+                username:"",
+                password:"",
+                role:"普通文案",
+                name:"",
+            }
+        })
+    }
+    handleAddSubmit(){
+        this.props.addUser(this.state.new_user);
+        this.setState({
+            add:false,
+            new_user:null
+        })
+    }
     handleDelete(id){
         this.props.deleteUser(id);
     }
@@ -66,6 +98,57 @@ class Price_Constants extends Component{
                             data={data}
                             entries={10}
                         />
+                        {
+                            this.state.add?<table className={"business-detail-table"}>
+                                <thead/>
+                                <tbody>
+                                <tr>
+                                    <td>
+                                        <Input
+                                            label={"用户名"}
+                                            type={"text"}
+                                            name={"username"}
+                                            value={this.state.new_user.username}
+                                            handleChange={this.handleChange.bind(this)}
+                                        />
+                                    </td>
+                                    <td>
+                                        <Input
+                                            label={"密码"}
+                                            type={"password"}
+                                            name={"password"}
+                                            value={this.state.new_user.password}
+                                            handleChange={this.handleChange.bind(this)}
+                                        />
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <Input
+                                            label={"用户姓名"}
+                                            type={"text"}
+                                            name={"name"}
+                                            value={this.state.new_user.name}
+                                            handleChange={this.handleChange.bind(this)}
+                                        />
+                                    </td>
+                                    <td>
+                                        <DropDown
+                                            label={"用户权限"}
+                                            options={["管理员","文案员"]}
+                                            name={"role"}
+                                            value={this.state.new_user.role}
+                                            handleChange={this.handleChange.bind(this)}
+                                        />
+                                    </td>
+                                    <td>
+                                        <button className={"btn btn-primary"} onClick={this.handleAddSubmit.bind(this)}>确认添加</button>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>:<button className={"btn btn-primary"} onClick={this.handleAdd.bind(this)}>添加用户</button>
+                        }
                     </div>
                 </div>
             </div>
@@ -83,6 +166,7 @@ const mapDispatchToProps = dispatch =>{
     return{
         getAllUsers: () => dispatch({type:actionTypes.SAGA_GET_ALL_USERS}),
         deleteUser: (id) => dispatch({type:actionTypes.SAGA_DELETE_USER, id:id}),
+        addUser: (user) => dispatch({type:actionTypes.SAGA_ADD_USER, user:user}),
         popUp: (status, message, action) => dispatch({type:actionTypes.POP_UP, message:message, status:status, action:action}),
     };
 };
