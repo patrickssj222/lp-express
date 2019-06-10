@@ -93,7 +93,7 @@ function* getCustomers(){
         }
         else{
             yield put({type:actionTypes.REMOVE_POP_UP});
-            yield put({type:actionTypes.POP_UP, status:"failure", message:["Error: "+response.data.status],onExit:"Reinitialize"});
+            yield put({type:actionTypes.POP_UP, status:"failure", message:["Error: "+response.data.status],onExit:null});
         }
     }
     catch(e){
@@ -112,7 +112,7 @@ function* addCustomers(action){
             });
             if(response.data.status>=200 && response.data.status<300){
                 yield put({type:actionTypes.REMOVE_POP_UP});
-                yield put({type:actionTypes.POP_UP, status:"success", message:["成功添加新客户"],onExit:null});
+                yield put({type:actionTypes.POP_UP, status:"success", message:["成功添加新客户"],onExit:"/customer"});
             }
             else{
                 yield put({type:actionTypes.REMOVE_POP_UP});
@@ -141,7 +141,7 @@ function* updateCustomers(action){
         console.log(response)
         if(response.data.status>=200 && response.data.status<300){
             yield put({type:actionTypes.REMOVE_POP_UP});
-            yield put({type:actionTypes.POP_UP, status:"success", message:["成功更新客户信息"],onExit:null});
+            yield put({type:actionTypes.POP_UP, status:"success", message:["成功更新客户信息"],onExit:"/customer"});
         }
         else{
             yield put({type:actionTypes.REMOVE_POP_UP});
@@ -163,7 +163,7 @@ function* forceDeleteCustomers(action){
         });
         if(response.data.status>=200 && response.data.status<300){
             yield put({type:actionTypes.REMOVE_POP_UP});
-            yield put({type:actionTypes.POP_UP, status:"success", message:["成功删除客户"],onExit:null});
+            yield put({type:actionTypes.POP_UP, status:"success", message:["成功删除客户"],onExit:"/customer"});
         }
         else{
             yield put({type:actionTypes.REMOVE_POP_UP});

@@ -15,7 +15,7 @@ class CustomerDetail extends Component{
     constructor(props){
         super(props);
         this.state={
-            detail:this.props.customer[this.props.payload.index],
+            detail:this.props.customer[this.props.location.state.index],
             business:null,
             china_geo:{
                 city:"",
@@ -39,12 +39,7 @@ class CustomerDetail extends Component{
                 label: '负责文案',
                 field: 'wenan',
                 sort: 'asc',
-            }/*,
-            {
-                label: '余款',
-                field: 'amount',
-                sort: 'asc',
-            }*/,
+            }
         ];
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -226,7 +221,7 @@ class CustomerDetail extends Component{
         }
     };
     render(){
-        console.log("state",this.state);
+        console.log("props",this.props);
         if(this.props.china_geo!=null && this.state.china_geo.city === ""){
             this.initCity();
         }
@@ -264,7 +259,7 @@ class CustomerDetail extends Component{
                 <div className={"section-wrapper"}>
                     <div className={"section-header"}>
                         <h3>基础信息</h3>
-                        <button onClick={this.props.optionPopUp.bind(this, ["删除方式？"],[{name:"彻底删除",handler:this.props.forceDeleteCustomer.bind(this,this.props.customer[this.props.payload.index])}])} className={"btn btn-danger"}>删除</button>
+                        <button onClick={this.props.optionPopUp.bind(this, ["删除方式？"],[{name:"彻底删除",handler:this.props.forceDeleteCustomer.bind(this,this.props.customer[this.props.location.state.index])}])} className={"btn btn-danger"}>删除</button>
                     </div>
                     <div className={"section-body"}>
                         <table className={"business-detail-table"}>

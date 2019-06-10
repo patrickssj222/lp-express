@@ -3,6 +3,7 @@ import "./PopUp.css";
 import MaterialIcon from 'material-icons-react';
 import * as actionTypes from "../../store/action";
 import connect from "react-redux/es/connect/connect";
+import {Link} from "react-router-dom";
 
 const SuccessPopUp = (props) => {
     return(
@@ -23,7 +24,7 @@ const SuccessPopUp = (props) => {
                         }
                     </div>
                     <div className="modal-footer">
-                        <button className="btn btn-success btn-block" onClick={props.removePopUp}>OK</button>
+                        <button className="btn btn-success btn-block" onClick={props.removePopUp}><Link to={props.onExit}>OK</Link></button>
                     </div>
                 </div>
             </div>
