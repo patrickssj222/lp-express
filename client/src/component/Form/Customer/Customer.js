@@ -15,7 +15,6 @@ class Customer extends Component{
     handleNewCustomer(e){
         this.props.switchView("AddCustomer");
     }
-
     render(){
         console.log(this.props.customer);
         const columns = [
@@ -39,7 +38,7 @@ class Customer extends Component{
                 label: '签证到期日',
                 field: 'visa_due',
                 sort: 'asc',
-            }
+            },
         ];
         let rows = null;
         if(this.props.customer!=null){

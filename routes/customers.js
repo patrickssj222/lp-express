@@ -39,6 +39,26 @@ router.post('/business/', function(req, res, next) {
     });
 });
 
+router.post('/delete/force/', function(req, res, next) {
+    let body = req.body;
+    res.locals.pool.query("DELETE FROM customer_emergency_contact WHERE customer_id = "+body.id+"" , function (error, results, fields) {
+        if(error){
+            res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
+            //If there is error, we send the error in the error section with 500 status
+        } else {
+            res.locals.pool.query("DELETE FROM customer WHERE id = "+body.id+"" , function (error, results, fields) {
+                if(error){
+                    res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
+                    //If there is error, we send the error in the error section with 500 status
+                }
+                else{
+                    res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
+                }
+            });
+        }
+    });
+});
+
 router.post('/add/one/', function(req,res,next){
     let body = req.body;
     let query = "INSERT INTO customer (";

@@ -63,6 +63,17 @@ const reducer = (store = initialState, action) => {
                 ...store,
                 popUp: null
             };
+
+        case actionTypes.OPTION_POP_UP:
+            console.log("clicked delete",action.message, action.option);
+            return{
+                ...store,
+                popUp:{
+                    status:"option",
+                    message:action.message,
+                    option:action.option,
+                }
+            };
         case actionTypes.UPDATE_CUSTOMERS:
             return{
                 ...store,

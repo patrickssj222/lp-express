@@ -144,6 +144,28 @@ function* updateCustomers(action){
     }
 }
 
+function* forceDeleteCustomers(action){
+    yield put({type:actionTypes.POP_UP, status:"loading", message:["正在删除客户..."],onExit:null});
+    try{
+        const response = yield call (axios, {
+            method: 'POST',
+            url: '/api/customers/delete/force',
+            data:action.customer,
+        });
+        if(response.data.status>=200 && response.data.status<300){
+            yield put({type:actionTypes.REMOVE_POP_UP});
+            yield put({type:actionTypes.POP_UP, status:"success", message:["成功删除客户"],onExit:null});
+        }
+        else{
+            yield put({type:actionTypes.REMOVE_POP_UP});
+            yield put({type:actionTypes.POP_UP, status:"failure", message:["Error: "+response.data.status],onExit:null});
+        }
+    }
+    catch(e){
+        console.log(e);
+    }
+}
+
 function* getBusiness(){
     yield put({type:actionTypes.POP_UP, status:"loading", message:["获取业务列表..."],onExit:null});
     try{
@@ -365,5 +387,6 @@ export function* watchSagaRequests() {
     yield takeEvery(actionTypes.SAGA_DELETE_PAYMENT_TRANSACTION, deleteBusinessPayment);
     yield takeEvery(actionTypes.SAGA_ADD_BUSINESS, addBusiness);
     yield takeEvery(actionTypes.SAGA_GET_CHINA_GEO, getChinaGeo);
+    yield takeEvery(actionTypes.SAGA_FORCE_DELETE_CUSTOMER, forceDeleteCustomers);
 }
 

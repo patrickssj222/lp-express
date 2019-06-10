@@ -266,6 +266,7 @@ class CustomerDetail extends Component{
                 <div className={"section-wrapper"}>
                     <div className={"section-header"}>
                         <h3>基础信息</h3>
+                        <button onClick={this.props.optionPopUp.bind(this, ["删除方式？"],[{name:"彻底删除",handler:this.props.forceDeleteCustomer.bind(this,this.props.customer[this.props.payload.index])}])} className={"btn btn-danger"}>删除</button>
                     </div>
                     <div className={"section-body"}>
                         <table className={"business-detail-table"}>
@@ -608,7 +609,9 @@ const mapDispatchToProps = dispatch =>{
     return{
         updateCustomer:(customer)=>dispatch({type:actionTypes.SAGA_UPDATE_CUSTOMERS,customer: customer}),
         updateView:(component, payload)=>dispatch({type:actionTypes.SWITCH_VIEW, component:component, payload:payload}),
-        getChinaGeo:()=>dispatch({type:actionTypes.SAGA_GET_CHINA_GEO})
+        getChinaGeo:()=>dispatch({type:actionTypes.SAGA_GET_CHINA_GEO}),
+        optionPopUp:(message,option)=>dispatch({type:actionTypes.OPTION_POP_UP, message:message,option:option}),
+        forceDeleteCustomer:(customer)=>dispatch({type:actionTypes.SAGA_FORCE_DELETE_CUSTOMER,customer:customer})
     }
 };
 export default connect(mapStateToProps, mapDispatchToProps)(CustomerDetail);
