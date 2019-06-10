@@ -79,6 +79,15 @@ function* getCustomers(){
         });
         if(response.data.status>=200 && response.data.status<300){
             const result = response.data.response;
+            result.forEach((customer, index)=>{
+                Object.keys(customer).forEach((key)=>{
+                    if(customer[key]===null){
+                        console.log("CUSTOMER", customer, key);
+                        result[index][key] = "";
+                    }
+                })
+            });
+            console.log("RESULT",result);
             yield put({type:actionTypes.UPDATE_CUSTOMERS, customer:result});
             yield put({type:actionTypes.REMOVE_POP_UP});
         }

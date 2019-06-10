@@ -104,9 +104,6 @@ class CustomerDetail extends Component{
         if(this.props.china_geo==null){
             this.props.getChinaGeo();
         }
-
-
-
     }
 
     handleChange(e){
@@ -261,6 +258,7 @@ class CustomerDetail extends Component{
             columns:this.columns,
             rows:rows
         };
+        console.log("THIS", this.state.detail);
         return(
             <div className={"form-wrapper content-wrapper customer-detail"}>
                 <div className={"section-wrapper"}>
@@ -294,14 +292,13 @@ class CustomerDetail extends Component{
                                         className={"form-control"}
                                         label={"出生日期："}
                                         name={"dob"}
-                                        value={this.state.detail.dob.replace(/\//g, '-')}
+                                        value={this.state.detail.dob}
                                         format={[
                                             {char: /\d/, repeat:4},
                                             { exactly: "-" },
                                             {char: /\d/, repeat:2},
                                             { exactly: "-" },
                                             {char: /\d/, repeat:2},
-                                            { exactly: "-" },
                                         ]}
                                         placeholder={"YYYY-MM-DD"}
                                         handleChange={this.handleSpecialChange}
@@ -330,6 +327,24 @@ class CustomerDetail extends Component{
                                                 name={"phone"}
                                                 value={this.state.detail.phone}
                                                 handleChange={this.handleChange}
+                                    />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <Input label={"国籍："}
+                                           name={"citizenship"}
+                                           value={this.state.detail.citizenship}
+                                           type={"text"}
+                                           handleChange={this.handleChange}
+                                    />
+                                </td>
+                                <td>
+                                    <Input label={"出生地："}
+                                           name={"birth_place"}
+                                           value={this.state.detail.birth_place}
+                                           type={"text"}
+                                           handleChange={this.handleChange}
                                     />
                                 </td>
                             </tr>
@@ -386,14 +401,6 @@ class CustomerDetail extends Component{
                             <tbody>
                             <tr>
                                 <td>
-                                    <Input label={"国籍："}
-                                           name={"citizenship"}
-                                           value={this.state.detail.citizenship}
-                                           type={"text"}
-                                           handleChange={this.handleChange}
-                                    />
-                                </td>
-                                <td>
                                     <CustomFormatInput
                                         label={"身份证号码："}
                                         name={"identification_number"}
@@ -436,14 +443,13 @@ class CustomerDetail extends Component{
                                     <CustomFormatInput
                                         label={"护照到期日："}
                                         name={"passport_due"}
-                                        value={this.state.detail.passport_due.replace(/\//g, '-')}
+                                        value={this.state.detail.passport_due}
                                         format={[
                                             {char: /\d/, repeat:4},
                                             { exactly: "-" },
                                             {char: /\d/, repeat:2},
                                             { exactly: "-" },
                                             {char: /\d/, repeat:2},
-                                            { exactly: "-" },
                                         ]}
                                         placeholder={"YYYY-MM-DD"}
                                         handleChange={this.handleSpecialChange}
@@ -452,7 +458,7 @@ class CustomerDetail extends Component{
                             </tr>
                             <tr>
                                 <td>
-                                    <Input label={"签证类型："}
+                                    <Input label={"在加身份："}
                                            name={"visa_type"}
                                            value={this.state.detail.visa_type}
                                            type={"text"}
@@ -463,14 +469,13 @@ class CustomerDetail extends Component{
                                     <CustomFormatInput
                                         label={"签证到期日："}
                                         name={"visa_due"}
-                                        value={this.state.detail.visa_due.replace(/\//g, '-')}
+                                        value={this.state.detail.visa_due}
                                         format={[
                                             {char: /\d/, repeat:4},
                                             { exactly: "-" },
                                             {char: /\d/, repeat:2},
                                             { exactly: "-" },
                                             {char: /\d/, repeat:2},
-                                            { exactly: "-" },
                                         ]}
                                         placeholder={"YYYY-MM-DD"}
                                         handleChange={this.handleSpecialChange}
@@ -494,14 +499,13 @@ class CustomerDetail extends Component{
                                     <CustomFormatInput
                                         label={"第一次登录时间："}
                                         name={"first_landing_date"}
-                                        value={this.state.detail.first_landing_date.replace(/\//g, '-')}
+                                        value={this.state.detail.first_landing_date}
                                         format={[
                                             {char: /\d/, repeat:4},
                                             { exactly: "-" },
                                             {char: /\d/, repeat:2},
                                             { exactly: "-" },
                                             {char: /\d/, repeat:2},
-                                            { exactly: "-" },
                                         ]}
                                         placeholder={"YYYY-MM-DD"}
                                         handleChange={this.handleSpecialChange}

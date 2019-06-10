@@ -19,6 +19,7 @@ import Business from "./component/Form/Business/Business";
 import BusinessDetail from "./component/Form/Business/BusinessDetail";
 import AddCustomer from "./component/Form/Customer/AddCustomer";
 import AddBusiness from "./component/Form/Business/AddBusiness";
+import UserAdministration from "./component/Form/UserAdministration/UserAdministration";
 
 library.add(faIgloo);
 
@@ -68,6 +69,9 @@ class App extends Component {
                 break;
             case "BusinessDetail":
                 view = <BusinessDetail payload={this.props.view.payload}/>;
+                break;
+            case "UserAdministration":
+                view = <UserAdministration payload={this.props.view.payload}/>;
                 break;
             default:
                 view = null;
