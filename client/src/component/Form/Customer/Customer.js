@@ -17,7 +17,6 @@ class Customer extends Component{
     }
 
     render(){
-        console.log(this.props.customer);
         const columns = [
             {
                 label: '姓名',
@@ -40,16 +39,12 @@ class Customer extends Component{
                 field: 'visa_due',
                 sort: 'asc',
             },
-            this.props.user.role==="admin"?{
-                label: '档案建立人',
-                field: 'created_by',
-                sort: 'asc',
-            }:null
         ];
         let rows = null;
         if(this.props.customer!=null){
+            rows = [];
             const customer = this.props.customer;
-            rows = Object.keys(customer).map((index)=>{
+            Object.keys(customer).forEach((index)=>{
                 let visa_due = "";
                 if(customer[index].visa_due){
                     const today = new Date();
@@ -85,20 +80,20 @@ class Customer extends Component{
                         passport_due=customer[index].passport_due;
                     }
                 }
-                if(this.props.user.role==="admin"){
-                    return({
+                if(this.props.user.role==="管理员"){
+                    console.log("SRKKKRR");
+                    rows.push({
                             name:customer[index].name,
                             phone: customer[index].phone!=null?customer[index].phone:"",
                             passport_due: passport_due,
                             visa_due: visa_due,
-                            created_by: customer[index].created_by?customer[index].created_by:"",
                             clickEvent: this.props.switchView.bind(this,"CustomerDetail",{index:index})
                         }
                     )
                 }
                 else{
                     if(this.props.user.id === customer[index].created_by){
-                        return({
+                        rows.push({
                             name:customer[index].name,
                             phone: customer[index].phone!=null?customer[index].phone:"",
                             passport_due: customer[index].passport_due!=null?customer[index].passport_due:"",
@@ -114,6 +109,8 @@ class Customer extends Component{
             columns:columns,
             rows:rows
         };
+
+        console.log("DATA", data);
         return(
             <div className={"form-wrapper content-wrapper"}>
                 <div className={"section-wrapper"}>
@@ -127,14 +124,17 @@ class Customer extends Component{
                         </div>
                     </div>
                     <div className={"section-body"}>
-                        <MDBDataTable
-                            striped
-                            bordered
-                            small
-                            hover
-                            data={data}
-                            entries={10}
-                        />
+                        {
+                            data.rows?<MDBDataTable
+                                striped
+                                bordered
+                                small
+                                hover
+                                data={data}
+                                entries={10}
+                            />:null
+                        }
+
                     </div>
                 </div>
             </div>

@@ -28,7 +28,6 @@ class App extends Component {
         super(props);
     }
     render() {
-        console.log("user", this.props.user);
         let popUp = null;
         if(this.props.popUp!=null){
             switch(this.props.popUp.status){
