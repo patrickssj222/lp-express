@@ -57,9 +57,6 @@ const reducer = (store = initialState, action) => {
                 }
             };
         case actionTypes.REMOVE_POP_UP:
-            if (store.popUp.onExit === "Reinitialize"){
-                window.location.reload();
-            }
             return{
                 ...store,
                 popUp: null

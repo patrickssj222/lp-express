@@ -82,7 +82,6 @@ function* getCustomers(){
             result.forEach((customer, index)=>{
                 Object.keys(customer).forEach((key)=>{
                     if(customer[key]===null){
-                        console.log("CUSTOMER", customer, key);
                         result[index][key] = "";
                     }
                 })

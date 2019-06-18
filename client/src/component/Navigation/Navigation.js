@@ -1,4 +1,4 @@
-import React, { Component} from "react";
+    import React, { Component} from "react";
 import "./Navigation.css";
 import $ from "jquery";
 import * as actionTypes from "../../store/action";
@@ -35,7 +35,7 @@ class Navigation extends Component {
         const adminContent = <div className="sidebar-menu">
             <ul>
                 <li className="sidebar-dropdown">
-                    <a href="#">
+                    <a>
                         <i className="fas fa-user"/>
                         <span>客户</span>
                     </a>
@@ -48,7 +48,7 @@ class Navigation extends Component {
                     </div>
                 </li>
                 <li className="sidebar-dropdown">
-                    <a href="#">
+                    <a>
                         <i className="fas fa-file"/>
                         <span>业务</span>
                     </a>
@@ -61,7 +61,7 @@ class Navigation extends Component {
                     </div>
                 </li>
                 <li className="sidebar-dropdown">
-                    <a href="#">
+                    <a>
                         <i className="fa fa-dollar-sign"/>
                         <span>常量</span>
                     </a>
@@ -74,7 +74,7 @@ class Navigation extends Component {
                     </div>
                 </li>
                 <li className="sidebar-dropdown">
-                    <a href="#">
+                    <a>
                         <i className={"fas fa-tools"}/>
                         <span>管理</span>
                     </a>
@@ -91,7 +91,7 @@ class Navigation extends Component {
         const wenanContent = <div className="sidebar-menu">
             <ul>
                 <li className="sidebar-dropdown">
-                    <a href="#">
+                    <a>
                         <i className="fas fa-user"/>
                         <span>客户</span>
                     </a>
@@ -109,7 +109,7 @@ class Navigation extends Component {
             <nav id="sidebar" className="sidebar-wrapper">
                 <div className="sidebar-content">
                     <div className="sidebar-brand">
-                        <a href="#">La Promesse Inc.</a>
+                        <a>La Promesse Inc.</a>
                     </div>
                     <div className="sidebar-header">
                         <div className="user-pic">

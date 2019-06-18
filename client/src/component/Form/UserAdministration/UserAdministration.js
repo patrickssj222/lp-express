@@ -32,7 +32,7 @@ class UserAdministration extends Component{
             new_user:{
                 username:"",
                 password:"",
-                role:"普通文案",
+                role:"规划师",
                 name:"",
             }
         })
@@ -136,7 +136,7 @@ class UserAdministration extends Component{
                                     <td>
                                         <DropDown
                                             label={"用户权限"}
-                                            options={["管理员","文案员"]}
+                                            options={["管理员","规划师"]}
                                             name={"role"}
                                             value={this.state.new_user.role}
                                             handleChange={this.handleChange.bind(this)}
