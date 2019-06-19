@@ -5,7 +5,7 @@ import { MDBDataTable } from "mdbreact";
 import "../Form.css";
 import Input from "../Input/Input";
 import DropDown from "../DropDown/DropDown";
-class Price_Constants extends Component{
+class UserAdministration extends Component{
     constructor(props){
         super(props);
         this.state={
@@ -32,7 +32,7 @@ class Price_Constants extends Component{
             new_user:{
                 username:"",
                 password:"",
-                role:"普通文案",
+                role:"规划师",
                 name:"",
             }
         })
@@ -136,7 +136,7 @@ class Price_Constants extends Component{
                                     <td>
                                         <DropDown
                                             label={"用户权限"}
-                                            options={["管理员","文案员"]}
+                                            options={["管理员","规划师"]}
                                             name={"role"}
                                             value={this.state.new_user.role}
                                             handleChange={this.handleChange.bind(this)}
@@ -170,4 +170,4 @@ const mapDispatchToProps = dispatch =>{
         popUp: (status, message, action) => dispatch({type:actionTypes.POP_UP, message:message, status:status, action:action}),
     };
 };
-export default connect(mapStateToProps, mapDispatchToProps)(Price_Constants);
+export default connect(mapStateToProps, mapDispatchToProps)(UserAdministration);

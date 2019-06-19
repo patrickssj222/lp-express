@@ -79,12 +79,20 @@ function* getCustomers(){
         });
         if(response.data.status>=200 && response.data.status<300){
             const result = response.data.response;
+            result.forEach((customer, index)=>{
+                Object.keys(customer).forEach((key)=>{
+                    if(customer[key]===null){
+                        result[index][key] = "";
+                    }
+                })
+            });
+            console.log("RESULT",result);
             yield put({type:actionTypes.UPDATE_CUSTOMERS, customer:result});
             yield put({type:actionTypes.REMOVE_POP_UP});
         }
         else{
             yield put({type:actionTypes.REMOVE_POP_UP});
-            yield put({type:actionTypes.POP_UP, status:"failure", message:["Error: "+response.data.status],onExit:"Reinitialize"});
+            yield put({type:actionTypes.POP_UP, status:"failure", message:["Error: "+response.data.status],onExit:null});
         }
     }
     catch(e){
@@ -103,7 +111,7 @@ function* addCustomers(action){
             });
             if(response.data.status>=200 && response.data.status<300){
                 yield put({type:actionTypes.REMOVE_POP_UP});
-                yield put({type:actionTypes.POP_UP, status:"success", message:["成功添加新客户"],onExit:null});
+                yield put({type:actionTypes.POP_UP, status:"success", message:["成功添加新客户"],onExit:"/customer"});
             }
             else{
                 yield put({type:actionTypes.REMOVE_POP_UP});
@@ -132,7 +140,29 @@ function* updateCustomers(action){
         console.log(response)
         if(response.data.status>=200 && response.data.status<300){
             yield put({type:actionTypes.REMOVE_POP_UP});
-            yield put({type:actionTypes.POP_UP, status:"success", message:["成功更新客户信息"],onExit:null});
+            yield put({type:actionTypes.POP_UP, status:"success", message:["成功更新客户信息"],onExit:"/customer"});
+        }
+        else{
+            yield put({type:actionTypes.REMOVE_POP_UP});
+            yield put({type:actionTypes.POP_UP, status:"failure", message:["Error: "+response.data.status],onExit:null});
+        }
+    }
+    catch(e){
+        console.log(e);
+    }
+}
+
+function* forceDeleteCustomers(action){
+    yield put({type:actionTypes.POP_UP, status:"loading", message:["正在删除客户..."],onExit:null});
+    try{
+        const response = yield call (axios, {
+            method: 'POST',
+            url: '/api/customers/delete/force',
+            data:action.customer,
+        });
+        if(response.data.status>=200 && response.data.status<300){
+            yield put({type:actionTypes.REMOVE_POP_UP});
+            yield put({type:actionTypes.POP_UP, status:"success", message:["成功删除客户"],onExit:"/customer"});
         }
         else{
             yield put({type:actionTypes.REMOVE_POP_UP});
@@ -365,5 +395,6 @@ export function* watchSagaRequests() {
     yield takeEvery(actionTypes.SAGA_DELETE_PAYMENT_TRANSACTION, deleteBusinessPayment);
     yield takeEvery(actionTypes.SAGA_ADD_BUSINESS, addBusiness);
     yield takeEvery(actionTypes.SAGA_GET_CHINA_GEO, getChinaGeo);
+    yield takeEvery(actionTypes.SAGA_FORCE_DELETE_CUSTOMER, forceDeleteCustomers);
 }
 

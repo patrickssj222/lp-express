@@ -20,6 +20,8 @@ import BusinessDetail from "./component/Form/Business/BusinessDetail";
 import AddCustomer from "./component/Form/Customer/AddCustomer";
 import AddBusiness from "./component/Form/Business/AddBusiness";
 import UserAdministration from "./component/Form/UserAdministration/UserAdministration";
+import OptionPopUp from "./component/PopUp/OptionPopUp";
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 
 library.add(faIgloo);
 
@@ -40,38 +42,20 @@ class App extends Component {
                 case "loading":
                     popUp = <LoadPopUp/>;
                     break;
+                case "option":
+                    popUp = <OptionPopUp/>
+                    break;
                 default:
                     popUp = null;
             }
         }
         let view = null;
         switch(this.props.view.component){
-            case "AddBusiness":
-                view = <AddBusiness payload={this.props.view.payload}/>;
-                break;
-            case "VisaApplication_2":
-                view = <VisaApplication_2 payload={this.props.view.payload}/>;
-                break;
-            case "Price_Constants":
-                view = <Price_Constants payload={this.props.view.payload}/>;
-                break;
-            case "Customer":
-                view = <Customer payload={this.props.view.payload}/>;
-                break;
-            case "AddCustomer":
-                view = <AddCustomer payload={this.props.view.payload}/>;
-                break;
             case "CustomerDetail":
                 view = <CustomerDetail payload={this.props.view.payload}/>;
                 break;
-            case "Business":
-                view = <Business payload={this.props.view.payload}/>;
-                break;
             case "BusinessDetail":
                 view = <BusinessDetail payload={this.props.view.payload}/>;
-                break;
-            case "UserAdministration":
-                view = <UserAdministration payload={this.props.view.payload}/>;
                 break;
             default:
                 view = null;
@@ -79,13 +63,25 @@ class App extends Component {
         let content = <LogIn/>;
         if(this.props.user!=null){
             content =
-                <div className={"page-wrapper chiller-theme toggled"}>
-                    <Navigation/>
-                    <main className="page-content">
-                        {view}
-                    </main>
-                    {popUp}
-                </div>;
+                <Router>
+                    <div className={"page-wrapper chiller-theme toggled"}>
+                        <Navigation/>
+                        <main className="page-content">
+                            <Switch>
+                                <Route exact path={'/'} component={Customer}/>
+                                <Route exact path={'/customer'} component={Customer}/>
+                                <Route exact path={'/customer/detail'} component={CustomerDetail}/>
+                                <Route exact path={'/customer/add'} component={AddCustomer}/>
+                                <Route exact path={'/business'} component={Business}/>
+                                <Route exact path={'/customer/add'} component={AddBusiness}/>
+                                <Route exact path={'/constants/price'} component={Price_Constants}/>
+                                <Route exact path={'/administration/user'} component={UserAdministration}/>
+                            </Switch>
+                        </main>
+                        {popUp}
+                    </div>;
+                </Router>
+
         }
 
         return (

@@ -3,6 +3,7 @@ import connect from "react-redux/es/connect/connect";
 import * as actionTypes from '../../../store/action';
 import { MDBDataTable } from "mdbreact";
 import "../Form.css";
+import {Link, withRouter} from "react-router-dom";
 class Customer extends Component{
     constructor(props){
         super(props);
@@ -12,10 +13,12 @@ class Customer extends Component{
         this.props.getCustomers();
     }
 
-    handleNewCustomer(e){
-        this.props.switchView("AddCustomer");
+    handleRedirect(path, index){
+        this.props.history.push({
+            pathname: path,
+            state: { index:index }
+        })
     }
-
     render(){
         const columns = [
             {
@@ -81,13 +84,12 @@ class Customer extends Component{
                     }
                 }
                 if(this.props.user.role==="管理员"){
-                    console.log("SRKKKRR");
                     rows.push({
                             name:customer[index].name,
                             phone: customer[index].phone!=null?customer[index].phone:"",
                             passport_due: passport_due,
                             visa_due: visa_due,
-                            clickEvent: this.props.switchView.bind(this,"CustomerDetail",{index:index})
+                            clickEvent: this.handleRedirect.bind(this,"/customer/detail",index)
                         }
                     )
                 }
@@ -98,11 +100,10 @@ class Customer extends Component{
                             phone: customer[index].phone!=null?customer[index].phone:"",
                             passport_due: customer[index].passport_due!=null?customer[index].passport_due:"",
                             visa_due: customer[index].visa_due!=null?customer[index].visa_due:"",
-                            clickEvent: this.props.switchView.bind(this,"CustomerDetail",{index:index})
+                            clickEvent: this.handleRedirect.bind(this,"/customer/detail",index)
                         })
                     }
                 }
-
             });
         }
         const data = {
@@ -110,7 +111,6 @@ class Customer extends Component{
             rows:rows
         };
 
-        console.log("DATA", data);
         return(
             <div className={"form-wrapper content-wrapper"}>
                 <div className={"section-wrapper"}>
@@ -120,7 +120,9 @@ class Customer extends Component{
                     <hr className={"style1"}/>
                     <div className={"footer"}>
                         <div className={"form-confirmation button-group"}>
-                            <button className={"btn btn-primary"} onClick={this.handleNewCustomer.bind(this)}>添加客户</button>
+                            <Link to={"/customer/add"}>
+                                <button className={"btn btn-primary"}>添加客户</button>
+                            </Link>
                         </div>
                     </div>
                     <div className={"section-body"}>
@@ -155,4 +157,4 @@ const mapDispatchToProps = dispatch =>{
         popUp: (status, message, action) => dispatch({type:actionTypes.POP_UP, message:message, status:status, action:action}),
     };
 };
-export default connect(mapStateToProps, mapDispatchToProps)(Customer);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Customer));

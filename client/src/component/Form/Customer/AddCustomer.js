@@ -25,10 +25,10 @@ class AddCustomer extends Component{
                 passport_due:"",
                 passport_number:"",
                 visa_due:"",
-                visa_type:"",
+                visa_type:"无身份信息",
                 first_landing_date:"",
                 first_landing_location:"",
-                used_name:"",
+                used_name:"无",
                 emergency_contact:[],
                 city_id:"",
                 birth_place:"",
@@ -258,7 +258,7 @@ class AddCustomer extends Component{
                 </div>
                 <div className={"section-wrapper"}>
                     <div className={"section-header"}>
-                        <h3>中国地址</h3>
+                        <h3>详细地址</h3>
                     </div>
                     <div className={"section-body"}>
                         <table className={"business-detail-table"}>
@@ -325,11 +325,11 @@ class AddCustomer extends Component{
                                     />
                                 </td>
                                 <td>
-                                    <Input label={"UCI 号码："}
-                                           name={"uci_number"}
-                                           value={this.state.detail.uci_number}
-                                           type={"text"}
-                                           handleChange={this.handleChange}
+                                    <DropDown label={"在加身份："}
+                                              name={"visa_type"}
+                                              value={this.state.detail.visa_type}
+                                              handleChange={this.handleChange}
+                                              options={["加拿大学签","加拿大旅游签","加拿大工签","加拿大移民","加拿大公民","加拿大难民","无身份信息"]}
                                     />
                                 </td>
                             </tr>
@@ -362,9 +362,9 @@ class AddCustomer extends Component{
                             </tr>
                             <tr>
                                 <td>
-                                    <Input label={"在加身份："}
-                                           name={"visa_type"}
-                                           value={this.state.detail.visa_type}
+                                    <Input label={"UCI 号码："}
+                                           name={"uci_number"}
+                                           value={this.state.detail.uci_number}
                                            type={"text"}
                                            handleChange={this.handleChange}
                                     />
