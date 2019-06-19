@@ -43,7 +43,7 @@ class App extends Component {
                     popUp = <LoadPopUp/>;
                     break;
                 case "option":
-                    popUp = <OptionPopUp/>
+                    popUp = <OptionPopUp/>;
                     break;
                 default:
                     popUp = null;

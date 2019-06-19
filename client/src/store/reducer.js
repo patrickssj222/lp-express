@@ -48,12 +48,13 @@ const reducer = (store = initialState, action) => {
                 },
             };
         case actionTypes.POP_UP:
+            console.log("POPUP",action);
             return{
                 ...store,
                 popUp:{
                     status:action.status,
                     message:action.message,
-                    onExit:action.action
+                    onExit:action.onExit
                 }
             };
         case actionTypes.REMOVE_POP_UP:

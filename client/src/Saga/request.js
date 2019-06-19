@@ -111,7 +111,7 @@ function* addCustomers(action){
             });
             if(response.data.status>=200 && response.data.status<300){
                 yield put({type:actionTypes.REMOVE_POP_UP});
-                yield put({type:actionTypes.POP_UP, status:"success", message:["成功添加新客户"],onExit:"/customer"});
+                yield put({type:actionTypes.POP_UP, status:"success", message:["成功添加客户"],onExit:"/customer"});
             }
             else{
                 yield put({type:actionTypes.REMOVE_POP_UP});
@@ -127,7 +127,6 @@ function* addCustomers(action){
         yield put({type:actionTypes.REMOVE_POP_UP});
         yield put({type:actionTypes.POP_UP, status:"failure", message:["请填入客户姓名."],onExit:null});
     }
-
 }
 function* updateCustomers(action){
     yield put({type:actionTypes.POP_UP, status:"loading", message:["更新客户信息..."],onExit:null});
@@ -137,7 +136,6 @@ function* updateCustomers(action){
             url: '/api/customers/update/one',
             data:action.customer,
         });
-        console.log(response)
         if(response.data.status>=200 && response.data.status<300){
             yield put({type:actionTypes.REMOVE_POP_UP});
             yield put({type:actionTypes.POP_UP, status:"success", message:["成功更新客户信息"],onExit:"/customer"});

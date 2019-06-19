@@ -11,7 +11,7 @@ class SuccessPopUp extends Component {
     }
 
     handleSubmit(){
-        this.props.history.push(this.props.onExit);
+        this.props.history.push(this.props.popUp.onExit);
     }
 
     render() {

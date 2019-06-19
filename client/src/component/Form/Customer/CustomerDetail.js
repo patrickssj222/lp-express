@@ -224,9 +224,10 @@ class CustomerDetail extends Component{
         let data = null;
         let region_value = "";
         let province_value = "";
+        let birth_region_value = "";
+        let birth_province_value = "";
         try{
             customer = this.props.customer[this.props.location.state.index];
-            console.log("props",this.props);
             if(this.props.china_geo!=null && this.state.china_geo.city === ""){
                 this.initCity();
             }
@@ -240,7 +241,21 @@ class CustomerDetail extends Component{
                         province_value = province_info?province_info.name:"";
                     }
                 }
+
             }
+            else if(this.props.china_geo!=null && this.state.birth_geo.city!==""){
+                const birth_city_info = this.findNested(this.props.china_geo,"name",this.state.birth_geo.city);
+                if(birth_city_info){
+                    const birth_region_info = this.props.china_geo[birth_city_info.region_id];
+                    birth_region_value = birth_region_info?birth_region_info.name:"";
+                    if(birth_region_info){
+                        const birth_province_info = birth_region_info.province[birth_city_info.province_id];
+                        birth_province_value = birth_province_info?birth_province_info.name:"";
+                    }
+                }
+            }
+
+
             let rows = [];
             if(this.state.business!=null){
                 rows = this.state.business.map((item)=>{
@@ -260,7 +275,6 @@ class CustomerDetail extends Component{
         catch{
             return(<Redirect to='/customer'/>);
         }
-        console.log("THIS", this.state.detail);
         return(
             <div className={"form-wrapper content-wrapper customer-detail"}>
                 <div className={"section-wrapper"}>
@@ -341,14 +355,6 @@ class CustomerDetail extends Component{
                                            handleChange={this.handleChange}
                                     />
                                 </td>
-                                <td>
-                                    <Input label={"出生地："}
-                                           name={"birth_place"}
-                                           value={this.state.detail.birth_place}
-                                           type={"text"}
-                                           handleChange={this.handleChange}
-                                    />
-                                </td>
                             </tr>
                             </tbody>
                         </table>
@@ -393,14 +399,14 @@ class CustomerDetail extends Component{
                                 <td>
                                     <Input label={"出生城市："}
                                            name={"city"}
-                                           value={this.state.china_geo.city}
+                                           value={this.state.birth_geo.city}
                                            type={"text"}
                                            handleChange={this.handleBirthCityChange}
                                     />
                                 </td>
                                 <td>
                                     <Input label={"出生省份："}
-                                           value={province_value}
+                                           value={birth_province_value}
                                            type={"text"}
                                            disabled={true}
                                            handleChange={this.handleBirthCityChange}
@@ -409,7 +415,7 @@ class CustomerDetail extends Component{
 
                                 <td>
                                     <Input label={"出生区域："}
-                                           value={region_value}
+                                           value={birth_region_value}
                                            type={"text"}
                                            disabled={true}
                                            handleChange={this.handleBirthCityChange}

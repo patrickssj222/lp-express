@@ -31,9 +31,13 @@ class AddCustomer extends Component{
                 used_name:"无",
                 emergency_contact:[],
                 city_id:"",
-                birth_place:"",
             },
             china_geo:{
+                city:"",
+                province:"",
+                region:""
+            },
+            birth_geo:{
                 city:"",
                 province:"",
                 region:""
@@ -42,6 +46,7 @@ class AddCustomer extends Component{
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleCityChange = this.handleCityChange.bind(this);
+        this.handleBirthCityChange = this.handleBirthCityChange.bind(this);
         this.handleContactChange = this.handleContactChange.bind(this);
         this.handleSpecialChange = this.handleSpecialChange.bind(this);
     }
@@ -72,7 +77,6 @@ class AddCustomer extends Component{
     }
 
     handleSpecialChange(name,value){
-        console.log("name", name, "value", value);
         this.setState((prevState) => ({
             ...prevState,
             detail:{
@@ -115,12 +119,26 @@ class AddCustomer extends Component{
             }
         }));
     }
+    handleBirthCityChange(e){
+        const { name, value } = e.target;
+        const city_info = this.findNested(this.props.china_geo,"name",value);
+        this.setState((prevState) => ({
+            ...prevState,
+            detail:{
+                ...prevState.detail,
+                birth_city_id: city_info?city_info.id:""
+            },
+            birth_geo:{
+                ...prevState.birth_geo,
+                [name]:value,
+            }
+        }));
+    }
     handleSubmit(e){
         this.props.addCustomer(this.state.detail);
     }
     handleContactChange(index, e){
         const { name, value } = e.target;
-        console.log(name, index);
         this.setState((prevState) => {
             let new_contacts = prevState.detail.emergency_contact;
             new_contacts[index][name] = value;
@@ -151,9 +169,10 @@ class AddCustomer extends Component{
     }
 
     render(){
-        console.log(this.state);
         let region_value = "";
         let province_value = "";
+        let birth_region_value = "";
+        let birth_province_value = "";
         if(this.props.china_geo!=null && this.state.china_geo.city!==""){
             const city_info = this.findNested(this.props.china_geo,"name",this.state.china_geo.city);
             if(city_info){
@@ -162,6 +181,17 @@ class AddCustomer extends Component{
                 if(region_info){
                     const province_info = region_info.province[city_info.province_id];
                     province_value = province_info?province_info.name:"";
+                }
+            }
+        }
+        else if(this.props.china_geo!=null && this.state.birth_geo.city!==""){
+            const birth_city_info = this.findNested(this.props.china_geo,"name",this.state.birth_geo.city);
+            if(birth_city_info){
+                const birth_region_info = this.props.china_geo[birth_city_info.region_id];
+                birth_region_value = birth_region_info?birth_region_info.name:"";
+                if(birth_region_info){
+                    const birth_province_info = birth_region_info.province[birth_city_info.province_id];
+                    birth_province_value = birth_province_info?birth_province_info.name:"";
                 }
             }
         }
@@ -243,14 +273,6 @@ class AddCustomer extends Component{
                                                handleChange={this.handleChange}
                                         />
                                     </td>
-                                    <td>
-                                        <Input label={"出生地："}
-                                               name={"birth_place"}
-                                               value={this.state.detail.birth_place}
-                                               type={"text"}
-                                               handleChange={this.handleChange}
-                                        />
-                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -266,7 +288,7 @@ class AddCustomer extends Component{
                             <tbody>
                             <tr>
                                 <td>
-                                    <Input label={"城市："}
+                                    <Input label={"中国城市："}
                                            name={"city"}
                                            value={this.state.china_geo.city}
                                            type={"text"}
@@ -274,7 +296,7 @@ class AddCustomer extends Component{
                                     />
                                 </td>
                                 <td>
-                                    <Input label={"省份："}
+                                    <Input label={"中国省份："}
                                            value={province_value}
                                            type={"text"}
                                            disabled={true}
@@ -283,11 +305,38 @@ class AddCustomer extends Component{
                                 </td>
 
                                 <td>
-                                    <Input label={"区域："}
+                                    <Input label={"中国区域："}
                                            value={region_value}
                                            type={"text"}
                                            disabled={true}
                                            handleChange={this.handleCityChange}
+                                    />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <Input label={"出生城市："}
+                                           name={"city"}
+                                           value={this.state.birth_geo.city}
+                                           type={"text"}
+                                           handleChange={this.handleBirthCityChange}
+                                    />
+                                </td>
+                                <td>
+                                    <Input label={"出生省份："}
+                                           value={birth_province_value}
+                                           type={"text"}
+                                           disabled={true}
+                                           handleChange={this.handleBirthCityChange}
+                                    />
+                                </td>
+
+                                <td>
+                                    <Input label={"出生区域："}
+                                           value={birth_region_value}
+                                           type={"text"}
+                                           disabled={true}
+                                           handleChange={this.handleBirthCityChange}
                                     />
                                 </td>
                             </tr>
@@ -428,7 +477,7 @@ class AddCustomer extends Component{
                         </table>
                     </div>
                 </div>
-                <div className={"section-wrapper"}>
+                {/*<div className={"section-wrapper"}>
                     <div className={"section-header"}>
                         <h3>紧急联系人信息</h3>
                         <button className={"btn btn-primary"} onClick={this.handleNewContact.bind(this)}>添加联系人</button>
@@ -475,7 +524,7 @@ class AddCustomer extends Component{
                             </tbody>
                         </table>
                     </div>
-                </div>
+                </div>*/}
                 <div className={"footer"}>
                     <div className={"form-confirmation button-group"}>
                         <small>完成值: {Math.round(this.state.total_completion/this.state.max_total*100)}%</small>

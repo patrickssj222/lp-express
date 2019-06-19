@@ -122,13 +122,19 @@ router.post('/update/one/', function(req,res,next){
     let query = "UPDATE customer SET ";
     Object.keys(body).forEach((key)=>{
         if(key!=="id" && key!=="creation_time" && key!=="emergency_contact"){
-            if(key!=="id" && key!=="emergency_contact"){
+            if(key!=="id" && key!=="emergency_contact" && key!=="update_time"){
                 if(body[key]===""||body[key]==="null"||body[key]===null){
                     query = query + key + " = null,";
                 }
                 else{
                     query = query + key + " = '"+body[key]+"',";
                 }
+            }
+            else if(key==="update_time"){
+                var d = new Date();
+                d = new Date(d.getTime() - 3000000);
+                var date_format_str = d.getFullYear().toString()+"-"+((d.getMonth()+1).toString().length==2?(d.getMonth()+1).toString():"0"+(d.getMonth()+1).toString())+"-"+(d.getDate().toString().length==2?d.getDate().toString():"0"+d.getDate().toString())+" "+(d.getHours().toString().length==2?d.getHours().toString():"0"+d.getHours().toString())+":"+((parseInt(d.getMinutes()/5)*5).toString().length==2?(parseInt(d.getMinutes()/5)*5).toString():"0"+(parseInt(d.getMinutes()/5)*5).toString())+":00";
+                query = query + key + " = '"+date_format_str+"',";
             }
         }
     });
@@ -141,7 +147,7 @@ router.post('/update/one/', function(req,res,next){
             res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
             //If there is error, we send the error in the error section with 500 status
         } else {
-            body.emergency_contact.forEach((contact)=>{
+            /*body.emergency_contact.forEach((contact)=>{
                 query = "";
                 query = query + "UPDATE customer_emergency_contact SET ";
                 Object.keys(contact).forEach((key)=>{
@@ -158,7 +164,7 @@ router.post('/update/one/', function(req,res,next){
                         //If there is error, we send the error in the error section with 500 status
                     }
                 });
-            });
+            });*/
             res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
             //If there is no error, all is good and response is 200OK.
         }
