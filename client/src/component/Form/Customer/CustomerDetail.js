@@ -293,7 +293,7 @@ class CustomerDetail extends Component{
                                         className={"form-control"}
                                         label={"出生日期："}
                                         name={"dob"}
-                                        value={this.state.detail.dob.replace(/\//g, '-')}
+                                        value={this.state.detail.dob?this.state.detail.dob.replace(/\//g, '-'):""}
                                         format={[
                                             {char: /\d/, repeat:4},
                                             { exactly: "-" },
@@ -444,7 +444,7 @@ class CustomerDetail extends Component{
                                     <CustomFormatInput
                                         label={"护照到期日："}
                                         name={"passport_due"}
-                                        value={this.state.detail.passport_due.replace(/\//g, '-')}
+                                        value={this.state.detail.passport_due?this.state.detail.passport_due.replace(/\//g, '-'):""}
                                         format={[
                                             {char: /\d/, repeat:4},
                                             { exactly: "-" },
@@ -470,7 +470,7 @@ class CustomerDetail extends Component{
                                     <CustomFormatInput
                                         label={"签证到期日："}
                                         name={"visa_due"}
-                                        value={this.state.detail.visa_due.replace(/\//g, '-')}
+                                        value={this.state.detail.visa_due?this.state.detail.visa_due.replace(/\//g, '-'):""}
                                         format={[
                                             {char: /\d/, repeat:4},
                                             { exactly: "-" },
@@ -500,7 +500,7 @@ class CustomerDetail extends Component{
                                     <CustomFormatInput
                                         label={"第一次登录时间："}
                                         name={"first_landing_date"}
-                                        value={this.state.detail.first_landing_date.replace(/\//g, '-')}
+                                        value={this.state.detail.first_landing_date?this.state.detail.first_landing_date.replace(/\//g, '-'):""}
                                         format={[
                                             {char: /\d/, repeat:4},
                                             { exactly: "-" },
@@ -579,24 +579,26 @@ class CustomerDetail extends Component{
                         <button className={"btn btn-primary"} onClick={this.handleSubmit.bind(this)}>更新客户</button>
                     </div>
                 </div>
-                <div className={"section-wrapper"}>
-                    <div className={"section-header"}>
-                        <h3>对应业务</h3>
-                    </div>
-                    <div className={"footer"}>
-                        <div className={"form-confirmation button-group"}>
-                            <button className={"btn btn-primary"} onClick={this.handleNewBusiness.bind(this)}>添加业务</button>
+                {
+                    this.props.user.role==="管理员"?<div className={"section-wrapper"}>
+                        <div className={"section-header"}>
+                            <h3>对应业务</h3>
                         </div>
-                    </div>
-                    <div className={"section-body"}>
-                        <MDBDataTable
-                            bordered
-                            small
-                            data={data}
-                            entries={10}
-                        />
-                    </div>
-                </div>
+                        <div className={"footer"}>
+                            <div className={"form-confirmation button-group"}>
+                                <button className={"btn btn-primary"} onClick={this.handleNewBusiness.bind(this)}>添加业务</button>
+                            </div>
+                        </div>
+                        <div className={"section-body"}>
+                            <MDBDataTable
+                                bordered
+                                small
+                                data={data}
+                                entries={10}
+                            />
+                        </div>
+                    </div>:null
+                }
 
             </div>
         );
