@@ -243,7 +243,7 @@ class CustomerDetail extends Component{
                 }
 
             }
-            else if(this.props.china_geo!=null && this.state.birth_geo.city!==""){
+            if(this.props.china_geo!=null && this.state.birth_geo.city!==""){
                 const birth_city_info = this.findNested(this.props.china_geo,"name",this.state.birth_geo.city);
                 if(birth_city_info){
                     const birth_region_info = this.props.china_geo[birth_city_info.region_id];
