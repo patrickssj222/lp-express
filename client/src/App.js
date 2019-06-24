@@ -1,15 +1,11 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
 import LogIn from "./component/LogIn/LogIn";
-import VisaApplication_2 from "./component/Form/VisaApplication_2/VisaApplication_2";
 import connect from "react-redux/es/connect/connect";
 import Price_Constants from "./component/Form/Price_Constants/Price_Constants";
 import Customer from "./component/Form/Customer/Customer";
-
 import Navigation from "./component/Navigation/Navigation";
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faIgloo } from '@fortawesome/free-solid-svg-icons'
 import SuccessPopUp from "./component/PopUp/SuccessPopUp";
 import FailurePopUp from "./component/PopUp/FailurePopUp";

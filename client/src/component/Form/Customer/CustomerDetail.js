@@ -58,7 +58,7 @@ class CustomerDetail extends Component{
         try{
             this.setState({
                 detail:this.props.location.state?this.props.customer[this.props.location.state.index]:null,
-            })
+            });
             axios({
                 method: 'POST',
                 url: '/api/customers/business',

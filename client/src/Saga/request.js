@@ -401,21 +401,76 @@ function* updateChinaGeo(action){
         console.log(e);
     }
 }
+
+function* addChinaGeo(action){
+    yield put({type:actionTypes.POP_UP, status:"loading", message:["正在添加新中国地理信息..."],onExit:null});
+    try{
+        const response = yield call (axios, {
+            method: 'POST',
+            url: '/api/geographic/china/add/',
+            data: action.detail
+        });
+        if(response.data.status>=200 && response.data.status<300){
+            yield put({type:actionTypes.REMOVE_POP_UP});
+            yield getChinaGeo();
+        }
+        else{
+            yield put({type:actionTypes.REMOVE_POP_UP});
+            yield put({type:actionTypes.POP_UP, status:"failure", message:["Error: "+response.data.status],onExit:null});
+
+        }
+    }
+    catch(e){
+        console.log(e);
+    }
+}
+
+function* deleteChinaGeo(action){
+    yield put({type:actionTypes.POP_UP, status:"loading", message:["正在删除中国地理信息..."],onExit:null});
+    try{
+        const response = yield call (axios, {
+            method: 'POST',
+            url: '/api/geographic/china/delete/',
+            data: {
+                id:action.id
+            }
+        });
+        if(response.data.status>=200 && response.data.status<300){
+            yield put({type:actionTypes.REMOVE_POP_UP});
+            yield getChinaGeo();
+        }
+        else{
+            yield put({type:actionTypes.REMOVE_POP_UP});
+            yield put({type:actionTypes.POP_UP, status:"failure", message:["Error: "+response.data.status],onExit:null});
+
+        }
+    }
+    catch(e){
+        console.log(e);
+    }
+}
+
 export function* watchSagaRequests() {
     yield takeEvery(actionTypes.SAGA_LOG_IN, logIn);
     yield takeEvery(actionTypes.SAGA_GET_PRICE_CONSTANTS, getPriceConstants);
     yield takeEvery(actionTypes.SAGA_UPDATE_PRICE_CONSTANTS, updatePriceConstants);
+
     yield takeEvery(actionTypes.SAGA_GET_CUSTOMERS, getCustomers);
     yield takeEvery(actionTypes.SAGA_UPDATE_CUSTOMERS, updateCustomers);
     yield takeEvery(actionTypes.SAGA_ADD_CUSTOMERS, addCustomers);
+    yield takeEvery(actionTypes.SAGA_FORCE_DELETE_CUSTOMER, forceDeleteCustomers);
+
     yield takeEvery(actionTypes.SAGA_GET_BUSINESS,getBusiness);
     yield takeEvery(actionTypes.SAGA_UPDATE_BUSINESS, updateBusiness);
     yield takeEvery(actionTypes.SAGA_GET_BUSINESS_DETAIL, initBusinessDetail);
     yield takeEvery(actionTypes.SAGA_ADD_PAYMENT_TRANSACTION, addBusinessPayment);
     yield takeEvery(actionTypes.SAGA_DELETE_PAYMENT_TRANSACTION, deleteBusinessPayment);
     yield takeEvery(actionTypes.SAGA_ADD_BUSINESS, addBusiness);
+
     yield takeEvery(actionTypes.SAGA_GET_CHINA_GEO, getChinaGeo);
     yield takeEvery(actionTypes.SAGA_UPDATE_CHINA_GEOGRAPHIC, updateChinaGeo);
-    yield takeEvery(actionTypes.SAGA_FORCE_DELETE_CUSTOMER, forceDeleteCustomers);
+    yield takeEvery(actionTypes.SAGA_ADD_CHINA_GEOGRAPHIC, addChinaGeo);
+    yield takeEvery(actionTypes.SAGA_DELETE_CHINA_GEOGRAPHIC, deleteChinaGeo);
+
 }
 
