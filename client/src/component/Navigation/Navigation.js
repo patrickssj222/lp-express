@@ -81,13 +81,16 @@ class Navigation extends Component {
                     <div className="sidebar-submenu">
                         <ul>
                             <li>
-                                <Link to={'/administration/user'}>用户管理</Link>
+                                <Link to={'/user'}>用户管理</Link>
+                            </li>
+                            <li>
+                                <Link to={'/china_geo'}>中国地理管理</Link>
                             </li>
                         </ul>
                     </div>
                 </li>
             </ul>
-        </div>
+        </div>;
         const wenanContent = <div className="sidebar-menu">
             <ul>
                 <li className="sidebar-dropdown">

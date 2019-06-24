@@ -11,6 +11,7 @@ class Customer extends Component{
 
     componentWillMount() {
         this.props.getCustomers();
+        this.props.getAllUsers();
     }
 
     handleRedirect(path, index){
@@ -19,6 +20,24 @@ class Customer extends Component{
             state: { index:index }
         })
     }
+
+    findNested (obj, key, value){
+        // Base case
+        if (obj[key] === value) {
+            return obj;
+        } else {
+            for (let i = 0, len = Object.keys(obj).length; i < len; i++) {
+                const next_obj = obj[Object.keys(obj)[i]];
+                if (typeof next_obj == 'object') {
+                    let found = this.findNested(next_obj, key, value);
+                    if (found) {
+                        // If the object was found in the recursive call, bubble it up.
+                        return found;
+                    }
+                }
+            }
+        }
+    };
     render(){
         const columns = [
             {
@@ -40,6 +59,11 @@ class Customer extends Component{
             {
                 label: '签证到期日',
                 field: 'visa_due',
+                sort: 'asc',
+            },
+            {
+                label: '规划师',
+                field: 'created_by',
                 sort: 'asc',
             },
         ];
@@ -83,12 +107,14 @@ class Customer extends Component{
                         passport_due=customer[index].passport_due;
                     }
                 }
-                if(this.props.user.role==="管理员"){
+                if(this.props.user.role==="管理员" && this.props.users_list){
+                    const user = this.findNested(this.props.users_list, "id", customer[index].created_by);
                     rows.push({
                             name:customer[index].name,
                             phone: customer[index].phone!=null?customer[index].phone:"",
                             passport_due: passport_due,
                             visa_due: visa_due,
+                            created_by: user?user.name:"",
                             clickEvent: this.handleRedirect.bind(this,"/customer/detail",index)
                         }
                     )
@@ -146,7 +172,8 @@ class Customer extends Component{
 const mapStateToProps = state => {
     return{
         user:state.user,
-        customer: state.customer
+        customer: state.customer,
+        users_list:state.users_list
     };
 };
 
@@ -154,6 +181,7 @@ const mapDispatchToProps = dispatch =>{
     return{
         getCustomers: () => dispatch({type:actionTypes.SAGA_GET_CUSTOMERS}),
         switchView: (component, payload) => dispatch({type:actionTypes.SWITCH_VIEW, component:component, payload:payload}),
+        getAllUsers: () => dispatch({type:actionTypes.SAGA_GET_ALL_USERS}),
         popUp: (status, message, action) => dispatch({type:actionTypes.POP_UP, message:message, status:status, action:action}),
     };
 };

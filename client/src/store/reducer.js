@@ -16,7 +16,6 @@ const initialState = {
     business_payment:null,
     china_geo:null,
     users_list:null,
-
 };
 
 const reducer = (store = initialState, action) => {

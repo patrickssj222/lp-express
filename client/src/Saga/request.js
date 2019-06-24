@@ -69,7 +69,6 @@ function* updatePriceConstants(action){
         console.log(e);
     }
 }
-
 function* getCustomers(){
     yield put({type:actionTypes.POP_UP, status:"loading", message:["获取客户列表..."],onExit:null});
     try{
@@ -115,7 +114,7 @@ function* addCustomers(action){
             }
             else{
                 yield put({type:actionTypes.REMOVE_POP_UP});
-                yield put({type:actionTypes.POP_UP, status:"failure", message:["Error: "+response.data.status],onExit:null});
+                yield put({type:actionTypes.POP_UP, status:"failure", message:["Error: "+response.data.error.sqlMessage],onExit:null});
             }
         }
         catch(e){
@@ -142,7 +141,7 @@ function* updateCustomers(action){
         }
         else{
             yield put({type:actionTypes.REMOVE_POP_UP});
-            yield put({type:actionTypes.POP_UP, status:"failure", message:["Error: "+response.data.status],onExit:null});
+            yield put({type:actionTypes.POP_UP, status:"failure", message:["Error: "+response.data.error.sqlMessage],onExit:null});
         }
     }
     catch(e){
@@ -361,13 +360,36 @@ function* getChinaGeo(){
     try{
         const response = yield call (axios, {
             method: 'POST',
-            url: '/api/customers/geo/china/',
+            url: '/api/geographic/china/',
         });
         if(response.data.status>=200 && response.data.status<300){
             console.log(response);
             const result = response.data.response;
             yield put({type:actionTypes.UPDATE_CHINA_GEO, china_geo:result});
             yield put({type:actionTypes.REMOVE_POP_UP});
+        }
+        else{
+            yield put({type:actionTypes.REMOVE_POP_UP});
+            yield put({type:actionTypes.POP_UP, status:"failure", message:["Error: "+response.data.status],onExit:null});
+
+        }
+    }
+    catch(e){
+        console.log(e);
+    }
+}
+
+function* updateChinaGeo(action){
+    yield put({type:actionTypes.POP_UP, status:"loading", message:["正在更新中国地理信息..."],onExit:null});
+    try{
+        const response = yield call (axios, {
+            method: 'POST',
+            url: '/api/geographic/china/update/',
+            data: action.detail
+        });
+        if(response.data.status>=200 && response.data.status<300){
+            yield put({type:actionTypes.REMOVE_POP_UP});
+            yield getChinaGeo();
         }
         else{
             yield put({type:actionTypes.REMOVE_POP_UP});
@@ -393,6 +415,7 @@ export function* watchSagaRequests() {
     yield takeEvery(actionTypes.SAGA_DELETE_PAYMENT_TRANSACTION, deleteBusinessPayment);
     yield takeEvery(actionTypes.SAGA_ADD_BUSINESS, addBusiness);
     yield takeEvery(actionTypes.SAGA_GET_CHINA_GEO, getChinaGeo);
+    yield takeEvery(actionTypes.SAGA_UPDATE_CHINA_GEOGRAPHIC, updateChinaGeo);
     yield takeEvery(actionTypes.SAGA_FORCE_DELETE_CUSTOMER, forceDeleteCustomers);
 }
 

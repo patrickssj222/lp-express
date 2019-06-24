@@ -174,25 +174,17 @@ class AddCustomer extends Component{
         let birth_region_value = "";
         let birth_province_value = "";
         if(this.props.china_geo!=null && this.state.china_geo.city!==""){
-            const city_info = this.findNested(this.props.china_geo,"name",this.state.china_geo.city);
+            const city_info = this.findNested(this.props.china_geo,"city",this.state.china_geo.city);
             if(city_info){
-                const region_info = this.props.china_geo[city_info.region_id];
-                region_value = region_info?region_info.name:"";
-                if(region_info){
-                    const province_info = region_info.province[city_info.province_id];
-                    province_value = province_info?province_info.name:"";
-                }
+                region_value=city_info.region;
+                province_value=city_info.province;
             }
         }
         if(this.props.china_geo!=null && this.state.birth_geo.city!==""){
-            const birth_city_info = this.findNested(this.props.china_geo,"name",this.state.birth_geo.city);
+            const birth_city_info = this.findNested(this.props.china_geo,"city",this.state.birth_geo.city);
             if(birth_city_info){
-                const birth_region_info = this.props.china_geo[birth_city_info.region_id];
-                birth_region_value = birth_region_info?birth_region_info.name:"";
-                if(birth_region_info){
-                    const birth_province_info = birth_region_info.province[birth_city_info.province_id];
-                    birth_province_value = birth_province_info?birth_province_info.name:"";
-                }
+                birth_region_value = birth_city_info.region;
+                birth_province_value = birth_city_info.province;
             }
         }
         return(

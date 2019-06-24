@@ -51,11 +51,13 @@ var usersRouter = require('./routes/users');
 var constantsRouter = require('./routes/constants');
 var customersRouter = require('./routes/customers');
 var businessRouter = require('./routes/business');
+var geographicRouter = require('./routes/geographic');
 app.use('/', indexRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/constants', constantsRouter);
 app.use('/api/customers', customersRouter);
 app.use('/api/business',businessRouter);
+    app.use('/api/geographic',geographicRouter);
 if(process.env.NODE_ENV === 'production') {
     app.use(express.static(path.join(__dirname, 'client/build')));
     //
