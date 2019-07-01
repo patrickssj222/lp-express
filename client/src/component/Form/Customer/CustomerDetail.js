@@ -82,6 +82,17 @@ class CustomerDetail extends Component{
         if(this.props.china_geo==null){
             this.props.getChinaGeo();
         }
+
+        if(this.props.customer){
+            const city_info = this.findNested(this.props.china_geo,"id",this.props.customer[this.props.location.state.index].birth_city_id);
+            this.setState({
+                birth_geo:{
+                    city:city_info.city,
+                    province:city_info.province,
+                    region:city_info.region
+                }
+            });
+        }
     }
 
     handleChange(e){
@@ -173,7 +184,7 @@ class CustomerDetail extends Component{
     }
     handleCityChange(e){
         const { name, value } = e.target;
-        const city_info = this.findNested(this.props.china_geo,"name",value);
+        const city_info = this.findNested(this.props.china_geo,"city",value);
         this.setState((prevState) => ({
             ...prevState,
             detail:{
@@ -189,7 +200,8 @@ class CustomerDetail extends Component{
 
     handleBirthCityChange(e){
         const { name, value } = e.target;
-        const city_info = this.findNested(this.props.china_geo,"name",value);
+        const city_info = this.findNested(this.props.china_geo,"city",value);
+        console.log("birth city",city_info);
         this.setState((prevState) => ({
             ...prevState,
             detail:{
@@ -220,6 +232,7 @@ class CustomerDetail extends Component{
         }
     };
     render(){
+        console.log("current state", this.state);
         let customer = null;
         let data = null;
         let region_value = "";
@@ -347,45 +360,6 @@ class CustomerDetail extends Component{
                                     />
                                 </td>
                             </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div className={"section-wrapper"}>
-                    <div className={"section-header"}>
-                        <h3>详细地址</h3>
-                    </div>
-                    <div className={"section-body"}>
-                        <table className={"business-detail-table"}>
-                            <thead/>
-                            <tbody>
-                            <tr>
-                                <td>
-                                    <Input label={"中国城市："}
-                                           name={"city"}
-                                           value={this.state.china_geo.city}
-                                           type={"text"}
-                                           handleChange={this.handleCityChange}
-                                    />
-                                </td>
-                                <td>
-                                    <Input label={"中国省份："}
-                                           value={province_value}
-                                           type={"text"}
-                                           disabled={true}
-                                           handleChange={this.handleCityChange}
-                                    />
-                                </td>
-
-                                <td>
-                                    <Input label={"中国区域："}
-                                           value={region_value}
-                                           type={"text"}
-                                           disabled={true}
-                                           handleChange={this.handleCityChange}
-                                    />
-                                </td>
-                            </tr>
                             <tr>
                                 <td>
                                     <Input label={"出生城市："}
@@ -419,6 +393,38 @@ class CustomerDetail extends Component{
                 </div>
                 <div className={"section-wrapper"}>
                     <div className={"section-header"}>
+                        <h3>详细地址</h3>
+                    </div>
+                    <div className={"section-body"}>
+                        <table className={"business-detail-table justify-auto"}>
+                            <thead/>
+                            <tbody>
+                            <tr>
+                                <td>
+                                    <Input label={"中国现居地址："}
+                                           name={"china_address"}
+                                           value={this.state.detail.china_address}
+                                           type={"text"}
+                                           handleChange={this.handleChange}
+                                    />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <Input label={"加拿大现居地址："}
+                                           name={"canada_address"}
+                                           value={this.state.detail.canada_address}
+                                           type={"text"}
+                                           handleChange={this.handleChange}
+                                    />
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div className={"section-wrapper"}>
+                    <div className={"section-header"}>
                         <h3>身份与证件</h3>
                     </div>
                     <div className={"section-body"}>
@@ -441,8 +447,10 @@ class CustomerDetail extends Component{
                                             {char: /\d/, repeat:4},
                                             { exactly: "-" },
                                             {char: /\d/, repeat:4},
+                                            { exactly: "-" },
+                                            {char: /\d/, repeat:1},
                                         ]}
-                                        placeholder={"XXX-XXX-XXXX-XXXX-XXXX"}
+                                        placeholder={"XXX-XXX-XXXX-XXXX-XXXX-X"}
                                         handleChange={this.handleSpecialChange}
                                     />
                                 </td>
@@ -451,7 +459,7 @@ class CustomerDetail extends Component{
                                               name={"visa_type"}
                                               value={this.state.detail.visa_type}
                                               handleChange={this.handleChange}
-                                              options={["加拿大学签","加拿大旅游签","加拿大工签","加拿大移民","加拿大公民","加拿大难民","无身份信息"]}
+                                              options={["加拿大学签","加拿大旅游签","加拿大工签","加拿大移民","加拿大公民","加拿大难民","首次签证"]}
                                     />
                                 </td>
                             </tr>
@@ -488,6 +496,7 @@ class CustomerDetail extends Component{
                                            name={"uci_number"}
                                            value={this.state.detail.uci_number}
                                            type={"text"}
+                                           disabled={this.state.detail.visa_type==="加拿大移民"||this.state.detail.visa_type==="加拿大公民"||this.state.detail.visa_type==="加拿大难民"||this.state.detail.visa_type==="首次签证"}
                                            handleChange={this.handleChange}
                                     />
 
@@ -505,6 +514,7 @@ class CustomerDetail extends Component{
                                             {char: /\d/, repeat:2},
                                         ]}
                                         placeholder={"YYYY-MM-DD"}
+                                        disabled={this.state.detail.visa_type==="加拿大移民"||this.state.detail.visa_type==="加拿大公民"||this.state.detail.visa_type==="加拿大难民"||this.state.detail.visa_type==="首次签证"}
                                         handleChange={this.handleSpecialChange}
                                     />
                                 </td>

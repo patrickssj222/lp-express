@@ -11,6 +11,7 @@ const CustomFormatInput = (props) => {
                 onChange={props.handleChange.bind(this, props.name)}
                 placeholder={props.placeholder}
                 name={props.name}
+                disabled={props.disabled}
             />
         </div>
     );

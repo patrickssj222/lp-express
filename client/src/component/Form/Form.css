@@ -145,3 +145,7 @@
 .red-text{
     color:red;
 }
+
+.justify-auto .input-group{
+    justify-content: normal !important;
+}

@@ -4,8 +4,7 @@ import * as actionTypes from '../../../store/action';
 import { MDBDataTable } from "mdbreact";
 import "../Form.css";
 import {Link, withRouter} from "react-router-dom";
-import CustomFormatInput from "./AddCustomer";
-class Customer extends Component{
+class AdminCustomer extends Component{
     constructor(props){
         super(props);
     }
@@ -61,6 +60,10 @@ class Customer extends Component{
                 label: '上次更新时间',
                 field: 'update_time',
             },
+            {
+                label: '规划师',
+                field: 'created_by',
+            },
         ];
         let rows = null;
         if(this.props.customer!=null){
@@ -102,15 +105,18 @@ class Customer extends Component{
                         passport_due=customer[index].passport_due;
                     }
                 }
-                if(this.props.user.id === customer[index].created_by){
+                if(this.props.users_list){
+                    const user = this.findNested(this.props.users_list, "id", customer[index].created_by);
                     rows.push({
-                        name:customer[index].name,
-                        phone: customer[index].phone!=null?customer[index].phone:"",
-                        passport_due: passport_due,
-                        visa_due: customer[index].visa_type==="加拿大移民"||customer[index].visa_type==="加拿大公民"||customer[index].visa_type==="加拿大难民"||customer[index].visa_type==="首次签证"?customer[index].visa_type:visa_due,
-                        update_time:customer[index].update_time,
-                        clickEvent: this.handleRedirect.bind(this,"/customer/detail",index)
-                    })
+                            name:customer[index].name,
+                            phone: customer[index].phone!=null?customer[index].phone:"",
+                            passport_due: passport_due,
+                            visa_due: customer[index].visa_type==="加拿大移民"||customer[index].visa_type==="加拿大公民"||customer[index].visa_type==="加拿大难民"||customer[index].visa_type==="首次签证"?customer[index].visa_type:visa_due,
+                            update_time:customer[index].update_time,
+                            created_by: user?user.name:"",
+                            clickEvent: this.handleRedirect.bind(this,"/customer/detail",index)
+                        }
+                    )
                 }
             });
         }
@@ -145,7 +151,6 @@ class Customer extends Component{
                                 order={['update_time','desc']}
                             />:null
                         }
-
                     </div>
                 </div>
             </div>
@@ -168,4 +173,4 @@ const mapDispatchToProps = dispatch =>{
         popUp: (status, message, action) => dispatch({type:actionTypes.POP_UP, message:message, status:status, action:action}),
     };
 };
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Customer));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(AdminCustomer));
