@@ -85,13 +85,15 @@ class CustomerDetail extends Component{
 
         if(this.props.customer){
             const city_info = this.findNested(this.props.china_geo,"id",this.props.customer[this.props.location.state.index].birth_city_id);
-            this.setState({
-                birth_geo:{
-                    city:city_info.city,
-                    province:city_info.province,
-                    region:city_info.region
-                }
-            });
+            if(city_info){
+                this.setState({
+                    birth_geo:{
+                        city:city_info.city,
+                        province:city_info.province,
+                        region:city_info.region
+                    }
+                });
+            }
         }
     }
 

@@ -13,6 +13,9 @@ class Customer extends Component{
     componentWillMount() {
         this.props.getCustomers();
         this.props.getAllUsers();
+        if(this.props.china_geo==null){
+            this.props.getChinaGeo();
+        }
     }
 
     handleRedirect(path, index){
@@ -156,7 +159,8 @@ const mapStateToProps = state => {
     return{
         user:state.user,
         customer: state.customer,
-        users_list:state.users_list
+        users_list:state.users_list,
+        china_geo:state.china_geo,
     };
 };
 
@@ -164,6 +168,7 @@ const mapDispatchToProps = dispatch =>{
     return{
         getCustomers: () => dispatch({type:actionTypes.SAGA_GET_CUSTOMERS}),
         switchView: (component, payload) => dispatch({type:actionTypes.SWITCH_VIEW, component:component, payload:payload}),
+        getChinaGeo:()=>dispatch({type:actionTypes.SAGA_GET_CHINA_GEO}),
         getAllUsers: () => dispatch({type:actionTypes.SAGA_GET_ALL_USERS}),
         popUp: (status, message, action) => dispatch({type:actionTypes.POP_UP, message:message, status:status, action:action}),
     };
