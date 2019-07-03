@@ -44,7 +44,6 @@ class AdminCustomer extends Component{
                 label: '姓名',
                 field: 'name',
                 sort: 'asc',
-
             },
             {
                 label: '电话',
@@ -60,6 +59,10 @@ class AdminCustomer extends Component{
                 label: '签证到期日',
                 field: 'visa_due',
                 sort: 'asc',
+            },
+            {
+                label: '上次更新时间',
+                field: 'update_time',
             },
             {
                 label: '规划师',
@@ -114,6 +117,7 @@ class AdminCustomer extends Component{
                             phone: customer[index].phone!=null?customer[index].phone:"",
                             passport_due: passport_due,
                             visa_due: visa_due,
+                            update_time:customer[index].update_time,
                             created_by: user?user.name:"",
                             clickEvent: this.handleRedirect.bind(this,"/customer/detail",index)
                         }
@@ -151,7 +155,6 @@ class AdminCustomer extends Component{
                                 entries={10}
                             />:null
                         }
-
                     </div>
                 </div>
             </div>

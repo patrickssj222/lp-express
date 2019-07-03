@@ -304,12 +304,12 @@ class AddCustomer extends Component{
                         <h3>详细地址</h3>
                     </div>
                     <div className={"section-body"}>
-                        <table className={"business-detail-table"}>
+                        <table className={"business-detail-table justify-auto"}>
                             <thead/>
                             <tbody>
                             <tr>
                                 <td>
-                                    <Input label={"中国现居地址："}
+                                    <Input label={"中国现居城市："}
                                            name={"city"}
                                            value={this.state.china_geo.city}
                                            type={"text"}
@@ -317,7 +317,7 @@ class AddCustomer extends Component{
                                     />
                                 </td>
                                 <td>
-                                    <Input label={""}
+                                    <Input label={"省份"}
                                            value={province_value}
                                            type={"text"}
                                            disabled={true}
@@ -326,10 +326,9 @@ class AddCustomer extends Component{
                                 </td>
 
                                 <td>
-                                    <Input label={""}
+                                    <Input label={"区域"}
                                            value={region_value}
                                            type={"text"}
-                                           disabled={true}
                                            handleChange={this.handleCityChange}
                                     />
                                 </td>
@@ -431,6 +430,7 @@ class AddCustomer extends Component{
                                            type={"text"}
                                            disabled={this.state.visa_type==="加拿大移民"||this.state.visa_type==="加拿大公民"||this.state.visa_type==="加拿大难民"||this.state.visa_type==="首次签证"}
                                            handleChange={this.handleChange}
+                                           disabled={this.state.detail.visa_type==="加拿大移民"||this.state.detail.visa_type==="加拿大公民"||this.state.detail.visa_type==="加拿大难民"||this.state.detail.visa_type==="首次签证"}
                                     />
                                 </td>
                                 <td>
@@ -447,6 +447,7 @@ class AddCustomer extends Component{
                                         ]}
                                         disabled={this.state.visa_type==="加拿大移民"||this.state.visa_type==="加拿大公民"||this.state.visa_type==="加拿大难民"||this.state.visa_type==="首次签证"}
                                         placeholder={"YYYY-MM-DD"}
+                                        disabled={this.state.detail.visa_type==="加拿大移民"||this.state.detail.visa_type==="加拿大公民"||this.state.detail.visa_type==="加拿大难民"||this.state.detail.visa_type==="首次签证"}
                                         handleChange={this.handleSpecialChange}
                                     />
                                 </td>

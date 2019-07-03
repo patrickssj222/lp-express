@@ -42,7 +42,7 @@ class Navigation extends Component {
                     <div className="sidebar-submenu">
                         <ul>
                             <li>
-                                <Link to={'/customer'}>客户列表</Link>
+                                <Link to={'/customer'}>私人客户列表</Link>
                             </li>
                             <li>
                                 <Link to={'/all-customer'}>公司客户列表</Link>

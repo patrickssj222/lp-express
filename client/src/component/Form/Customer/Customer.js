@@ -4,6 +4,7 @@ import * as actionTypes from '../../../store/action';
 import { MDBDataTable } from "mdbreact";
 import "../Form.css";
 import {Link, withRouter} from "react-router-dom";
+import CustomFormatInput from "./AddCustomer";
 class Customer extends Component{
     constructor(props){
         super(props);
@@ -12,6 +13,9 @@ class Customer extends Component{
     componentWillMount() {
         this.props.getCustomers();
         this.props.getAllUsers();
+        if(this.props.china_geo==null){
+            this.props.getChinaGeo();
+        }
     }
 
     handleRedirect(path, index){
@@ -43,23 +47,22 @@ class Customer extends Component{
             {
                 label: '姓名',
                 field: 'name',
-                sort: 'asc',
-
             },
             {
                 label: '电话',
                 field: 'phone',
-                sort: 'asc',
             },
             {
                 label: '护照到期日',
                 field: 'passport_due',
-                sort: 'asc',
             },
             {
                 label: '签证到期日',
                 field: 'visa_due',
-                sort: 'asc',
+            },
+            {
+                label: '上次更新时间',
+                field: 'update_time',
             },
         ];
         let rows = null;
@@ -108,6 +111,7 @@ class Customer extends Component{
                         phone: customer[index].phone!=null?customer[index].phone:"",
                         passport_due: passport_due,
                         visa_due: visa_due,
+                        update_time:customer[index].update_time,
                         clickEvent: this.handleRedirect.bind(this,"/customer/detail",index)
                     })
                 }
@@ -141,6 +145,7 @@ class Customer extends Component{
                                 hover
                                 data={data}
                                 entries={10}
+                                order={['update_time','desc']}
                             />:null
                         }
 
@@ -154,7 +159,8 @@ const mapStateToProps = state => {
     return{
         user:state.user,
         customer: state.customer,
-        users_list:state.users_list
+        users_list:state.users_list,
+        china_geo:state.china_geo,
     };
 };
 
@@ -162,6 +168,7 @@ const mapDispatchToProps = dispatch =>{
     return{
         getCustomers: () => dispatch({type:actionTypes.SAGA_GET_CUSTOMERS}),
         switchView: (component, payload) => dispatch({type:actionTypes.SWITCH_VIEW, component:component, payload:payload}),
+        getChinaGeo:()=>dispatch({type:actionTypes.SAGA_GET_CHINA_GEO}),
         getAllUsers: () => dispatch({type:actionTypes.SAGA_GET_ALL_USERS}),
         popUp: (status, message, action) => dispatch({type:actionTypes.POP_UP, message:message, status:status, action:action}),
     };

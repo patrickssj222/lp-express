@@ -81,6 +81,19 @@ class CustomerDetail extends Component{
         if(this.props.china_geo==null){
             this.props.getChinaGeo();
         }
+
+        if(this.props.customer){
+            const city_info = this.findNested(this.props.china_geo,"id",this.props.customer[this.props.location.state.index].birth_city_id);
+            if(city_info){
+                this.setState({
+                    birth_geo:{
+                        city:city_info.city,
+                        province:city_info.province,
+                        region:city_info.region
+                    }
+                });
+            }
+        }
     }
 
     handleChange(e){
@@ -185,7 +198,6 @@ class CustomerDetail extends Component{
     handleBirthCityChange(e){
         const { name, value } = e.target;
         const city_info = this.findNested(this.props.china_geo,"city",value);
-        console.log("China geo", this.props.china_geo);
         this.setState((prevState) => ({
             ...prevState,
             detail:{
@@ -216,6 +228,7 @@ class CustomerDetail extends Component{
         }
     };
     render(){
+        console.log("current state", this.state);
         let customer = null;
         let data = null;
         let region_value = "";
@@ -387,7 +400,7 @@ class CustomerDetail extends Component{
                                            name={"city"}
                                            value={this.state.china_geo.city}
                                            type={"text"}
-                                           handleChange={this.handleCityChange}
+                                           handleChange={this.handleBirthCityChange}
                                     />
                                 </td>
                                 <td>
@@ -395,7 +408,7 @@ class CustomerDetail extends Component{
                                            value={province_value}
                                            type={"text"}
                                            disabled={true}
-                                           handleChange={this.handleCityChange}
+                                           handleChange={this.handleBirthCityChange}
                                     />
                                 </td>
 
@@ -404,7 +417,7 @@ class CustomerDetail extends Component{
                                            value={region_value}
                                            type={"text"}
                                            disabled={true}
-                                           handleChange={this.handleCityChange}
+                                           handleChange={this.handleBirthCityChange}
                                     />
                                 </td>
                             </tr>
@@ -502,7 +515,7 @@ class CustomerDetail extends Component{
                                            name={"uci_number"}
                                            value={this.state.detail.uci_number}
                                            type={"text"}
-                                           disabled={this.state.visa_type==="加拿大移民"||this.state.visa_type==="加拿大公民"||this.state.visa_type==="加拿大难民"||this.state.visa_type==="首次签证"}
+                                           disabled={this.state.detail.visa_type==="加拿大移民"||this.state.detail.visa_type==="加拿大公民"||this.state.detail.visa_type==="加拿大难民"||this.state.detail.visa_type==="首次签证"}
                                            handleChange={this.handleChange}
                                     />
                                 </td>
@@ -518,8 +531,8 @@ class CustomerDetail extends Component{
                                             { exactly: "-" },
                                             {char: /\d/, repeat:2},
                                         ]}
-                                        disabled={this.state.visa_type==="加拿大移民"||this.state.visa_type==="加拿大公民"||this.state.visa_type==="加拿大难民"||this.state.visa_type==="首次签证"}
                                         placeholder={"YYYY-MM-DD"}
+                                        disabled={this.state.detail.visa_type==="加拿大移民"||this.state.detail.visa_type==="加拿大公民"||this.state.detail.visa_type==="加拿大难民"||this.state.detail.visa_type==="首次签证"}
                                         handleChange={this.handleSpecialChange}
                                     />
                                 </td>
