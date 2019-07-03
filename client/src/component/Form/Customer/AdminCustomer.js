@@ -4,7 +4,7 @@ import * as actionTypes from '../../../store/action';
 import { MDBDataTable } from "mdbreact";
 import "../Form.css";
 import {Link, withRouter} from "react-router-dom";
-class Customer extends Component{
+class AdminCustomer extends Component{
     constructor(props){
         super(props);
     }
@@ -61,6 +61,11 @@ class Customer extends Component{
                 field: 'visa_due',
                 sort: 'asc',
             },
+            {
+                label: '规划师',
+                field: 'created_by',
+                sort: 'asc',
+            },
         ];
         let rows = null;
         if(this.props.customer!=null){
@@ -102,14 +107,17 @@ class Customer extends Component{
                         passport_due=customer[index].passport_due;
                     }
                 }
-                if(this.props.user.id === customer[index].created_by){
+                if(this.props.users_list){
+                    const user = this.findNested(this.props.users_list, "id", customer[index].created_by);
                     rows.push({
-                        name:customer[index].name,
-                        phone: customer[index].phone!=null?customer[index].phone:"",
-                        passport_due: passport_due,
-                        visa_due: visa_due,
-                        clickEvent: this.handleRedirect.bind(this,"/customer/detail",index)
-                    })
+                            name:customer[index].name,
+                            phone: customer[index].phone!=null?customer[index].phone:"",
+                            passport_due: passport_due,
+                            visa_due: visa_due,
+                            created_by: user?user.name:"",
+                            clickEvent: this.handleRedirect.bind(this,"/customer/detail",index)
+                        }
+                    )
                 }
             });
         }
@@ -166,4 +174,4 @@ const mapDispatchToProps = dispatch =>{
         popUp: (status, message, action) => dispatch({type:actionTypes.POP_UP, message:message, status:status, action:action}),
     };
 };
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Customer));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(AdminCustomer));

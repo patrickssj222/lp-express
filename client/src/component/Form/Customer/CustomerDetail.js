@@ -51,7 +51,6 @@ class CustomerDetail extends Component{
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleCityChange = this.handleCityChange.bind(this);
         this.handleBirthCityChange = this.handleBirthCityChange.bind(this);
-        this.handleContactChange = this.handleContactChange.bind(this);
         this.handleSpecialChange = this.handleSpecialChange.bind(this);
     }
     componentWillMount() {
@@ -111,37 +110,6 @@ class CustomerDetail extends Component{
         this.props.updateView("AddBusiness", {customer_id:this.state.detail.id, customer_name:this.state.detail.name, index:this.props.payload.index});
     }
 
-    handleContactChange(e, index){
-        const { name, value } = e.target;
-        this.setState((prevState) => {
-            let new_contacts = prevState.detail.emergency_contact;
-            new_contacts[index][name] = value;
-            return ({
-                ...prevState,
-                detail:{
-                    ...prevState.detail,
-                    emergency_contact:new_contacts
-                }
-            })
-        });
-    }
-    handleNewContact(e){
-        this.setState((prevState) => ({
-            ...prevState,
-            detail:{
-                ...prevState.detail,
-                emergency_contact:[
-                    ...prevState.detail.emergency_contact,
-                    {
-                        name:"",
-                        relationship:"",
-                        phone:""
-                    }
-                ]
-            }
-        }));
-    }
-
     initCity(){
         try{
             axios({
@@ -157,7 +125,34 @@ class CustomerDetail extends Component{
                         ...prevState,
                         china_geo:{
                             ...prevState.china_geo,
-                            city:result[0].name
+                            city:result[0].city
+                        }
+                    }));
+                }
+                else{
+                }
+
+            });
+
+        }
+        catch(e){
+            console.log(e);
+        }
+        try{
+            axios({
+                method: 'POST',
+                url: '/api/customers/city/china',
+                data:{
+                    id:this.state.detail.birth_city_id
+                }
+            }).then(response=>{
+                if(response.data.status>=200 && response.data.status<300){
+                    const result = response.data.response;
+                    this.setState((prevState) => ({
+                        ...prevState,
+                        birth_geo:{
+                            ...prevState.china_geo,
+                            city:result[0].city
                         }
                     }));
                 }
@@ -173,7 +168,7 @@ class CustomerDetail extends Component{
     }
     handleCityChange(e){
         const { name, value } = e.target;
-        const city_info = this.findNested(this.props.china_geo,"name",value);
+        const city_info = this.findNested(this.props.china_geo,"city",value);
         this.setState((prevState) => ({
             ...prevState,
             detail:{
@@ -189,7 +184,8 @@ class CustomerDetail extends Component{
 
     handleBirthCityChange(e){
         const { name, value } = e.target;
-        const city_info = this.findNested(this.props.china_geo,"name",value);
+        const city_info = this.findNested(this.props.china_geo,"city",value);
+        console.log("China geo", this.props.china_geo);
         this.setState((prevState) => ({
             ...prevState,
             detail:{
@@ -271,7 +267,7 @@ class CustomerDetail extends Component{
                 <div className={"section-wrapper"}>
                     <div className={"section-header"}>
                         <h3>基础信息</h3>
-                        <button onClick={this.props.optionPopUp.bind(this, ["删除方式？"],[{name:"彻底删除",handler:this.props.forceDeleteCustomer.bind(this,customer)}])} className={"btn btn-danger"}>删除</button>
+                        <button onClick={this.props.optionPopUp.bind(this, ["删除方式？"],[{name:"彻底删除",handler:this.props.forceDeleteCustomer.bind(this,this.props.customer[this.props.location.state.index])}])} className={"btn btn-danger"}>删除</button>
                     </div>
                     <div className={"section-body"}>
                         <table className={"business-detail-table"}>
@@ -296,10 +292,9 @@ class CustomerDetail extends Component{
                                 </td>
                                 <td>
                                     <CustomFormatInput
-                                        className={"form-control"}
                                         label={"出生日期："}
                                         name={"dob"}
-                                        value={this.state.detail.dob}
+                                        value={this.state.detail.dob.replace(/\//g, '-')}
                                         format={[
                                             {char: /\d/, repeat:4},
                                             { exactly: "-" },
@@ -347,45 +342,6 @@ class CustomerDetail extends Component{
                                     />
                                 </td>
                             </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div className={"section-wrapper"}>
-                    <div className={"section-header"}>
-                        <h3>详细地址</h3>
-                    </div>
-                    <div className={"section-body"}>
-                        <table className={"business-detail-table"}>
-                            <thead/>
-                            <tbody>
-                            <tr>
-                                <td>
-                                    <Input label={"中国城市："}
-                                           name={"city"}
-                                           value={this.state.china_geo.city}
-                                           type={"text"}
-                                           handleChange={this.handleCityChange}
-                                    />
-                                </td>
-                                <td>
-                                    <Input label={"中国省份："}
-                                           value={province_value}
-                                           type={"text"}
-                                           disabled={true}
-                                           handleChange={this.handleCityChange}
-                                    />
-                                </td>
-
-                                <td>
-                                    <Input label={"中国区域："}
-                                           value={region_value}
-                                           type={"text"}
-                                           disabled={true}
-                                           handleChange={this.handleCityChange}
-                                    />
-                                </td>
-                            </tr>
                             <tr>
                                 <td>
                                     <Input label={"出生城市："}
@@ -419,6 +375,63 @@ class CustomerDetail extends Component{
                 </div>
                 <div className={"section-wrapper"}>
                     <div className={"section-header"}>
+                        <h3>详细地址</h3>
+                    </div>
+                    <div className={"section-body"}>
+                        <table className={"business-detail-table"}>
+                            <thead/>
+                            <tbody>
+                            <tr>
+                                <td>
+                                    <Input label={"中国现居城市："}
+                                           name={"city"}
+                                           value={this.state.china_geo.city}
+                                           type={"text"}
+                                           handleChange={this.handleCityChange}
+                                    />
+                                </td>
+                                <td>
+                                    <Input label={"省份"}
+                                           value={province_value}
+                                           type={"text"}
+                                           disabled={true}
+                                           handleChange={this.handleCityChange}
+                                    />
+                                </td>
+
+                                <td>
+                                    <Input label={"区域"}
+                                           value={region_value}
+                                           type={"text"}
+                                           disabled={true}
+                                           handleChange={this.handleCityChange}
+                                    />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <Input label={"加拿大现居地址："}
+                                           name={"canada_address"}
+                                           value={this.state.detail.canada_address}
+                                           type={"text"}
+                                           handleChange={this.handleChange}
+                                    />
+                                </td>
+                                <td>
+                                    <Input label={"加拿大邮编："}
+                                           name={"postal_code"}
+                                           value={this.state.detail.postal_code}
+                                           type={"text"}
+                                           handleChange={this.handleChange}
+                                    />
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div className={"section-wrapper"}>
+                    <div className={"section-header"}>
                         <h3>身份与证件</h3>
                     </div>
                     <div className={"section-body"}>
@@ -440,7 +453,8 @@ class CustomerDetail extends Component{
                                             { exactly: "-" },
                                             {char: /\d/, repeat:4},
                                             { exactly: "-" },
-                                            {char: /\d/, repeat:4},
+                                            {char: /\d/, repeat:3},
+                                            {char: /\d|X/, repeat:1},
                                         ]}
                                         placeholder={"XXX-XXX-XXXX-XXXX-XXXX"}
                                         handleChange={this.handleSpecialChange}
@@ -451,7 +465,7 @@ class CustomerDetail extends Component{
                                               name={"visa_type"}
                                               value={this.state.detail.visa_type}
                                               handleChange={this.handleChange}
-                                              options={["加拿大学签","加拿大旅游签","加拿大工签","加拿大移民","加拿大公民","加拿大难民","无身份信息"]}
+                                              options={["加拿大学签","加拿大旅游签","加拿大工签","加拿大移民","加拿大公民","加拿大难民","首次签证"]}
                                     />
                                 </td>
                             </tr>
@@ -469,7 +483,7 @@ class CustomerDetail extends Component{
                                     <CustomFormatInput
                                         label={"护照到期日："}
                                         name={"passport_due"}
-                                        value={this.state.detail.passport_due}
+                                        value={this.state.detail.passport_due.replace(/\//g, '-')}
                                         format={[
                                             {char: /\d/, repeat:4},
                                             { exactly: "-" },
@@ -488,15 +502,15 @@ class CustomerDetail extends Component{
                                            name={"uci_number"}
                                            value={this.state.detail.uci_number}
                                            type={"text"}
+                                           disabled={this.state.visa_type==="加拿大移民"||this.state.visa_type==="加拿大公民"||this.state.visa_type==="加拿大难民"||this.state.visa_type==="首次签证"}
                                            handleChange={this.handleChange}
                                     />
-
                                 </td>
                                 <td>
                                     <CustomFormatInput
                                         label={"签证到期日："}
                                         name={"visa_due"}
-                                        value={this.state.detail.visa_due}
+                                        value={this.state.detail.visa_due.replace(/\//g, '-')}
                                         format={[
                                             {char: /\d/, repeat:4},
                                             { exactly: "-" },
@@ -504,6 +518,7 @@ class CustomerDetail extends Component{
                                             { exactly: "-" },
                                             {char: /\d/, repeat:2},
                                         ]}
+                                        disabled={this.state.visa_type==="加拿大移民"||this.state.visa_type==="加拿大公民"||this.state.visa_type==="加拿大难民"||this.state.visa_type==="首次签证"}
                                         placeholder={"YYYY-MM-DD"}
                                         handleChange={this.handleSpecialChange}
                                     />
@@ -526,7 +541,7 @@ class CustomerDetail extends Component{
                                     <CustomFormatInput
                                         label={"第一次登录时间："}
                                         name={"first_landing_date"}
-                                        value={this.state.detail.first_landing_date}
+                                        value={this.state.detail.first_landing_date.replace(/\//g, '-')}
                                         format={[
                                             {char: /\d/, repeat:4},
                                             { exactly: "-" },
@@ -551,54 +566,6 @@ class CustomerDetail extends Component{
                         </table>
                     </div>
                 </div>
-                {/*<div className={"section-wrapper"}>
-                    <div className={"section-header"}>
-                        <h3>紧急联系人信息</h3>
-                        <button className={"btn btn-primary"} onClick={this.handleNewContact.bind(this)}>添加联系人</button>
-                    </div>
-                    <div className={"section-body"}>
-                        <table className={"business-detail-table"}>
-                            <thead/>
-                            <tbody>
-                            {
-                                this.state.detail.emergency_contact?this.state.detail.emergency_contact.map((contact, index)=>{
-                                    return (
-                                        <tr key={index}>
-                                            <td>
-                                                <Input
-                                                    label={"姓名"}
-                                                    name={"name"}
-                                                    value={this.state.detail.emergency_contact[index].name}
-                                                    type={"text"}
-                                                    handleChange={(event)=>this.handleContactChange(event,index)}
-                                                />
-                                            </td>
-                                            <td>
-                                                <Input
-                                                    label={"关系"}
-                                                    name={"relationship"}
-                                                    value={this.state.detail.emergency_contact[index].relationship}
-                                                    type={"text"}
-                                                    handleChange={(event)=>this.handleContactChange(event,index)}
-                                                />
-                                            </td>
-                                            <td>
-                                                <Input
-                                                    label={"电话"}
-                                                    name={"phone"}
-                                                    value={this.state.detail.emergency_contact[index].phone}
-                                                    type={"tel"}
-                                                    handleChange={(event)=>this.handleContactChange(event,index)}
-                                                />
-                                            </td>
-                                        </tr>
-                                    )
-                                }):null
-                            }
-                            </tbody>
-                        </table>
-                    </div>
-                </div>*/}
                 <div className={"footer"}>
                     <div className={"form-confirmation button-group"}>
                         <small>完成值: {Math.round(this.state.total_completion/this.state.max_total*100)}%</small>

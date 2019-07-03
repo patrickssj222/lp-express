@@ -5,8 +5,6 @@ import './CustomerDetail.css';
 import Input from "../Input/Input";
 import connect from "react-redux/es/connect/connect";
 import * as actionTypes from "../../../store/action";
-import axios from "axios";
-import {MDBDataTable} from "mdbreact";
 import PhoneInput from "../Input/PhoneInput";
 import CustomFormatInput from "../Input/CustomFormatInput";
 class AddCustomer extends Component{
@@ -25,12 +23,15 @@ class AddCustomer extends Component{
                 passport_due:"",
                 passport_number:"",
                 visa_due:"",
-                visa_type:"无身份信息",
+                visa_type:"首次签证",
                 first_landing_date:"",
                 first_landing_location:"",
                 used_name:"无",
                 emergency_contact:[],
                 city_id:"",
+                canada_address:"",
+                postal_code:"",
+                birth_city_id:null
             },
             china_geo:{
                 city:"",
@@ -106,7 +107,7 @@ class AddCustomer extends Component{
 
     handleCityChange(e){
         const { name, value } = e.target;
-        const city_info = this.findNested(this.props.china_geo,"name",value);
+        const city_info = this.findNested(this.props.china_geo,"city",value);
         this.setState((prevState) => ({
             ...prevState,
             detail:{
@@ -119,9 +120,10 @@ class AddCustomer extends Component{
             }
         }));
     }
+
     handleBirthCityChange(e){
         const { name, value } = e.target;
-        const city_info = this.findNested(this.props.china_geo,"name",value);
+        const city_info = this.findNested(this.props.china_geo,"city",value);
         this.setState((prevState) => ({
             ...prevState,
             detail:{
@@ -266,6 +268,33 @@ class AddCustomer extends Component{
                                         />
                                     </td>
                                 </tr>
+                                <tr>
+                                    <td>
+                                        <Input label={"出生城市："}
+                                               name={"city"}
+                                               value={this.state.birth_geo.city}
+                                               type={"text"}
+                                               handleChange={this.handleBirthCityChange}
+                                        />
+                                    </td>
+                                    <td>
+                                        <Input label={"出生省份："}
+                                               value={birth_province_value}
+                                               type={"text"}
+                                               disabled={true}
+                                               handleChange={this.handleBirthCityChange}
+                                        />
+                                    </td>
+
+                                    <td>
+                                        <Input label={"出生区域："}
+                                               value={birth_region_value}
+                                               type={"text"}
+                                               disabled={true}
+                                               handleChange={this.handleBirthCityChange}
+                                        />
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -280,7 +309,7 @@ class AddCustomer extends Component{
                             <tbody>
                             <tr>
                                 <td>
-                                    <Input label={"中国城市："}
+                                    <Input label={"中国现居地址："}
                                            name={"city"}
                                            value={this.state.china_geo.city}
                                            type={"text"}
@@ -288,7 +317,7 @@ class AddCustomer extends Component{
                                     />
                                 </td>
                                 <td>
-                                    <Input label={"中国省份："}
+                                    <Input label={""}
                                            value={province_value}
                                            type={"text"}
                                            disabled={true}
@@ -297,7 +326,7 @@ class AddCustomer extends Component{
                                 </td>
 
                                 <td>
-                                    <Input label={"中国区域："}
+                                    <Input label={""}
                                            value={region_value}
                                            type={"text"}
                                            disabled={true}
@@ -307,31 +336,23 @@ class AddCustomer extends Component{
                             </tr>
                             <tr>
                                 <td>
-                                    <Input label={"出生城市："}
-                                           name={"city"}
-                                           value={this.state.birth_geo.city}
+                                    <Input label={"加拿大现居地址："}
+                                           name={"canada_address"}
+                                           value={this.state.detail.canada_address}
                                            type={"text"}
-                                           handleChange={this.handleBirthCityChange}
+                                           handleChange={this.handleChange}
                                     />
                                 </td>
                                 <td>
-                                    <Input label={"出生省份："}
-                                           value={birth_province_value}
+                                    <Input label={"加拿大邮编："}
+                                           name={"postal_code"}
+                                           value={this.state.detail.postal_code}
                                            type={"text"}
-                                           disabled={true}
-                                           handleChange={this.handleBirthCityChange}
-                                    />
-                                </td>
-
-                                <td>
-                                    <Input label={"出生区域："}
-                                           value={birth_region_value}
-                                           type={"text"}
-                                           disabled={true}
-                                           handleChange={this.handleBirthCityChange}
+                                           handleChange={this.handleChange}
                                     />
                                 </td>
                             </tr>
+
                             </tbody>
                         </table>
                     </div>
@@ -359,7 +380,8 @@ class AddCustomer extends Component{
                                             { exactly: "-" },
                                             {char: /\d/, repeat:4},
                                             { exactly: "-" },
-                                            {char: /\d/, repeat:4},
+                                            {char: /\d/, repeat:3},
+                                            {char: /\d|X/, repeat:1},
                                         ]}
                                         placeholder={"XXX-XXX-XXXX-XXXX-XXXX"}
                                         handleChange={this.handleSpecialChange}
@@ -370,7 +392,7 @@ class AddCustomer extends Component{
                                               name={"visa_type"}
                                               value={this.state.detail.visa_type}
                                               handleChange={this.handleChange}
-                                              options={["加拿大学签","加拿大旅游签","加拿大工签","加拿大移民","加拿大公民","加拿大难民","无身份信息"]}
+                                              options={["加拿大学签","加拿大旅游签","加拿大工签","加拿大移民","加拿大公民","加拿大难民","首次签证"]}
                                     />
                                 </td>
                             </tr>
@@ -407,6 +429,7 @@ class AddCustomer extends Component{
                                            name={"uci_number"}
                                            value={this.state.detail.uci_number}
                                            type={"text"}
+                                           disabled={this.state.visa_type==="加拿大移民"||this.state.visa_type==="加拿大公民"||this.state.visa_type==="加拿大难民"||this.state.visa_type==="首次签证"}
                                            handleChange={this.handleChange}
                                     />
                                 </td>
@@ -422,6 +445,7 @@ class AddCustomer extends Component{
                                             { exactly: "-" },
                                             {char: /\d/, repeat:2},
                                         ]}
+                                        disabled={this.state.visa_type==="加拿大移民"||this.state.visa_type==="加拿大公民"||this.state.visa_type==="加拿大难民"||this.state.visa_type==="首次签证"}
                                         placeholder={"YYYY-MM-DD"}
                                         handleChange={this.handleSpecialChange}
                                     />
@@ -537,7 +561,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch =>{
     return{
         addCustomer:(customer)=>dispatch({type:actionTypes.SAGA_ADD_CUSTOMERS,customer: customer}),
-        getChinaGeo:()=>dispatch({type:actionTypes.SAGA_GET_CHINA_GEO})
+        getChinaGeo:()=>dispatch({type:actionTypes.SAGA_GET_CHINA_GEO}),
     }
 };
 export default connect(mapStateToProps, mapDispatchToProps)(AddCustomer);

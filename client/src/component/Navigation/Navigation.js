@@ -44,6 +44,9 @@ class Navigation extends Component {
                             <li>
                                 <Link to={'/customer'}>客户列表</Link>
                             </li>
+                            <li>
+                                <Link to={'/all-customer'}>公司客户列表</Link>
+                            </li>
                         </ul>
                     </div>
                 </li>
