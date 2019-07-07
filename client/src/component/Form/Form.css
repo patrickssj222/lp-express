@@ -149,3 +149,8 @@
 .justify-auto .input-group{
     justify-content: normal !important;
 }
+
+.input-group input:disabled{
+    background-color: #e9ecef;
+    opacity: 1;
+}

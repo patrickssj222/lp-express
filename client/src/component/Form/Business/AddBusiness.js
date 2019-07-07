@@ -39,6 +39,7 @@ class addBusiness extends Component{
         this.handleOtherFeeChange = this.handleOtherFeeChange.bind(this);
     }
     componentWillMount() {
+        console.log("add business props", this.props);
         this.props.getPriceConstants();
     }
     componentWillReceiveProps(nextProps, nextContext) {

@@ -47,7 +47,6 @@ const reducer = (store = initialState, action) => {
                 },
             };
         case actionTypes.POP_UP:
-            console.log("POPUP",action);
             return{
                 ...store,
                 popUp:{

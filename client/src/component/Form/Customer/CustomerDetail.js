@@ -9,7 +9,7 @@ import axios from "axios";
 import {MDBDataTable} from "mdbreact";
 import CustomFormatInput from "../Input/CustomFormatInput";
 import PhoneInput from "../Input/PhoneInput";
-import { Redirect } from "react-router-dom";
+import { Redirect, withRouter } from "react-router-dom";
 
 
 class CustomerDetail extends Component{
@@ -54,6 +54,9 @@ class CustomerDetail extends Component{
         this.handleSpecialChange = this.handleSpecialChange.bind(this);
     }
     componentWillMount() {
+        if(!this.props.china_geo){
+            this.props.getChinaGeo();
+        }
         try{
             this.setState({
                 detail:this.props.location.state?this.props.customer[this.props.location.state.index]:null,
@@ -78,9 +81,7 @@ class CustomerDetail extends Component{
         }
         catch(e){
         }
-        if(this.props.china_geo==null){
-            this.props.getChinaGeo();
-        }
+
 
         if(this.props.customer){
             const city_info = this.findNested(this.props.china_geo,"id",this.props.customer[this.props.location.state.index].birth_city_id);
@@ -120,64 +121,26 @@ class CustomerDetail extends Component{
         this.props.updateCustomer(this.state.detail);
     }
     handleNewBusiness(e){
-        this.props.updateView("AddBusiness", {customer_id:this.state.detail.id, customer_name:this.state.detail.name, index:this.props.payload.index});
+        this.props.history.push({
+            pathname: "/business/add",
+            state:{customer_id:this.state.detail.id, customer_name:this.state.detail.name, index:this.props.payload.index}
+        });
     }
 
     initCity(){
-        try{
-            axios({
-                method: 'POST',
-                url: '/api/customers/city/china',
-                data:{
-                    id:this.state.detail.city_id
-                }
-            }).then(response=>{
-                if(response.data.status>=200 && response.data.status<300){
-                    const result = response.data.response;
-                    this.setState((prevState) => ({
-                        ...prevState,
-                        china_geo:{
-                            ...prevState.china_geo,
-                            city:result[0].city
-                        }
-                    }));
-                }
-                else{
-                }
-
-            });
-
-        }
-        catch(e){
-            console.log(e);
-        }
-        try{
-            axios({
-                method: 'POST',
-                url: '/api/customers/city/china',
-                data:{
-                    id:this.state.detail.birth_city_id
-                }
-            }).then(response=>{
-                if(response.data.status>=200 && response.data.status<300){
-                    const result = response.data.response;
-                    this.setState((prevState) => ({
-                        ...prevState,
-                        birth_geo:{
-                            ...prevState.china_geo,
-                            city:result[0].city
-                        }
-                    }));
-                }
-                else{
-                }
-
-            });
-
-        }
-        catch(e){
-            console.log(e);
-        }
+        const city = this.findNested(this.props.china_geo,"id",this.state.detail.city_id);
+        const birth_city = this.findNested(this.props.china_geo,"id",this.state.detail.birth_city_id);
+        this.setState((prevState) => ({
+            ...prevState,
+            china_geo:{
+                ...prevState.china_geo,
+                city:city.city
+            },
+            birth_geo:{
+                ...prevState.birth_geo,
+                city:birth_city.city
+            }
+        }));
     }
     handleCityChange(e){
         const { name, value } = e.target;
@@ -228,7 +191,6 @@ class CustomerDetail extends Component{
         }
     };
     render(){
-        console.log("current state", this.state);
         let customer = null;
         let data = null;
         let region_value = "";
@@ -400,7 +362,7 @@ class CustomerDetail extends Component{
                                            name={"city"}
                                            value={this.state.china_geo.city}
                                            type={"text"}
-                                           handleChange={this.handleBirthCityChange}
+                                           handleChange={this.handleCityChange}
                                     />
                                 </td>
                                 <td>
@@ -408,7 +370,7 @@ class CustomerDetail extends Component{
                                            value={province_value}
                                            type={"text"}
                                            disabled={true}
-                                           handleChange={this.handleBirthCityChange}
+                                           handleChange={this.handleCityChange}
                                     />
                                 </td>
 
@@ -417,7 +379,7 @@ class CustomerDetail extends Component{
                                            value={region_value}
                                            type={"text"}
                                            disabled={true}
-                                           handleChange={this.handleBirthCityChange}
+                                           handleChange={this.handleCityChange}
                                     />
                                 </td>
                             </tr>

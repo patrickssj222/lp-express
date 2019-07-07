@@ -11,9 +11,11 @@ class Customer extends Component{
     }
 
     componentWillMount() {
-        this.props.getCustomers();
+        if(!this.props.customer){
+            this.props.getCustomers();
+        }
         this.props.getAllUsers();
-        if(this.props.china_geo==null){
+        if(!this.props.china_geo){
             this.props.getChinaGeo();
         }
     }
