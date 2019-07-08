@@ -335,7 +335,6 @@ function* addBusiness(action){
             data:action.detail
         });
         if(response.data.status>=200 && response.data.status<300){
-            yield put({type:actionTypes.SWITCH_VIEW, component:"CustomerDetail", payload:{index:action.customer_id}});
             yield put({type:actionTypes.REMOVE_POP_UP});
         }
         else{

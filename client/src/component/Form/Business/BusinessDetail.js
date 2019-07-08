@@ -34,7 +34,7 @@ class BusinessDetail extends Component{
         this.handleAddPayment = this.handleAddPayment.bind(this);
     }
     componentWillMount() {
-        this.props.getBusinessDetail(this.props.payload.id);
+        this.props.getBusinessDetail(this.props.location.state.id);
     }
     componentWillReceiveProps(nextProps, nextContext) {
         const detail = JSON.parse(JSON.stringify(nextProps.business_detail));

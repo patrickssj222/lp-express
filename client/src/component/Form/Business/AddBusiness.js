@@ -6,6 +6,7 @@ import Input from "../Input/Input";
 import connect from "react-redux/es/connect/connect";
 import * as actionTypes from "../../../store/action";
 import findObject from "../../../utility/findObject";
+import { withRouter } from 'react-router-dom';
 
 
 class addBusiness extends Component{
@@ -40,19 +41,23 @@ class addBusiness extends Component{
     }
     componentWillMount() {
         console.log("add business props", this.props);
-        this.props.getPriceConstants();
-    }
-    componentWillReceiveProps(nextProps, nextContext) {
-        const customer = findObject(this.props.customer,"id",nextProps.payload.customer_id)[0];
-        console.log("found customer",customer);
-        this.setState({
-            detail:{
-                ...this.state.detail,
-                customer_id: nextProps.payload.customer_id,
-                customer_name:customer.name
-            },
-            customer:customer
-        })
+        console.log("add business location", this.props.location.state);
+        try{
+            this.setState({
+                detail:{
+                    ...this.state.detail,
+                    customer_id: this.props.location.state.customer_id,
+                    customer_name:this.props.location.state.customer_name
+                },
+            })
+        }
+        catch{
+            this.props.history.push("/customer");
+        }
+        if(!this.props.constants.fee){
+            this.props.getPriceConstants();
+        }
+
     }
     handleServiceTypeChange(e){
         const { name, value } = e.target;
@@ -176,7 +181,11 @@ class addBusiness extends Component{
     }
     handleSubmit(e){
         console.log("Adding business: ", this.state.detail);
-        this.props.addNewBusiness(this.state.detail, this.props.payload.index);
+        this.props.addNewBusiness(this.state.detail);
+        this.props.history.push({
+            pathname: "/customer/detail",
+            state: { index: this.props.location.state.index}
+        })
     }
     render(){
         if(this.state.detail===null || this.props.constants.fee===null){
@@ -204,7 +213,7 @@ class addBusiness extends Component{
                 <div className={"section-wrapper"}>
                     <div className={"section-header"}>
                         <h3>业务信息</h3>
-                        <small>客户姓名:{this.state.customer?this.state.customer.name:"加载中..."}</small>
+                        <small>客户姓名:{this.props.location.state.customer_name}</small>
                     </div>
                     <div className={"section-body"}>
                         <table className={"business-detail-table"}>

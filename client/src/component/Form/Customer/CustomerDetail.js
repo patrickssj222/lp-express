@@ -65,7 +65,7 @@ class CustomerDetail extends Component{
                 method: 'POST',
                 url: '/api/customers/business',
                 data:{
-                    id:this.state.detail.id
+                    id:this.props.customer[this.props.location.state.index].id
                 }
             }).then(response=>{
                 if(response.data.status>=200 && response.data.status<300){
@@ -123,7 +123,7 @@ class CustomerDetail extends Component{
     handleNewBusiness(e){
         this.props.history.push({
             pathname: "/business/add",
-            state:{customer_id:this.state.detail.id, customer_name:this.state.detail.name, index:this.props.payload.index}
+            state:{customer_id:this.state.detail.id, customer_name:this.state.detail.name, index:this.props.location.state.index}
         });
     }
 
@@ -141,6 +141,13 @@ class CustomerDetail extends Component{
                 city:birth_city.city
             }
         }));
+    }
+
+    handleRedirect(path, id){
+        this.props.history.push({
+            pathname: path,
+            state:{id:id}
+        })
     }
     handleCityChange(e){
         const { name, value } = e.target;
@@ -224,8 +231,8 @@ class CustomerDetail extends Component{
                     return({
                         service_name:item.service_name,
                         progress:item.progress,
-                        wenan:item.wenan,/*
-                    amount:item.amount*/
+                        wenan:item.wenan,
+                        clickEvent: this.handleRedirect.bind(this,"/business/detail",item.id)
                     })
                 })
             }
