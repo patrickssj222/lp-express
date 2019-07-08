@@ -27,6 +27,7 @@ app.use(cors());
 //Database connection
 console.log(process.env.INSTANCE_CONNECTION_NAME);
 var db_config = {
+    connectionLimit: 5,
     user: process.env.SQL_USER,
     database: process.env.SQL_DATABASE,
     password: process.env.SQL_PASSWORD

@@ -61,7 +61,10 @@ class CustomerDetail extends Component{
             this.setState({
                 detail:this.props.location.state?this.props.customer[this.props.location.state.index]:null,
             });
-            axios({
+            if(this.props.china_geo!=null && this.state.china_geo.city === ""){
+                this.initCity();
+            }
+            /*axios({
                 method: 'POST',
                 url: '/api/customers/business',
                 data:{
@@ -76,7 +79,7 @@ class CustomerDetail extends Component{
                 }
                 else{
                 }
-            });
+            });*/
 
         }
         catch(e){
@@ -123,22 +126,23 @@ class CustomerDetail extends Component{
     handleNewBusiness(e){
         this.props.history.push({
             pathname: "/business/add",
-            state:{customer_id:this.state.detail.id, customer_name:this.state.detail.name, index:this.props.payload.index}
+            state:{customer_id:this.state.detail.id, customer_name:this.state.detail.name}
         });
     }
 
     initCity(){
         const city = this.findNested(this.props.china_geo,"id",this.state.detail.city_id);
         const birth_city = this.findNested(this.props.china_geo,"id",this.state.detail.birth_city_id);
+
         this.setState((prevState) => ({
             ...prevState,
             china_geo:{
                 ...prevState.china_geo,
-                city:city.city
+                city:city?city.city:""
             },
             birth_geo:{
                 ...prevState.birth_geo,
-                city:birth_city.city
+                city:birth_city?birth_city.city:""
             }
         }));
     }
@@ -199,9 +203,7 @@ class CustomerDetail extends Component{
         let birth_province_value = "";
         try{
             customer = this.props.customer[this.props.location.state.index];
-            if(this.props.china_geo!=null && this.state.china_geo.city === ""){
-                this.initCity();
-            }
+
             if(this.props.china_geo!=null && this.state.china_geo.city!==""){
                 const city_info = this.findNested(this.props.china_geo,"city",this.state.china_geo.city);
                 if(city_info){

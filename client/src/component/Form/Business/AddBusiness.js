@@ -43,6 +43,7 @@ class addBusiness extends Component{
         this.props.getPriceConstants();
     }
     componentWillReceiveProps(nextProps, nextContext) {
+        console.log("BUSINESS NEXT PROPS", nextProps);
         const customer = findObject(this.props.customer,"id",nextProps.payload.customer_id)[0];
         console.log("found customer",customer);
         this.setState({
