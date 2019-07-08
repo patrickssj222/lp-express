@@ -10,9 +10,7 @@ class AdminCustomer extends Component{
     }
 
     componentWillMount() {
-        if(!this.props.customer){
-            this.props.getCustomers();
-        }
+        this.props.getCustomers();
         this.props.getAllUsers();
         if(!this.props.china_geo){
             this.props.getChinaGeo();

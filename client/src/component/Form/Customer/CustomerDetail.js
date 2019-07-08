@@ -58,9 +58,6 @@ class CustomerDetail extends Component{
             this.props.getChinaGeo();
         }
         try{
-            this.setState({
-                detail:this.props.location.state?this.props.customer[this.props.location.state.index]:null,
-            });
             axios({
                 method: 'POST',
                 url: '/api/customers/business',
@@ -70,6 +67,7 @@ class CustomerDetail extends Component{
             }).then(response=>{
                 if(response.data.status>=200 && response.data.status<300){
                     const result = response.data.response;
+                    console.log("CUSTOMER BUSINESS RESULT", result);
                     this.setState({
                         business:result
                     });
@@ -77,14 +75,20 @@ class CustomerDetail extends Component{
                 else{
                 }
             });
-
+            this.setState({
+                detail:this.props.location.state?this.props.customer[this.props.location.state.index]:null,
+            });
+            if(this.props.china_geo!=null && this.state.china_geo.city === "" && this.props.location.state){
+                this.initCity(this.props.customer[this.props.location.state.index].city_id, this.props.customer[this.props.location.state.index].birth_city_id);
+            }
         }
         catch(e){
+            console.log(e);
         }
 
 
         if(this.props.customer){
-            const city_info = this.findNested(this.props.china_geo,"id",this.props.customer[this.props.location.state.index].birth_city_id);
+            let city_info = this.findNested(this.props.china_geo,"id",this.props.customer[this.props.location.state.index].birth_city_id);
             if(city_info){
                 this.setState({
                     birth_geo:{
@@ -94,6 +98,21 @@ class CustomerDetail extends Component{
                     }
                 });
             }
+            city_info = this.findNested(this.props.china_geo,"id",this.props.customer[this.props.location.state.index].city_id);
+            if(city_info){
+                this.setState({
+                    china_geo:{
+                        city:city_info.city,
+                        province:city_info.province,
+                        region:city_info.region
+                    }
+                });
+            }
+        }
+    }
+    componentWillReceiveProps(nextProps, nextContext) {
+        if(nextProps.customer){
+
         }
     }
 
@@ -127,18 +146,19 @@ class CustomerDetail extends Component{
         });
     }
 
-    initCity(){
-        const city = this.findNested(this.props.china_geo,"id",this.state.detail.city_id);
-        const birth_city = this.findNested(this.props.china_geo,"id",this.state.detail.birth_city_id);
+    initCity(city_id, birth_city_id){
+        const city = this.findNested(this.props.china_geo,"id",city_id);
+        const birth_city = this.findNested(this.props.china_geo,"id",birth_city_id);
+
         this.setState((prevState) => ({
             ...prevState,
             china_geo:{
                 ...prevState.china_geo,
-                city:city.city
+                city:city?city.city:""
             },
             birth_geo:{
                 ...prevState.birth_geo,
-                city:birth_city.city
+                city:birth_city?birth_city.city:""
             }
         }));
     }
@@ -206,9 +226,7 @@ class CustomerDetail extends Component{
         let birth_province_value = "";
         try{
             customer = this.props.customer[this.props.location.state.index];
-            if(this.props.china_geo!=null && this.state.china_geo.city === ""){
-                this.initCity();
-            }
+
             if(this.props.china_geo!=null && this.state.china_geo.city!==""){
                 const city_info = this.findNested(this.props.china_geo,"city",this.state.china_geo.city);
                 if(city_info){

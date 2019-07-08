@@ -57,7 +57,6 @@ class addBusiness extends Component{
         if(!this.props.constants.fee){
             this.props.getPriceConstants();
         }
-
     }
     handleServiceTypeChange(e){
         const { name, value } = e.target;

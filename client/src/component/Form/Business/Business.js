@@ -11,7 +11,12 @@ class Business extends Component{
     componentWillMount() {
         this.props.getBusiness();
     }
-
+    handleRedirect(path, id){
+        this.props.history.push({
+            pathname: path,
+            state:{id:id}
+        })
+    }
     render(){
         const columns = [
             {
@@ -57,7 +62,7 @@ class Business extends Component{
                     total_fee: business[index].total_fee!=null?business[index].total_fee:"",
                     progress: business[index].progress!=null?business[index].progress:"",
                     wenan: business[index].wenan!=null?business[index].wenan:"",
-                    clickEvent: this.props.switchView.bind(this,"BusinessDetail",{id: business[index].id})
+                    clickEvent: this.handleRedirect.bind(this,"/business/detail",business[index].id)
                 })
             });
         }

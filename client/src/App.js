@@ -73,6 +73,7 @@ class App extends Component {
                                 <Route exact path={'/customer/add'} component={AddCustomer}/>
                                 <Route exact path={'/business'} component={Business}/>
                                 <Route exact path={'/business/add'} component={AddBusiness}/>
+                                <Route exact path={'/business/detail'} component={BusinessDetail}/>
                                 <Route exact path={'/constants/price'} component={Price_Constants}/>
                                 <Route exact path={'/user'} component={UserAdministration}/>
                                 <Route exact path={'/china_geo'} component={ChinaGeographic}/>
