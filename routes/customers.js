@@ -2,11 +2,12 @@ var express = require('express');
 var router = express.Router();
 
 router.post('/all/', function(req, res, next) {
-    res.locals.pool.query("SELECT * FROM customer" , function (error, results, fields) {
+    res.locals.pool.query("SELECT c.*, u.name AS user_name, u.id AS user_id FROM customer c INNER JOIN customer_user cu ON cu.customer_id = c.id INNER JOIN user u ON cu.user_id = u.id" , function (error, results, fields) {
         if(error){
             res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
             //If there is error, we send the error in the error section with 500 status
         } else {
+            console.log(results);
             res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
             //If there is no error, all is good and response is 200OK.
         }
@@ -44,15 +45,20 @@ router.post('/delete/force/', function(req, res, next) {
     res.locals.pool.query("DELETE FROM customer_emergency_contact WHERE customer_id = "+body.id+"" , function (error, results, fields) {
         if(error){
             res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
-            //If there is error, we send the error in the error section with 500 status
         } else {
             res.locals.pool.query("DELETE FROM customer WHERE id = "+body.id+"" , function (error, results, fields) {
                 if(error){
                     res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
-                    //If there is error, we send the error in the error section with 500 status
                 }
                 else{
-                    res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
+                    res.locals.pool.query("DELETE FROM customer_user WHERE customer_id = "+body.id+"" , function (error, results, fields) {
+                        if(error){
+                            res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
+                        }
+                        else{
+                            res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
+                        }
+                    });
                 }
             });
         }
@@ -80,7 +86,7 @@ router.post('/add/one/', function(req,res,next){
         }
     });
     query = query.slice(0,-1);
-    query = query + "); ";
+    query = query + ");";
     res.locals.pool.query(query, function (error, results, fields) {
         if(error){
             res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
@@ -116,7 +122,6 @@ router.post('/add/one/', function(req,res,next){
     });
 });
 
-
 router.post('/update/one/', function(req,res,next){
     let body = req.body;
     let query = "UPDATE customer SET ";
@@ -140,7 +145,6 @@ router.post('/update/one/', function(req,res,next){
     });
     query = query.slice(0,-1);
     query = query + " WHERE id = "+body.id+";";
-    console.log(query);
 
     res.locals.pool.query(query, function (error, results, fields) {
         if(error){
