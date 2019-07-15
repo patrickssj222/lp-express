@@ -89,7 +89,6 @@ class AddCustomer extends Component{
     findNested (obj, key, value){
         // Base case
         if (obj[key] === value) {
-            console.log("FOUND VALUE", value);
             return obj;
         } else {
             for (let i = 0, len = Object.keys(obj).length; i < len; i++) {
