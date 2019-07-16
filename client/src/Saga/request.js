@@ -114,7 +114,7 @@ function* addCustomers(action){
             }
             else{
                 yield put({type:actionTypes.REMOVE_POP_UP});
-                yield put({type:actionTypes.POP_UP, status:"failure", message:["Error: "+response.data.error.sqlMessage],onExit:null});
+                yield put({type:actionTypes.POP_UP, status:"failure", message:["Error: "+response.data.error.message],onExit:null});
             }
         }
         catch(e){

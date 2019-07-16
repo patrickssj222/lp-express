@@ -68,78 +68,170 @@ router.post('/add/one/', function(req,res,next){
     let body = req.body;
     let query = null;
     if(body.passport_number!=="" || body.passport_number!==null || body.passport_number!=="null"){
-        query = "SELECT id FROM customer WHERE passport_number = '"+body.passport_number+"';";
-    }
-    res.locals.pool.query(query, function (error, results, fields) {
-        if(error){
-            res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
-            //If there is error, we send the error in the error section with 500 status
-        }
-        else{
-            if(results.length>0) {
-                query = "INSERT INTO customer_user (customer_id, user_id) VALUES (" + results[0].id + ", " + body.created_by + ");"
-                res.locals.pool.query(query, function (error, results, fields) {
-                    if(error){
-                        res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
-                    }
-                    else{
-                        res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
-                    }
-                });
+        query = "SELECT c.id, cu.user_id FROM customer c INNER JOIN customer_user cu ON c.id = cu.customer_id WHERE c.passport_number = '"+body.passport_number+"';";
+        res.locals.pool.query(query, function (error, results, fields) {
+            if(error){
+                res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
+                //If there is error, we send the error in the error section with 500 status
             }
             else{
-                query = "INSERT INTO customer (";
-                Object.keys(body).forEach((key)=>{
-                    if(key!=="id" && key!=="emergency_contact" && key!=="created_by" && key!=="user_name" && key!=="user_role"){
-                        query = query + key + ",";
+                if(results.length>0) {
+                    if(results[0].user_id === body.created_by){
+                        res.send(JSON.stringify({"status": 500, "error": {message:"Customer already exists under your name."}, "response": null}));
                     }
-                });
-                query = query.slice(0,-1);
-                query = query + ") VALUES (";
-                Object.keys(body).forEach((key)=>{
-                    if(key!=="id" && key!=="emergency_contact" && key!=="created_by" && key!=="user_name" && key!=="user_role"){
-                        if(body[key]===""||body[key]==="null"||body[key]===null){
-                            query = query + "null,";
-                        }
-                        else{
-                            query = query + "'"+ body[key] + "',";
-                        }
+                    else{
+                        query = "INSERT INTO customer_user (customer_id, user_id) VALUES (" + results[0].id + ", " + body.created_by + ");"
+                        res.locals.pool.query(query, function (error, results, fields) {
+                            if(error){
+                                res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
+                            }
+                            else{
+                                res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
+                            }
+                        });
                     }
-                });
-                query = query.slice(0,-1);
-                query = query + ");";
+                }
+                else{
+                    query = "INSERT INTO customer (";
+                    Object.keys(body).forEach((key)=>{
+                        if(key!=="id" && key!=="emergency_contact" && key!=="created_by" && key!=="user_name" && key!=="user_role"){
+                            query = query + key + ",";
+                        }
+                    });
+                    query = query.slice(0,-1);
+                    query = query + ") VALUES (";
+                    Object.keys(body).forEach((key)=>{
+                        if(key!=="id" && key!=="emergency_contact" && key!=="created_by" && key!=="user_name" && key!=="user_role"){
+                            if(body[key]===""||body[key]==="null"||body[key]===null){
+                                query = query + "null,";
+                            }
+                            else{
+                                query = query + "'"+ body[key] + "',";
+                            }
+                        }
+                    });
+                    query = query.slice(0,-1);
+                    query = query + ");";
 
-                res.locals.pool.query(query, function (error, results, fields) {
-                    if(error){
-                        res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
-                        //If there is error, we send the error in the error section with 500 status
-                    } else {
-                        /*body.emergency_contact.forEach((contact)=>{
-                            query = "";
-                            query = query + "INSERT INTO customer_emergency_contact (";
-                            Object.keys(contact).forEach((key)=>{
-                                if(key!=="id"){
-                                    query = query + key + ",";
-                                }
-                            });
-                            query = query + "customer_id";
-                            query = query + ") VALUES (";
-                            Object.keys(contact).forEach((key)=>{
-                                if(key!=="id"){
-                                    query = query + "'"+ contact[key] + "',";
-                                }
-                            });
-                            query = query+ "'"+results.insertId+"'";
-                            query = query + "); ";
+                    res.locals.pool.query(query, function (error, results, fields) {
+                        if(error){
+                            res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
+                            //If there is error, we send the error in the error section with 500 status
+                        } else {
+                            /*body.emergency_contact.forEach((contact)=>{
+                                query = "";
+                                query = query + "INSERT INTO customer_emergency_contact (";
+                                Object.keys(contact).forEach((key)=>{
+                                    if(key!=="id"){
+                                        query = query + key + ",";
+                                    }
+                                });
+                                query = query + "customer_id";
+                                query = query + ") VALUES (";
+                                Object.keys(contact).forEach((key)=>{
+                                    if(key!=="id"){
+                                        query = query + "'"+ contact[key] + "',";
+                                    }
+                                });
+                                query = query+ "'"+results.insertId+"'";
+                                query = query + "); ";
+                                res.locals.pool.query(query, function (error, results, fields) {
+                                    if(error){
+                                        console.log(error);
+                                        res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
+                                        //If there is error, we send the error in the error section with 500 status
+                                    }
+                                });
+                            });*/
+                            query = "SELECT LAST_INSERT_ID();";
                             res.locals.pool.query(query, function (error, results, fields) {
                                 if(error){
                                     console.log(error);
                                     res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
                                     //If there is error, we send the error in the error section with 500 status
                                 }
+                                else{
+                                    query = "INSERT INTO customer_user (customer_id, user_id) VALUES(LAST_INSERT_ID(),"+body.created_by+");";
+                                    res.locals.pool.query(query, function (error, results, fields) {
+                                        if(error){
+                                            console.log(error);
+                                            res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
+                                            //If there is error, we send the error in the error section with 500 status
+                                        }
+                                        else{
+                                            res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
+                                        }
+                                    });
+                                }
                             });
-                        });*/
-                        query = "SELECT LAST_INSERT_ID();";
+
+                        }
+                    });
+                }
+            }
+        });
+    }
+    else{
+        query = "INSERT INTO customer (";
+        Object.keys(body).forEach((key)=>{
+            if(key!=="id" && key!=="emergency_contact" && key!=="created_by" && key!=="user_name" && key!=="user_role"){
+                query = query + key + ",";
+            }
+        });
+        query = query.slice(0,-1);
+        query = query + ") VALUES (";
+        Object.keys(body).forEach((key)=>{
+            if(key!=="id" && key!=="emergency_contact" && key!=="created_by" && key!=="user_name" && key!=="user_role"){
+                if(body[key]===""||body[key]==="null"||body[key]===null){
+                    query = query + "null,";
+                }
+                else{
+                    query = query + "'"+ body[key] + "',";
+                }
+            }
+        });
+        query = query.slice(0,-1);
+        query = query + ");";
+
+        res.locals.pool.query(query, function (error, results, fields) {
+            if(error){
+                res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
+                //If there is error, we send the error in the error section with 500 status
+            } else {
+                /*body.emergency_contact.forEach((contact)=>{
+                    query = "";
+                    query = query + "INSERT INTO customer_emergency_contact (";
+                    Object.keys(contact).forEach((key)=>{
+                        if(key!=="id"){
+                            query = query + key + ",";
+                        }
+                    });
+                    query = query + "customer_id";
+                    query = query + ") VALUES (";
+                    Object.keys(contact).forEach((key)=>{
+                        if(key!=="id"){
+                            query = query + "'"+ contact[key] + "',";
+                        }
+                    });
+                    query = query+ "'"+results.insertId+"'";
+                    query = query + "); ";
+                    res.locals.pool.query(query, function (error, results, fields) {
+                        if(error){
+                            console.log(error);
+                            res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
+                            //If there is error, we send the error in the error section with 500 status
+                        }
+                    });
+                });*/
+                query = "SELECT LAST_INSERT_ID();";
+                res.locals.pool.query(query, function (error, results, fields) {
+                    if(error){
+                        console.log(error);
+                        res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
+                        //If there is error, we send the error in the error section with 500 status
+                    }
+                    else{
+                        query = "INSERT INTO customer_user (customer_id, user_id) VALUES(LAST_INSERT_ID(),"+body.created_by+");";
                         res.locals.pool.query(query, function (error, results, fields) {
                             if(error){
                                 console.log(error);
@@ -147,25 +239,16 @@ router.post('/add/one/', function(req,res,next){
                                 //If there is error, we send the error in the error section with 500 status
                             }
                             else{
-                                query = "INSERT INTO customer_user (customer_id, user_id) VALUES(LAST_INSERT_ID(),"+body.created_by+");";
-                                res.locals.pool.query(query, function (error, results, fields) {
-                                    if(error){
-                                        console.log(error);
-                                        res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
-                                        //If there is error, we send the error in the error section with 500 status
-                                    }
-                                    else{
-                                        res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
-                                    }
-                                });
+                                res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
                             }
                         });
-
                     }
                 });
+
             }
-        }
-    });
+        });
+    }
+
 });
 
 router.post('/update/one/', function(req,res,next){

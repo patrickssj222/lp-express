@@ -67,15 +67,18 @@ class Customer extends Component{
             },
         ];
         let rows = null;
+        let customer_pushed = null;
         if(this.props.customer!=null){
             rows = [];
+            customer_pushed = [];
             const customer = this.props.customer;
             Object.keys(customer).forEach((index)=>{
                 let visa_due = "";
                 if(customer[index].visa_due){
                     const today = new Date();
+                    const offset = today.getTimezoneOffset();
                     const visa_time = new Date(customer[index].visa_due);
-                    const diffTime = visa_time.getTime() - today.getTime();
+                    const diffTime = visa_time.getTime() - today.getTime() + (60000*offset);
                     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
                     if(diffDays<=90&&diffDays>=0){
                         visa_due=<div className={"blue-text"}>{customer[index].visa_due} 剩余时间:{diffDays}天</div>
@@ -93,8 +96,9 @@ class Customer extends Component{
                 let passport_due = "";
                 if(customer[index].passport_due){
                     const today = new Date();
+                    const offset = today.getTimezoneOffset();
                     const passport_time = new Date(customer[index].passport_due);
-                    const diffTime = passport_time.getTime() - today.getTime();
+                    const diffTime = passport_time.getTime() - today.getTime() + (60000*offset);
                     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
                     if(diffDays<=180&&diffDays>=0){
                         passport_due=<div className={"blue-text"}>{customer[index].passport_due} 剩余时间:{diffDays}天</div>
@@ -107,14 +111,17 @@ class Customer extends Component{
                     }
                 }
                 if(this.props.user.id === customer[index].created_by){
-                    rows.push({
-                        name:customer[index].name,
-                        phone: customer[index].phone!=null?customer[index].phone:"",
-                        passport_due: passport_due,
-                        visa_due: visa_due,
-                        update_time:customer[index].update_time,
-                        clickEvent: this.handleRedirect.bind(this,"/customer/detail",index)
-                    })
+                    if(!this.findNested(customer_pushed,"id",customer[index].id)){
+                        customer_pushed.push(customer[index]);
+                        rows.push({
+                            name:customer[index].name,
+                            phone: customer[index].phone!=null?customer[index].phone:"",
+                            passport_due: passport_due,
+                            visa_due: visa_due,
+                            update_time:customer[index].update_time,
+                            clickEvent: this.handleRedirect.bind(this,"/customer/detail",index)
+                        })
+                    }
                 }
             });
         }
