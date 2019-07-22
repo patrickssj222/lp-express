@@ -200,6 +200,13 @@ class CustomerDetail extends Component{
             }
         }));
     }
+
+    handlePrintDetail(){
+        this.props.history.push({
+            pathname: "/customer/detail/print",
+            state:{detail:this.state}
+        });
+    }
     findNested (obj, key, value){
         // Base case
         if (obj[key] === value) {
@@ -267,9 +274,12 @@ class CustomerDetail extends Component{
                 <div className={"section-wrapper"}>
                     <div className={"section-header"}>
                         <h3>基础信息</h3>
-                        {
-                            this.props.user.role==="管理员"?<button onClick={this.props.optionPopUp.bind(this, ["删除方式？"],[{name:"彻底删除",handler:this.props.forceDeleteCustomer.bind(this,this.props.customer[this.props.location.state.index])}])} className={"btn btn-danger"}>删除</button>:null
-                        }
+                        <div className={"button-group"}>
+                            <button className={"btn btn-primary"} onClick={this.handlePrintDetail.bind(this)}>打印</button>
+                            {
+                                this.props.user.role==="管理员"?<button onClick={this.props.optionPopUp.bind(this, ["删除方式？"],[{name:"彻底删除",handler:this.props.forceDeleteCustomer.bind(this,this.props.customer[this.props.location.state.index])}])} className={"btn btn-danger"}>删除</button>:null
+                            }
+                        </div>
                     </div>
                     <div className={"section-body"}>
                         <table className={"business-detail-table"}>

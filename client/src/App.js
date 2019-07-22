@@ -20,6 +20,7 @@ import OptionPopUp from "./component/PopUp/OptionPopUp";
 import ChinaGeographic from "./component/Form/Geographics/ChinaGeographic";
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import AdminCustomer from "./component/Form/Customer/AdminCustomer";
+import PrintCustomerDetail from "./component/Form/Customer/PrintCustomerDetail";
 
 library.add(faIgloo);
 
@@ -70,6 +71,7 @@ class App extends Component {
                                 <Route exact path={'/customer'} component={Customer}/>
                                 <Route exact path={'/all-customer'} component={AdminCustomer}/>
                                 <Route exact path={'/customer/detail'} component={CustomerDetail}/>
+                                <Route exact path={'/customer/detail/print'} component={PrintCustomerDetail}/>
                                 <Route exact path={'/customer/add'} component={AddCustomer}/>
                                 <Route exact path={'/business'} component={Business}/>
                                 <Route exact path={'/business/add'} component={AddBusiness}/>

@@ -1,0 +1,60 @@
+.print-wrapper{
+    display: flex;
+    flex-direction: column;
+    height:100%;
+    padding:60px 150px!important;
+}
+
+.print-wrapper .print-header{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size:30px;
+    margin-bottom: 50px;
+}
+
+.print-wrapper .print-body{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.print-wrapper .flex-table{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width:100%;
+    margin-bottom:50px;
+}
+
+.print-wrapper .flex-row{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width:100%;
+}
+
+.print-wrapper .flex-cell{
+    border: 1px solid black;
+    flex:1;
+    padding:15px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    height:100%;
+}
+
+.print-wrapper .label{
+    max-width: 200px;
+}
+
+.print-wrapper .large-row .flex-cell{
+    padding:30px 15px;
+}
+
+.print-wrapper small{
+    position: relative;
+    top:25px;
+    color:gray;
+}
