@@ -212,7 +212,7 @@ class CustomerDetail extends Component{
                 axios.get('/fetch-pdf', {responseType:'blob'}).then((res)=>{
                     console.log("FETCHED", res);
                     const pdfBlob = new Blob([res.data],{type:'application/pdf'});
-                    saveAs(pdfBlob, 'newPdf.pdf');
+                    saveAs(pdfBlob, this.state.detail.name+'-客户档案.pdf');
                 })
             })
 
@@ -285,7 +285,7 @@ class CustomerDetail extends Component{
                     <div className={"section-header"}>
                         <h3>基础信息</h3>
                         <div className={"button-group"}>
-                            <button className={"btn btn-primary"} onClick={this.handlePrintDetail.bind(this)}>打印</button>
+                            <button className={"btn btn-primary"} onClick={this.handlePrintDetail.bind(this)}>下载pdf文档</button>
                             {
                                 this.props.user.role==="管理员"?<button onClick={this.props.optionPopUp.bind(this, ["删除方式？"],[{name:"彻底删除",handler:this.props.forceDeleteCustomer.bind(this,this.props.customer[this.props.location.state.index])}])} className={"btn btn-danger"}>删除</button>:null
                             }

@@ -63,17 +63,6 @@ app.use('/api/geographic',geographicRouter);
 
 
 app.post('/create-pdf',(req,res)=>{
-    /*var phantom = require('phantom');
-    phantom.create().then(function(ph) {
-        ph.createPage().then(function(page) {
-            page.open(path.join(__dirname, 'temp.html')).then(function(status) {
-                page.render('result.pdf').then(function() {
-                    console.log('Page Rendered');
-                    ph.exit();
-                });
-            });
-        });
-    });*/
     pdf.create(pdfTemplate(req.body),{}).toFile('result.pdf',(err)=>{
         if(err){
             res.send(JSON.stringify({"status": 500, "error": err, "response": null}));
