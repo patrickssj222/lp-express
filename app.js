@@ -6,10 +6,11 @@ var logger = require('morgan');
 var mysql = require("mysql");
 var cors = require('cors');
 var bodyParser = require('body-parser');
+var pdf = require('html-pdf');
+var pdfTemplate = require('./documents');
 require('dotenv').config();
 
 var app = express();
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -20,7 +21,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'client/build')));
 //production mode
-
 
 //By Pass CORS
 app.use(cors());
@@ -47,6 +47,7 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 
 
+
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var constantsRouter = require('./routes/constants');
@@ -58,7 +59,35 @@ app.use('/api/users', usersRouter);
 app.use('/api/constants', constantsRouter);
 app.use('/api/customers', customersRouter);
 app.use('/api/business',businessRouter);
-    app.use('/api/geographic',geographicRouter);
+app.use('/api/geographic',geographicRouter);
+
+
+app.post('/create-pdf',(req,res)=>{
+    /*var phantom = require('phantom');
+    phantom.create().then(function(ph) {
+        ph.createPage().then(function(page) {
+            page.open(path.join(__dirname, 'temp.html')).then(function(status) {
+                page.render('result.pdf').then(function() {
+                    console.log('Page Rendered');
+                    ph.exit();
+                });
+            });
+        });
+    });*/
+    pdf.create(pdfTemplate(req.body),{}).toFile('result.pdf',(err)=>{
+        if(err){
+            res.send(JSON.stringify({"status": 500, "error": err, "response": null}));
+        }
+        res.send(JSON.stringify({"status": 200, "error": null, "response": null}));
+    });
+});
+
+
+
+app.get('/fetch-pdf',(req,res)=>{
+    res.sendFile(path.join(__dirname, 'result.pdf'));
+});
+
 if(process.env.NODE_ENV === 'production') {
     app.use(express.static(path.join(__dirname, 'client/build')));
     //

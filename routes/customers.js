@@ -29,7 +29,6 @@ router.post('/contact/', function(req, res, next) {
 router.post('/business/', function(req, res, next) {
     let body = req.body;
     res.locals.pool.query("SELECT b.*, s.type AS service_type, s.name AS service_name FROM business b INNER JOIN service_constants s ON b.service_constants_id = s.id WHERE customer_id = "+body.id+"" , function (error, results, fields) {
-        console.log("Result", results);
         if(error){
             res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
             //If there is error, we send the error in the error section with 500 status

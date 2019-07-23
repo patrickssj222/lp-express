@@ -20,10 +20,17 @@ class PrintCustomerDetail extends Component{
         }
     }
     render() {
-        const info = this.state.detail;
-        console.log("PRINT PROP",info);
+        const info = this.state;
         return(
             <div className={"print-wrapper"}>
+                <div className={"print-top"}>
+                    <h1>Logo</h1>
+                    <div className={"watermark"}>
+                        <small>20 Amber Street, Unit 201</small>
+                        <small>Markham, ON</small>
+                        <small>L3R SP4</small>
+                    </div>
+                </div>
                 <div className={"print-header"}>
                     加诺咨询-加拿大境内客户信息收集表
                 </div>
@@ -165,6 +172,7 @@ class PrintCustomerDetail extends Component{
                                 信息收集人
                             </div>
                             <div className={"flex-cell"}>
+                                <div>{" 1"}</div>
                             </div>
                         </div>
                         <div className={"flex-row large-row"}>
@@ -195,6 +203,9 @@ class PrintCustomerDetail extends Component{
                             </div>
                         </div>
                     </div>
+                </div>
+                <div className={"print-footer"}>
+
                 </div>
             </div>
         );

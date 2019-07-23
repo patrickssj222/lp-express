@@ -10,7 +10,7 @@ import {MDBDataTable} from "mdbreact";
 import CustomFormatInput from "../Input/CustomFormatInput";
 import PhoneInput from "../Input/PhoneInput";
 import { Redirect, withRouter } from "react-router-dom";
-
+import { saveAs } from 'file-saver';
 
 class CustomerDetail extends Component{
     constructor(props){
@@ -202,10 +202,20 @@ class CustomerDetail extends Component{
     }
 
     handlePrintDetail(){
-        this.props.history.push({
+        /*this.props.history.push({
             pathname: "/customer/detail/print",
-            state:{detail:this.state}
-        });
+            state:this.state
+        });*/
+        console.log("print state", this.state);
+        axios.post('/create-pdf',this.state)
+            .then(()=>{
+                axios.get('/fetch-pdf', {responseType:'blob'}).then((res)=>{
+                    console.log("FETCHED", res);
+                    const pdfBlob = new Blob([res.data],{type:'application/pdf'});
+                    saveAs(pdfBlob, 'newPdf.pdf');
+                })
+            })
+
     }
     findNested (obj, key, value){
         // Base case
