@@ -74,14 +74,15 @@ app.post('/create-pdf',(req,res)=>{
 
 
 app.get('/fetch-pdf',(req,res)=>{
-    res.sendFile(path.join(__dirname, 'result.pdf'));
+    console.log(__dirname+'/result.pdf');
+    res.sendFile('/result.pdf', { root : __dirname});
 });
 
 if(process.env.NODE_ENV === 'production') {
     app.use(express.static(path.join(__dirname, 'client/build')));
     //
     app.get('*', (req, res) => {
-        res.sendfile(path.join(__dirname = 'client/build/index.html'));
+        res.sendFile(path.join(__dirname = 'client/build/index.html'));
     })
 }
 

@@ -208,12 +208,13 @@ class CustomerDetail extends Component{
         });*/
         console.log("print state", this.state);
         axios.post('/create-pdf',this.state)
-            .then(()=>{
-                axios.get('/fetch-pdf', {responseType:'blob'}).then((res)=>{
-                    console.log("FETCHED", res);
-                    const pdfBlob = new Blob([res.data],{type:'application/pdf'});
-                    saveAs(pdfBlob, this.state.detail.name+'-客户档案.pdf');
-                })
+            .then((res)=>{
+                if(res.status === 200){
+                    axios.get('/fetch-pdf', {responseType:'blob'}).then((res)=>{
+                        const pdfBlob = new Blob([res.data],{type:'application/pdf'});
+                        saveAs(pdfBlob, this.state.detail.name+'-客户档案.pdf');
+                    })
+                }
             })
 
     }
