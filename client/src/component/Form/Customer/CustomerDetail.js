@@ -224,10 +224,6 @@ class CustomerDetail extends Component{
         this.setState({
             pdfCreated: true
         })
-        // this.props.history.push({
-        //     pathname: "/customer/detail/print",
-        //     state:this.state
-        // });
     }
 
     findNested (obj, key, value){
@@ -253,6 +249,8 @@ class CustomerDetail extends Component{
         if (this.state.pdfCreated) {
             newWindow = <PrintResult 
             detail={this.state.detail}
+            birth_geo={this.state.birth_geo}
+            china_geo={this.state.china_geo}
             />
         }
 
