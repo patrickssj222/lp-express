@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PrintResult from './PrintResult'
 import DropDown from '../DropDown/DropDown';
 import '../Form.css';
 import './CustomerDetail.css';
@@ -27,7 +28,8 @@ class CustomerDetail extends Component{
                 city:"",
                 province:"",
                 region:""
-            }
+            },
+            pdfCreated: false
         };
         this.columns = [
             {
@@ -126,6 +128,7 @@ class CustomerDetail extends Component{
             }
         }));
     }
+
     handleSpecialChange(name,value){
         console.log("name", name, "value", value);
         this.setState((prevState) => ({
@@ -136,9 +139,11 @@ class CustomerDetail extends Component{
             }
         }));
     }
+
     handleSubmit(e){
         this.props.updateCustomer(this.state.detail);
     }
+
     handleNewBusiness(e){
         this.props.history.push({
             pathname: "/business/add",
@@ -213,12 +218,18 @@ class CustomerDetail extends Component{
                 }
             })
     }
+
     handlePrintLayoutRedirect(){
-        this.props.history.push({
-            pathname: "/customer/detail/print",
-            state:this.state
-        });
+        console.log("create a pdf now", this.state);
+        this.setState({
+            pdfCreated: true
+        })
+        // this.props.history.push({
+        //     pathname: "/customer/detail/print",
+        //     state:this.state
+        // });
     }
+
     findNested (obj, key, value){
         // Base case
         if (obj[key] === value) {
@@ -237,6 +248,14 @@ class CustomerDetail extends Component{
         }
     };
     render(){
+        let newWindow = null;
+        console.log(this.state)
+        if (this.state.pdfCreated) {
+            newWindow = <PrintResult 
+            detail={this.state.detail}
+            />
+        }
+
         let customer = null;
         let data = null;
         let region_value = "";
@@ -283,6 +302,7 @@ class CustomerDetail extends Component{
         }
         return(
             <div className={"form-wrapper content-wrapper customer-detail"}>
+                {newWindow}
                 <div className={"section-wrapper"}>
                     <div className={"section-header"}>
                         <h3>基础信息</h3>
