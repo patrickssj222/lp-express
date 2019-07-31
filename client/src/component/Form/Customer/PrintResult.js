@@ -23,6 +23,9 @@ class PrintResult extends Component {
             pdf.addImage(imgData, "PNG", 10, 1, 180, 150);
             pdf.save("downloadedPdf.pdf");
             document.body.removeChild(canvas) // remove the canvas that was used to create the pdf.
+            this.setState({
+                pdfCreated: false // set the value to false so as prepare to reprint again.
+            })
         });
       };
 

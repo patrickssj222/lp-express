@@ -220,7 +220,7 @@ class CustomerDetail extends Component{
     }
 
     handlePrintLayoutRedirect(){
-        console.log("create a pdf now", this.state);
+        console.log("creating a pdf now");
         this.setState({
             pdfCreated: true
         })
@@ -245,7 +245,6 @@ class CustomerDetail extends Component{
     };
     render(){
         let newWindow = null;
-        console.log(this.state)
         if (this.state.pdfCreated) {
             newWindow = <PrintResult 
             detail={this.state.detail}
