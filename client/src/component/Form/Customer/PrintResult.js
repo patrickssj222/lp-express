@@ -3,11 +3,8 @@ import NewWindow from 'react-new-window'
 import './PrintResult.css';
 import logo from "../../../img/logo.jpg";
 
-// import { PDFExport } from '@progress/kendo-react-pdf';
-
 import jsPDF from 'jspdf';
 import html2canvas from "html2canvas";
-import ReactDOM from "react-dom";
 
 class PrintResult extends Component {
 
@@ -17,14 +14,15 @@ class PrintResult extends Component {
     }
 
     // html2canvas + jsPDF generate PDF
+    // html -> canvas -> pdf
     handleDownloadPDF = () => {
-        // let rootNode = ReactDOM.findDOMNode(this);
         html2canvas(this.printRef.current).then(function(canvas) {
-          document.body.appendChild(canvas);
-          const imgData = canvas.toDataURL("image/png");
-          const pdf = new jsPDF();
-          pdf.addImage(imgData, "PNG", 10, 1, 180, 300);
-          pdf.save("downloadedPdf.pdf");
+            document.body.appendChild(canvas);
+            const imgData = canvas.toDataURL("image/png");
+            const pdf = new jsPDF();
+            pdf.addImage(imgData, "PNG", 10, 1, 180, 150);
+            pdf.save("downloadedPdf.pdf");
+            document.body.removeChild(canvas) // remove the canvas that was used to create the pdf.
         });
       };
 
