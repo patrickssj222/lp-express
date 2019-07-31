@@ -299,8 +299,9 @@ class CustomerDetail extends Component{
             return(<Redirect to='/customer'/>);
         }
         return(
+            <div>
+            {newWindow}
             <div className={"form-wrapper content-wrapper customer-detail"}>
-                {newWindow}
                 <div className={"section-wrapper"}>
                     <div className={"section-header"}>
                         <h3>基础信息</h3>
@@ -638,6 +639,7 @@ class CustomerDetail extends Component{
                     </div>:null
                 }
 
+            </div>          
             </div>
         );
     }
