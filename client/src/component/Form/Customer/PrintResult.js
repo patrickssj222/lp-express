@@ -150,17 +150,14 @@ class PrintResult extends Component {
                             </div>
                             <div className={"flex-row"}>
                             <div className={"half-row"}>
-
-</div>
-<div className={"half-row"}>
-    
-</div>
                                 <div className={"flex-cell label"}>
                                     护照号码
                                 </div>
                                 <div className={"flex-cell"}>
                                     {this.props.detail.passport_number}
                                 </div>
+                            </div>
+                            <div className={"half-row"}>
                                 <div className={"flex-cell label"}>
                                     护照到期日
                                 </div>
@@ -168,23 +165,24 @@ class PrintResult extends Component {
                                     {this.props.detail.passport_due}
                                 </div>
                             </div>
+                            </div>
                             <div className={"flex-row"}>
-                            <div className={"half-row"}>
-                                <div className={"flex-cell label"}>
-                                    签证到期日
+                                <div className={"half-row"}>
+                                    <div className={"flex-cell label"}>
+                                        签证到期日
+                                    </div>
+                                    <div className={"flex-cell"}>
+                                        {this.props.detail.visa_due}
+                                    </div>
                                 </div>
-                                <div className={"flex-cell"}>
-                                    {this.props.detail.visa_due}
+                                <div className={"half-row"}>
+                                    <div className={"flex-cell label"}>
+                                        加拿大UCI号码
+                                    </div>
+                                    <div className={"flex-cell"}>
+                                        {this.props.detail.uci_number}
+                                    </div>                          
                                 </div>
-                            </div>
-                            <div className={"half-row"}>
-                                <div className={"flex-cell label"}>
-                                    加拿大UCI号码
-                                </div>
-                                <div className={"flex-cell"}>
-                                    {this.props.detail.uci_number}
-                                </div>                          
-                            </div>
                             </div>
                             <div className={"flex-row"}>
                             <div className={"half-row"}>
@@ -243,25 +241,32 @@ class PrintResult extends Component {
                         </div>
                         <div className={"flex-table"}>
                             <div className={"flex-row"}>
-                                <div className={"flex-cell label"}>
-                                    客户
+                                <div className={"half-row"}>
+                                    <div className={"flex-cell label"}>
+                                        客户
+                                    </div>
+                                    <div className={"flex-cell"}>
+                                        {this.props.detail.name}
+                                    </div>
                                 </div>
-                                <div className={"flex-cell"}>
-                                    {this.props.detail.name}
-                                </div>
-                                <div className={"flex-cell label"}>
-                                    信息收集人
-                                </div>
-                                <div className={"flex-cell"}>
+                                <div className={"half-row"}>
+                                    <div className={"flex-cell label"}>
+                                        信息收集人
+                                    </div>
+                                    <div className={"flex-cell"}>
+                                    </div>
                                 </div>
                             </div>
                             <div className={"flex-row large-row"}>
+                            <div className={"half-row"}>
                                 <div className={"flex-cell label"}>
                                     客户签字
                                 </div>
                                 <div className={"flex-cell to-fill"}>
                                     <small>请与护照签名一致</small>
                                 </div>
+                            </div>
+                            <div className={"half-row"}>
                                 <div className={"flex-cell label"}>
                                     日期
                                 </div>
@@ -269,26 +274,31 @@ class PrintResult extends Component {
                                     <small>YYYY-MM-DD</small>
                                 </div>
                             </div>
+                            </div>
                             <div className={"flex-row large-row"}>
+                            <div className={"half-row"}>
                                 <div className={"flex-cell label"}>
                                     信息收集人签字
                                 </div>
                                 <div className={"flex-cell to-fill"}>
                                     <small>YYYY-MM- DD</small>
                                 </div>
+                            </div>
+                            <div className={"half-row"}>
                                 <div className={"flex-cell label"}>
                                     日期
                                 </div>
                                 <div className={"flex-cell to-fill"}>
                                     <small>YYYY-MM-DD</small>
-                                </div>
+                                </div>                                
                             </div>
                         </div>
                     </div>
-                    <div className={"print-footer"}>
-
-                    </div>
                 </div>
+                <div className={"print-footer"}>
+
+                </div>
+            </div>
             <button onClick={() => this.handleDownloadPDF(this.props.callback)}>Download PDF</button> 
             </NewWindow>
         )
