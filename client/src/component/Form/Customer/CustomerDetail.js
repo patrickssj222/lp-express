@@ -243,6 +243,13 @@ class CustomerDetail extends Component{
             }
         }
     };
+
+    printFinishCallback = () => {
+        this.setState({
+            pdfCreated: false // set the value to false so as prepare to reprint again.
+        })
+    }
+
     render(){
         let newWindow = null;
         if (this.state.pdfCreated) {
@@ -250,6 +257,7 @@ class CustomerDetail extends Component{
             detail={this.state.detail}
             birth_geo={this.state.birth_geo}
             china_geo={this.state.china_geo}
+            callback={this.printFinishCallback} // pass callback to child
             />
         }
 

@@ -1,11 +1,13 @@
 body {
-    font-size: 7px;
+    margin: 0px;
+    padding: 0px;
 }
 
 .print-wrapper{
+    font-size: 7px;
     display: flex;
     flex-direction: column;
-    padding: 10px;
+    /* padding: 10px; */
     overflow: scroll;
 }
 
@@ -13,8 +15,23 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    font-size: 15px;
-    margin-bottom: 10px;
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 13px;
+}
+
+.print-wrapper .print-top{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    height: 60px;
+    margin-bottom: 13px;
+}
+
+.print-wrapper .print-top .watermark{
+    display: flex;
+    flex-direction: column;
+    justify-content: right;
 }
 
 .print-wrapper .print-body{
@@ -29,6 +46,8 @@ body {
     align-items: center;
     width: 100%;
     margin-bottom: 20px;
+    border: 0 solid black;
+    border-width: 1px 1px 2px 2px;
 }
 
 .print-wrapper .flex-row{
@@ -36,34 +55,69 @@ body {
     flex-direction: row;
     justify-content: space-between;
     width: 100%;
+    flex-flow: row wrap;
+}
+
+.print-wrapper .flex-row .half-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 50%;
 }
 
 .print-wrapper .flex-row .flex-cell{
-    border: 1px solid black;
-    padding: 2px;
+    border: 0 solid black;
+    border-width: 1px 1px 0 0;
+    padding: 0px;
+    flex-grow: 3;
+    height: 25px;
+    font-size: 8px;
+    flex-shrink: 0;
+
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    flex:1;
-    height:20px;
-    font-size: 7px;
 }
 
-.print-wrapper .to-fill {
-    flex: 2;
+.print-wrapper .flex-inner-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.print-wrapper .flex-inner-cell {
+    flex-grow: 1;
+    text-align: center;
+    border: 0 solid black;
+    border-width: 0px 1px 0px 0px;
+    height: 100%;
+
+    /* center the text vertically */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.print-wrapper .flex-inner-cell:last-child {
+    border: 0 solid black;
 }
 
 .print-wrapper .label{
-    flex: 1;
-    width: 80px;
-    max-width: 170px;
-    font-size: 7px !important;
+    /* flex: 1; */
+    flex-grow: 1;
+    min-width: 110px;
+    max-width: 110px;
+    font-size: 11px !important;
 }
 
 .print-wrapper .large-row .flex-cell{
     padding: 30px 15px;
-    height: 80px;
+    height: 50px;
 }
 
 .print-wrapper small{
@@ -72,14 +126,3 @@ body {
     color:gray;
 }
 
-.print-wrapper .print-top{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-}
-
-.print-wrapper .print-top .watermark{
-    display: flex;
-    flex-direction: column;
-    justify-content: right;
-}
