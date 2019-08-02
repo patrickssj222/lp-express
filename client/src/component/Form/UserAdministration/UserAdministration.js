@@ -4,6 +4,8 @@ import * as actionTypes from '../../../store/action';
 import { MDBDataTable } from "mdbreact";
 import "../Form.css";
 import Input from "../Input/Input";
+import PhoneInput from "../Input/PhoneInput";
+import CustomFormatInput from "../Input/CustomFormatInput";
 import DropDown from "../DropDown/DropDown";
 class UserAdministration extends Component{
     constructor(props){
@@ -16,16 +18,29 @@ class UserAdministration extends Component{
     componentWillMount() {
         this.props.getAllUsers();
     }
-    handleChange(e){
+
+    handleChange = e => {
         const { name, value } = e.target;
         this.setState((prevState) => ({
             ...prevState,
             new_user:{
                 ...prevState.new_user,
-                [name]:value,
+                [name]: value,
             }
         }));
     }
+
+    handleSpecialChange = (name, value) => {
+        this.setState((prevState) => ({
+            ...prevState,
+            new_user:{
+                ...prevState.new_user,
+                [name]: value,
+            }
+        }));
+    }
+
+
     handleAdd(){
         this.setState({
             add:true,
@@ -45,6 +60,7 @@ class UserAdministration extends Component{
             }
         })
     }
+
     handleAddSubmit(){
         this.props.addUser(this.state.new_user);
         this.setState({
@@ -52,6 +68,7 @@ class UserAdministration extends Component{
             new_user:null
         })
     }
+    
     handleDelete(id){
         this.props.deleteUser(id);
     }
@@ -130,12 +147,20 @@ class UserAdministration extends Component{
                                         />
                                     </td>
                                     <td>
-                                        <Input
+                                        <CustomFormatInput
                                             label={"出生日期"}
-                                            type={"text"} // TODO: type change to date.
                                             name={"birth_date"}
-                                            value={this.state.new_user.password}
-                                            handleChange={this.handleChange.bind(this)}
+                                            value={this.state.new_user.birth_date.replace(/\//g, '-')}
+                                            format={[
+                                                {char: /\d/, repeat:4},
+                                                { exactly: "-" },
+                                                {char: /\d/, repeat:2},
+                                                { exactly: "-" },
+                                                {char: /\d/, repeat:2},
+                                            ]}
+                                            placeholder={"YYYY-MM-DD"}
+                                            // handleChange={this.handleChange.bind(this)}
+                                            handleChange={this.handleSpecialChange}
                                         />
                                     </td>
 
@@ -160,12 +185,19 @@ class UserAdministration extends Component{
                                         />
                                     </td>
                                     <td>
-                                        <Input
+                                        <CustomFormatInput
                                             label={"入职时间"}
-                                            type={"text"} // TODO: type change to date.
                                             name={"enter_date"}
-                                            value={this.state.new_user.enter_date}
-                                            handleChange={this.handleChange.bind(this)}
+                                            value={this.state.new_user.enter_date.replace(/\//g, '-')}
+                                            format={[
+                                                {char: /\d/, repeat:4},
+                                                { exactly: "-" },
+                                                {char: /\d/, repeat:2},
+                                                { exactly: "-" },
+                                                {char: /\d/, repeat:2},
+                                            ]}
+                                            placeholder={"YYYY-MM-DD"}
+                                            handleChange={this.handleSpecialChange}
                                         />
                                     </td>
                                 </tr>
@@ -192,7 +224,7 @@ class UserAdministration extends Component{
                                     <td>
                                         <Input
                                             label={"固定底薪"}
-                                            type={"text"} // TODO: type change to date.
+                                            type={"text"}
                                             name={"base_salary"}
                                             value={this.state.new_user.base_salary}
                                             handleChange={this.handleChange.bind(this)}
@@ -210,18 +242,23 @@ class UserAdministration extends Component{
                                         />
                                     </td>
                                     <td>
-                                        <Input
-                                            label={"账号 / 手机号"}
-                                            type={"text"} // TODO: type change to date.
+                                        {/* <Input
+                                            label={"账号"}
+                                            type={"text"}
                                             name={"user_name_cell"}
                                             value={this.state.new_user.user_name_cell}
                                             handleChange={this.handleChange.bind(this)}
+                                        /> */}
+                                        <PhoneInput label={"账号"}
+                                               name={"phone"}
+                                               value={this.state.new_user.phone}
+                                               handleChange={this.handleChange}
                                         />
                                     </td>
                                     <td>
                                         <Input
                                             label={"密码"}
-                                            type={"text"} // TODO: type change to date.
+                                            type={"password"}
                                             name={"pwd"}
                                             value={this.state.new_user.pwd}
                                             handleChange={this.handleChange.bind(this)}
