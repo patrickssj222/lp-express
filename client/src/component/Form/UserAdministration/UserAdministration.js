@@ -6,6 +6,7 @@ import "../Form.css";
 import Input from "../Input/Input";
 import DropDown from "../DropDown/DropDown";
 class UserAdministration extends Component{
+
     constructor(props){
         super(props);
         this.state={
@@ -44,6 +45,7 @@ class UserAdministration extends Component{
             new_user:null
         })
     }
+    
     handleDelete(id){
         this.props.deleteUser(id);
     }
