@@ -30,10 +30,18 @@ class UserAdministration extends Component{
         this.setState({
             add:true,
             new_user:{
-                username:"",
-                password:"",
-                role:"规划师",
-                name:"",
+                name: "",
+                gender: "",
+                birth_date: "",
+                visa_type: "",
+                sin_num: 0,
+                enter_date: "",
+                department: "",
+                role: "",
+                base_salary: "",
+                rights: "",
+                user_name_cell: "",
+                pwd: "",
             }
         })
     }
@@ -105,28 +113,7 @@ class UserAdministration extends Component{
                                 <tr>
                                     <td>
                                         <Input
-                                            label={"用户名"}
-                                            type={"text"}
-                                            name={"username"}
-                                            value={this.state.new_user.username}
-                                            handleChange={this.handleChange.bind(this)}
-                                        />
-                                    </td>
-                                    <td>
-                                        <Input
-                                            label={"密码"}
-                                            type={"password"}
-                                            name={"password"}
-                                            value={this.state.new_user.password}
-                                            handleChange={this.handleChange.bind(this)}
-                                        />
-                                    </td>
-
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <Input
-                                            label={"用户姓名"}
+                                            label={"姓名"}
                                             type={"text"}
                                             name={"name"}
                                             value={this.state.new_user.name}
@@ -135,17 +122,113 @@ class UserAdministration extends Component{
                                     </td>
                                     <td>
                                         <DropDown
-                                            label={"用户权限"}
-                                            options={["管理员","规划师"]}
+                                            label={"性别"}
+                                            options={["男","女"]}
+                                            name={"gender"}
+                                            value={this.state.new_user.gender}
+                                            handleChange={this.handleChange.bind(this)}
+                                        />
+                                    </td>
+                                    <td>
+                                        <Input
+                                            label={"出生日期"}
+                                            type={"text"} // TODO: type change to date.
+                                            name={"birth_date"}
+                                            value={this.state.new_user.password}
+                                            handleChange={this.handleChange.bind(this)}
+                                        />
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <DropDown
+                                            label={"在加身份"}
+                                            options={["加拿大学签","加拿大工签", "加拿大旅游签", "加拿大移民", "加拿大公民", "加拿大难民"]}
+                                            name={"visa_type"}
+                                            value={this.state.new_user.visa_type}
+                                            handleChange={this.handleChange.bind(this)}
+                                        />
+                                    </td>
+                                    <td>
+                                        <Input
+                                            label={"Sin Number"}
+                                            type={"text"}
+                                            name={"sin_num"}
+                                            value={this.state.new_user.sin_num}
+                                            handleChange={this.handleChange.bind(this)}
+                                        />
+                                    </td>
+                                    <td>
+                                        <Input
+                                            label={"入职时间"}
+                                            type={"text"} // TODO: type change to date.
+                                            name={"enter_date"}
+                                            value={this.state.new_user.enter_date}
+                                            handleChange={this.handleChange.bind(this)}
+                                        />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <DropDown
+                                            label={"入职部门"}
+                                            options={["行政部（一级）","外联部（二级）", "人力资源部（二级）", "文案部（一级）", "签证部（二级）", "申请部（二级）", "市场部（二级）", "传媒部（二级）", "业务部（二级）"]}
+                                            name={"department"}
+                                            value={this.state.new_user.department}
+                                            handleChange={this.handleChange.bind(this)}
+                                        />
+                                    </td>
+                                    <td>
+                                        <DropDown
+                                            label={"工作职位"}
+                                            // TODO: dynamically update options according to the department
+                                            options={["行政部（一级）","外联部（二级）", "人力资源部（二级）", "文案部（一级）", "签证部（二级）", "申请部（二级）", "市场部（二级）", "传媒部（二级）", "业务部（二级）"]}
                                             name={"role"}
                                             value={this.state.new_user.role}
                                             handleChange={this.handleChange.bind(this)}
                                         />
                                     </td>
                                     <td>
-                                        <button className={"btn btn-primary"} onClick={this.handleAddSubmit.bind(this)}>确认添加</button>
+                                        <Input
+                                            label={"固定底薪"}
+                                            type={"text"} // TODO: type change to date.
+                                            name={"base_salary"}
+                                            value={this.state.new_user.base_salary}
+                                            handleChange={this.handleChange.bind(this)}
+                                        />
                                     </td>
                                 </tr>
+                                <tr>
+                                    <td>
+                                        <DropDown
+                                            label={"权限"}
+                                            options={[ "管理员（高级）", "管理员", "规划师", "文案师", "收款员"]}
+                                            name={"rights"}
+                                            value={this.state.new_user.rights}
+                                            handleChange={this.handleChange.bind(this)}
+                                        />
+                                    </td>
+                                    <td>
+                                        <Input
+                                            label={"账号 / 手机号"}
+                                            type={"text"} // TODO: type change to date.
+                                            name={"user_name_cell"}
+                                            value={this.state.new_user.user_name_cell}
+                                            handleChange={this.handleChange.bind(this)}
+                                        />
+                                    </td>
+                                    <td>
+                                        <Input
+                                            label={"密码"}
+                                            type={"text"} // TODO: type change to date.
+                                            name={"pwd"}
+                                            value={this.state.new_user.pwd}
+                                            handleChange={this.handleChange.bind(this)}
+                                        />
+                                    </td>
+                                </tr>
+                                <button className={"btn btn-primary"} onClick={this.handleAddSubmit.bind(this)}>确认添加</button>
                                 </tbody>
                             </table>:<button className={"btn btn-primary"} onClick={this.handleAdd.bind(this)}>添加用户</button>
                         }
