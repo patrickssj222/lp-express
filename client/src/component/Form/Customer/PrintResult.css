@@ -3,12 +3,16 @@ body {
     padding: 0px;
 }
 
-.print-wrapper{
-    font-size: 7px;
+.print-wrapper {
+    font-size: 9px;
     display: flex;
     flex-direction: column;
     /* padding: 10px; */
     overflow: scroll;
+}
+
+.print-wrapper p {
+    margin: 0;
 }
 
 .print-wrapper .print-header{
@@ -31,7 +35,7 @@ body {
 .print-wrapper .print-top .watermark{
     display: flex;
     flex-direction: column;
-    justify-content: right;
+    align-items: flex-end;
 }
 
 .print-wrapper .print-body{

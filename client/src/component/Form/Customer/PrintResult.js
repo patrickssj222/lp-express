@@ -11,6 +11,22 @@ class PrintResult extends Component {
     constructor(props) {
         super(props);
         this.printRef = React.createRef();
+        this.visa_names = {
+            加拿大学签: "学签",
+            加拿大旅游签: "访问签",
+            加拿大工签: "工签",
+            加拿大移民: "PR",
+            加拿大公民: "公民",
+            加拿大难民: "学签",
+            首次签证: "学签"
+        }
+        this.visa_types = {}
+        for (let visa_name in this.visa_names) {
+            this.visa_types[visa_name] = <p> &#x25EF; {this.visa_names[visa_name]} </p>
+        }
+        this.visa_types[this.props.detail.visa_type] = <p>&#9673; {this.visa_names[this.props.detail.visa_type]} </p>;
+        console.log(this.visa_types)
+        
     }
 
     // html2canvas + jsPDF generate PDF
@@ -40,7 +56,7 @@ class PrintResult extends Component {
                         </div>
                     </div>
                     <div className={"print-header"}>
-                        加诺咨询-加拿大境内客户信息收集表
+                        加诺咨询 - 加拿大境内客户信息收集表
                     </div>
                     <div className={"print-body"}>
                         <div className={"flex-table"}>
@@ -131,19 +147,19 @@ class PrintResult extends Component {
                                     {/* {this.props.detail.visa_type} */}
                                     <div className={"flex-inner-container"}>
                                         <div className={"flex-inner-cell"}> 
-                                        &#x25EF;学签
+                                        {this.visa_types.加拿大学签} 
                                         </div>
                                         <div className={"flex-inner-cell"}> 
-                                        &#x25EF;工签
+                                        {this.visa_types.加拿大工签} 
                                         </div>   
                                         <div className={"flex-inner-cell"}> 
-                                        &#x25EF;访问签
+                                        {this.visa_types.加拿大旅游签}
                                         </div>  
                                         <div className={"flex-inner-cell"}> 
-                                        &#x25EF;PR
+                                        {this.visa_types.加拿大移民} 
                                         </div>
                                         <div className={"flex-inner-cell"}> 
-                                        &#9673;公民
+                                        {this.visa_types.加拿大公民} 
                                         </div>  
                                     </div>
                                 </div>
@@ -281,7 +297,7 @@ class PrintResult extends Component {
                                     信息收集人签字
                                 </div>
                                 <div className={"flex-cell to-fill"}>
-                                    <small>YYYY-MM- DD</small>
+                                    <small>YYYY-MM-DD</small>
                                 </div>
                             </div>
                             <div className={"half-row"}>
@@ -296,7 +312,24 @@ class PrintResult extends Component {
                     </div>
                 </div>
                 <div className={"print-footer"}>
-
+                    <div className={"footer-info"}>
+                        {/* <img src={} /> */}
+                        <div className={"footer-text"}> 
+                            info@lpfirm.ca
+                        </div>
+                    </div>
+                    <div className={"footer-info"}>
+                        {/* <img src={} /> */}
+                        <div className={"footer-text"}> 
+                            www.lpfirm.ca
+                        </div>
+                    </div>
+                    <div className={"footer-info"}>
+                        {/* <img src={} /> */}
+                        <div className={"footer-text"}> 
+                            647-978-8567
+                        </div>
+                    </div>
                 </div>
             </div>
             <button onClick={() => this.handleDownloadPDF(this.props.callback)}>Download PDF</button> 
