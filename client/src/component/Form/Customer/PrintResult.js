@@ -1,16 +1,20 @@
 import React, { Component } from 'react';
 import NewWindow from 'react-new-window'
-import './PrintResult.css';
-import logo from "../../../img/logo&words.png";
-
 import jsPDF from 'jspdf';
 import html2canvas from "html2canvas";
+
+import './PrintResult.css';
+import logo from "../../../img/logo&words.png";
+import email from "../../../img/email.png";
+import internet from "../../../img/internet.png";
+import phone from "../../../img/phone.png";
+
 
 class PrintResult extends Component {
 
     constructor(props) {
         super(props);
-        this.printRef = React.createRef();
+        this.printRef = React.createRef(); // reference to the things that need to be printed
         this.visa_names = {
             加拿大学签: "学签",
             加拿大旅游签: "访问签",
@@ -24,9 +28,8 @@ class PrintResult extends Component {
         for (let visa_name in this.visa_names) {
             this.visa_types[visa_name] = <p> &#x25EF; {this.visa_names[visa_name]} </p>
         }
-        this.visa_types[this.props.detail.visa_type] = <p>&#9673; {this.visa_names[this.props.detail.visa_type]} </p>;
-        console.log(this.visa_types)
-        
+        // dynamically update the visa type by filling in the circle.
+        this.visa_types[this.props.detail.visa_type] = <p> &#9673; {this.visa_names[this.props.detail.visa_type]} </p>;
     }
 
     // html2canvas + jsPDF generate PDF
@@ -36,19 +39,23 @@ class PrintResult extends Component {
             document.body.appendChild(canvas);
             const imgData = canvas.toDataURL("image/png");
             const pdf = new jsPDF();
-            pdf.addImage(imgData, "PNG", 7, 7, 195, 245);
+            // pdf.addImage(imgData, "PNG", 7, 10, 199, 260); // base line
+            pdf.addImage(imgData, "PNG", 7, 10, 199, 255);
             pdf.save("downloadedPdf.pdf");
             document.body.removeChild(canvas) // remove the canvas that was used to create the pdf.
-            callback();
+            callback(); // callback to mutate state in parent component.
         });
-      };
+    };
 
     render () {
         return(
             <NewWindow>
-                <div className={"print-wrapper"} ref={this.printRef}>
+                {/* <div className={"btn-container"}>
+                    <button className={"btn btn-primary btn-customize"} onClick={() => this.handleDownloadPDF(this.props.callback)}>Download PDF</button> 
+                </div> */}
+                <div className={"print-wrapper"} ref={this.printRef}> 
                     <div className={"print-top"}>
-                        <img style={{width: "190px", height: "50px"}} src={logo} height={100}/>
+                        <img style={{width: "190px", height: "50px"}} src={logo}/>
                         <div className={"watermark"}>
                             <small>20 Amber Street, Unit 201</small>
                             <small>Markham, ON</small>
@@ -61,7 +68,7 @@ class PrintResult extends Component {
                     <div className={"print-body"}>
                         <div className={"flex-table"}>
                             <div className={"flex-row"}>
-                                <div className={"flex-cell"}>
+                                <div style={{fontSize: "12px", borderWidth:"1px 1px 1px 0px"}} className={"flex-cell"}>
                                     基本信息
                                 </div>
                             </div>
@@ -313,26 +320,28 @@ class PrintResult extends Component {
                 </div>
                 <div className={"print-footer"}>
                     <div className={"footer-info"}>
-                        {/* <img src={} /> */}
+                        <img className={"footer-image"} src={email} />
                         <div className={"footer-text"}> 
                             info@lpfirm.ca
                         </div>
                     </div>
                     <div className={"footer-info"}>
-                        {/* <img src={} /> */}
+                        <img className={"footer-image"} src={internet} />
                         <div className={"footer-text"}> 
                             www.lpfirm.ca
                         </div>
                     </div>
                     <div className={"footer-info"}>
-                        {/* <img src={} /> */}
+                        <img className={"footer-image"} src={phone} />
                         <div className={"footer-text"}> 
                             647-978-8567
                         </div>
                     </div>
                 </div>
             </div>
-            <button onClick={() => this.handleDownloadPDF(this.props.callback)}>Download PDF</button> 
+            <div className={"btn-container"}>
+                <button className={"btn btn-primary btn-customize"} onClick={() => this.handleDownloadPDF(this.props.callback)}>Download PDF</button> 
+            </div>
             </NewWindow>
         )
     }
