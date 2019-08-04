@@ -108,6 +108,7 @@ class UserAdministration extends Component{
             columns:columns,
             rows:rows
         };
+        
         return(
             <div className={"form-wrapper content-wrapper"}>
                 <div className={"section-wrapper"}>
