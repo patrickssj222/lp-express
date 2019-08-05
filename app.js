@@ -8,6 +8,9 @@ var cors = require('cors');
 var bodyParser = require('body-parser');
 var pdf = require('html-pdf');
 var pdfTemplate = require('./documents');
+// Passport update
+var passport = require('./passport');
+
 require('dotenv').config();
 
 var app = express();
@@ -46,8 +49,6 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json());
 
-
-
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var constantsRouter = require('./routes/constants');
@@ -61,6 +62,9 @@ app.use('/api/customers', customersRouter);
 app.use('/api/business',businessRouter);
 app.use('/api/geographic',geographicRouter);
 
+// Passport update
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.post('/create-pdf',(req,res)=>{
     pdf.create(pdfTemplate(req.body),{}).toFile('result.pdf',(err)=>{
@@ -70,8 +74,6 @@ app.post('/create-pdf',(req,res)=>{
         res.send(JSON.stringify({"status": 200, "error": null, "response": null}));
     });
 });
-
-
 
 app.get('/fetch-pdf',(req,res)=>{
     console.log(__dirname+'/result.pdf');

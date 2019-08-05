@@ -10,8 +10,8 @@ import reducer from './store/reducer';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import createSagaMiddleware from 'redux-saga';
 import rootSaga from './Saga/root';
-import { BrowserRouter } from 'react-router-dom'
-
+import { BrowserRouter } from 'react-router-dom';
+import passport from 'passport';
 
 const sagaMiddleware = createSagaMiddleware();
 

@@ -8,7 +8,8 @@ function* logIn(action){
             method: 'POST',
             url: '/api/users',
             data:{
-                user: action.username,
+                // user: action.username,
+                username: action.username,
                 password: action.password
             },
         });
