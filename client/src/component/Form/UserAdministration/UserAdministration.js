@@ -251,13 +251,27 @@ class UserAdministration extends Component{
                                         />
                                     </td>
                                     <td>
-                                        <Input
+                                        <CustomFormatInput
+                                            label={"固定底薪"}
+                                            name={"base_salary"}
+                                            value={this.state.new_user.base_salary}
+                                            format={[
+                                                {char: /\d/, repeat:5},
+                                                { exactly: "." },
+                                                {char: /\d/, repeat:2},
+                                                { exactly: "$" },
+                                            ]}
+                                            placeholder={"0000.00$"}
+                                            // handleChange={this.handleChange.bind(this)}
+                                            handleChange={this.handleSpecialChange}
+                                        />
+                                        {/* <Input
                                             label={"固定底薪"}
                                             type={"text"}
                                             name={"base_salary"}
                                             value={this.state.new_user.base_salary}
                                             handleChange={this.handleChange.bind(this)}
-                                        />
+                                        /> */}
                                     </td>
                                 </tr>
                                 <tr>
