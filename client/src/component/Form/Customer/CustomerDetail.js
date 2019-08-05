@@ -202,10 +202,6 @@ class CustomerDetail extends Component{
     }
 
     handlePrintDetail(){
-        /*this.props.history.push({
-            pathname: "/customer/detail/print",
-            state:this.state
-        });*/
         console.log("print state", this.state);
         axios.post('/create-pdf',this.state)
             .then((res)=>{
@@ -216,7 +212,12 @@ class CustomerDetail extends Component{
                     })
                 }
             })
-
+    }
+    handlePrintLayoutRedirect(){
+        this.props.history.push({
+            pathname: "/customer/detail/print",
+            state:this.state
+        });
     }
     findNested (obj, key, value){
         // Base case
@@ -286,7 +287,10 @@ class CustomerDetail extends Component{
                     <div className={"section-header"}>
                         <h3>基础信息</h3>
                         <div className={"button-group"}>
+{/*
                             <button className={"btn btn-primary"} onClick={this.handlePrintDetail.bind(this)}>下载pdf文档</button>
+*/}
+                            <button className={"btn btn-primary"} onClick={this.handlePrintLayoutRedirect.bind(this)}>打印界面</button>
                             {
                                 this.props.user.role==="管理员"?<button onClick={this.props.optionPopUp.bind(this, ["删除方式？"],[{name:"彻底删除",handler:this.props.forceDeleteCustomer.bind(this,this.props.customer[this.props.location.state.index])}])} className={"btn btn-danger"}>删除</button>:null
                             }

@@ -4,7 +4,7 @@ import * as actionTypes from "../../../store/action";
 import connect from "react-redux/es/connect/connect";
 import { withRouter } from 'react-router-dom';
 import "./PrintCustomerDetail.css";
-
+import logo from "../../../img/logo.jpg";
 class PrintCustomerDetail extends Component{
     constructor(props){
         super(props);
@@ -24,7 +24,7 @@ class PrintCustomerDetail extends Component{
         return(
             <div className={"print-wrapper"}>
                 <div className={"print-top"}>
-                    <h1>Logo</h1>
+                    <img src={logo} height={100}/>
                     <div className={"watermark"}>
                         <small>20 Amber Street, Unit 201</small>
                         <small>Markham, ON</small>
@@ -72,7 +72,7 @@ class PrintCustomerDetail extends Component{
                                 出生地
                             </div>
                             <div className={"flex-cell"}>
-                                {info.birth_geo.city+", "+info.birth_geo.province+", "+info.birth_geo.region}
+                                {info.birth_geo.city+" "+info.birth_geo.province+" "+info.birth_geo.region}
                             </div>
                         </div>
                         <div className={"flex-row"}>
@@ -142,7 +142,7 @@ class PrintCustomerDetail extends Component{
                                 中国现居地址
                             </div>
                             <div className={"flex-cell"}>
-                                {info.china_geo.city+", "+info.china_geo.province+", "+info.china_geo.region}
+                                {info.china_geo.city+" "+info.china_geo.province+" "+info.china_geo.region}
                             </div>
                         </div>
                         <div className={"flex-row"}>
@@ -172,7 +172,6 @@ class PrintCustomerDetail extends Component{
                                 信息收集人
                             </div>
                             <div className={"flex-cell"}>
-                                <div>{" 1"}</div>
                             </div>
                         </div>
                         <div className={"flex-row large-row"}>

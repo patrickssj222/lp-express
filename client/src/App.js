@@ -63,26 +63,30 @@ class App extends Component {
         if(this.props.user!=null){
             content =
                 <Router>
-                    <div className={"page-wrapper chiller-theme toggled"}>
-                        <Navigation/>
-                        <main className="page-content">
-                            <Switch>
-                                <Route exact path={'/'} component={Customer}/>
-                                <Route exact path={'/customer'} component={Customer}/>
-                                <Route exact path={'/all-customer'} component={AdminCustomer}/>
-                                <Route exact path={'/customer/detail'} component={CustomerDetail}/>
-                                <Route exact path={'/customer/detail/print'} component={PrintCustomerDetail}/>
-                                <Route exact path={'/customer/add'} component={AddCustomer}/>
-                                <Route exact path={'/business'} component={Business}/>
-                                <Route exact path={'/business/add'} component={AddBusiness}/>
-                                <Route exact path={'/business/detail'} component={BusinessDetail}/>
-                                <Route exact path={'/constants/price'} component={Price_Constants}/>
-                                <Route exact path={'/user'} component={UserAdministration}/>
-                                <Route exact path={'/china_geo'} component={ChinaGeographic}/>
-                            </Switch>
-                        </main>
-                        {popUp}
-                    </div>;
+                    <Switch>
+                        <Route exact path={'/customer/detail/print'} component={PrintCustomerDetail}/>
+                        <Route path={'/'}>
+                            <div className={"page-wrapper chiller-theme toggled"}>
+                                <Navigation/>
+                                <main className="page-content">
+                                    <Switch>
+                                        <Route exact path={'/'} component={Customer}/>
+                                        <Route exact path={'/customer'} component={Customer}/>
+                                        <Route exact path={'/all-customer'} component={AdminCustomer}/>
+                                        <Route exact path={'/customer/detail'} component={CustomerDetail}/>
+                                        <Route exact path={'/customer/add'} component={AddCustomer}/>
+                                        <Route exact path={'/business'} component={Business}/>
+                                        <Route exact path={'/business/add'} component={AddBusiness}/>
+                                        <Route exact path={'/business/detail'} component={BusinessDetail}/>
+                                        <Route exact path={'/constants/price'} component={Price_Constants}/>
+                                        <Route exact path={'/user'} component={UserAdministration}/>
+                                        <Route exact path={'/china_geo'} component={ChinaGeographic}/>
+                                    </Switch>
+                                </main>
+                                {popUp}
+                            </div>
+                        </Route>
+                    </Switch>
                 </Router>
 
         }
