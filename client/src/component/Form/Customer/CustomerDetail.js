@@ -258,7 +258,6 @@ class CustomerDetail extends Component{
             birth_geo={this.state.birth_geo}
             china_geo={this.state.china_geo}
             callback={this.printFinishCallback} // pass callback to child
-            name={"Preview PDF"}
             />
         }
 

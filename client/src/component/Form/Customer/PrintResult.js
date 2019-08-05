@@ -4,7 +4,7 @@ import jsPDF from 'jspdf';
 import html2canvas from "html2canvas";
 
 import './PrintResult.css';
-import logo from "../../../img/logo&words.png";
+import logo from "../../../img/logo&words1.1.png";
 import email from "../../../img/email.png";
 import internet from "../../../img/internet.png";
 import phone from "../../../img/phone.png";
@@ -40,7 +40,8 @@ class PrintResult extends Component {
             const imgData = canvas.toDataURL("image/png");
             const pdf = new jsPDF();
             // pdf.addImage(imgData, "PNG", 7, 10, 199, 260); // base line
-            pdf.addImage(imgData, "PNG", 7, 10, 199, 255);
+            // pdf.addImage(imgData, "PNG", 7, 10, 199, 255);
+            pdf.addImage(imgData, "PNG", 7, 15, 199, 245);
             pdf.save("downloadedPdf.pdf");
             document.body.removeChild(canvas) // remove the canvas that was used to create the pdf.
             callback(); // callback to mutate state in parent component.
@@ -48,11 +49,14 @@ class PrintResult extends Component {
     };
 
     render () {
+        // const features = {
+        //     width: "600px",
+        //     height: "630px"
+        // }
         return(
-            <NewWindow>
-                {/* <div className={"btn-container"}>
-                    <button className={"btn btn-primary btn-customize"} onClick={() => this.handleDownloadPDF(this.props.callback)}>Download PDF</button> 
-                </div> */}
+            <NewWindow
+            // features={features}
+            name={"Preview PDF"}>
                 <div className={"print-wrapper"} ref={this.printRef}> 
                     <div className={"print-top"}>
                         <img style={{width: "190px", height: "50px"}} src={logo}/>

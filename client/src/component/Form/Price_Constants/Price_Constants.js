@@ -10,6 +10,7 @@ class Price_Constants extends Component{
 
     componentWillMount() {
         console.log("price constants");
+        console.log(this.props);
         this.props.getPriceConstants();
     }
 

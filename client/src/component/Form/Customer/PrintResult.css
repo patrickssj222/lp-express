@@ -1,4 +1,4 @@
-body {
+body, html {
     margin: 0px;
     padding: 0px;
 }
@@ -8,6 +8,12 @@ body {
     display: flex;
     flex-direction: column;
     overflow: scroll;
+    width: 595px;
+    height: 625px;
+    max-width: 595px;
+    min-width: 595px;
+    max-height: 617px;
+    min-height: 617px;
 }
 
 .print-wrapper p {
