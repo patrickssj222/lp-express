@@ -16,6 +16,7 @@ const initialState = {
     business_payment:null,
     china_geo:null,
     users_list:null,
+    admin_dataset: null,
 };
 
 const reducer = (store = initialState, action) => {
@@ -101,6 +102,11 @@ const reducer = (store = initialState, action) => {
                 ...store,
                 china_geo: action.china_geo
             };
+        case actionTypes.SET_ADMIN_DATASET:
+            return{
+                ...store,
+                admin_dataset:action.admin_dataset
+            }
         default:
             return store;
     }

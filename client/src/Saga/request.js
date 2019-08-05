@@ -85,7 +85,7 @@ function* getCustomers(){
                     }
                 })
             });
-            console.log("RESULT",result);
+            console.log("All Customer RESULT",result);
             yield put({type:actionTypes.UPDATE_CUSTOMERS, customer:result});
             yield put({type:actionTypes.REMOVE_POP_UP});
         }
