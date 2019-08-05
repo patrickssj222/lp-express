@@ -10,8 +10,30 @@ import DropDown from "../DropDown/DropDown";
 class UserAdministration extends Component{
     constructor(props){
         super(props);
+        this.role_options = {
+            "行政部（一级）": ["部长"],
+            "外联部（二级）":["外联/主任", "外联/主管", "前台"],
+            "人力资源部（二级）":["人力资源/主任", "培训讲师/主管", "移民/讲师", "留学/讲师", "招聘/主管", "见习规划师"],
+            "文案部（一级）":["部长"],
+            "签证部（二级）":["主任", "文案助理"],
+            "申请部（二级）":["主任", "文案助理", "申请助理"],
+            "市场部（一级）":["部长"],
+            "传媒部（二级）":["主任", "设计/主管", "设计师", "IT/主管", "网络工程师", "新媒体/主管", "文字编辑"],
+            "业务部（二级）":[null]
+        }
         this.state={
             add:false
+            // role_options: {
+            //     "行政部（一级）": ["部长"],
+            //     "外联部（二级）":["外联/主任", "外联/主管", "前台"],
+            //     "人力资源部（二级）":["人力资源/主任", "培训讲师/主管", "移民/讲师", "留学/讲师", "招聘/主管", "见习规划师"],
+            //     "文案部（一级）":["部长"],
+            //     "签证部（二级）":["主任", "文案助理"],
+            //     "申请部（二级）":["主任", "文案助理", "申请助理"],
+            //      "市场部（一级）":["部长"],
+            //      "传媒部（二级）":["主任", "设计/主管", "设计师", "IT/主管", "网络工程师", "新媒体/主管", "文字编辑"],
+            //      "业务部（二级）":[null]
+            // }
         }
     }
 
@@ -55,7 +77,7 @@ class UserAdministration extends Component{
                 role: "",
                 base_salary: "",
                 rights: "",
-                user_name_cell: "",
+                user_name: "",
                 pwd: "",
             }
         })
@@ -88,6 +110,11 @@ class UserAdministration extends Component{
 
             },
             {
+                label: 'Salary',
+                field: 'salary',
+                sort: 'asc',
+            },
+            {
                 label: '',
                 field: 'delete_button',
                 sort: 'asc',
@@ -99,7 +126,8 @@ class UserAdministration extends Component{
             rows = Object.keys(users_list).map((index)=>{
                 return({
                     name: users_list[index].name,
-                    role:users_list[index].role,
+                    role: users_list[index].role,
+                    salary: users_list[index].base_salary,
                     delete_button:<button className={"btn btn-danger"} onClick={this.handleDelete.bind(this, users_list[index].id)}>删除</button>
                 })
             });
@@ -206,7 +234,7 @@ class UserAdministration extends Component{
                                     <td>
                                         <DropDown
                                             label={"入职部门"}
-                                            options={["行政部（一级）","外联部（二级）", "人力资源部（二级）", "文案部（一级）", "签证部（二级）", "申请部（二级）", "市场部（二级）", "传媒部（二级）", "业务部（二级）"]}
+                                            options={["行政部（一级）","外联部（二级）", "人力资源部（二级）", "文案部（一级）", "签证部（二级）", "申请部（二级）", "市场部（一级）", "传媒部（二级）", "业务部（二级）"]}
                                             name={"department"}
                                             value={this.state.new_user.department}
                                             handleChange={this.handleChange.bind(this)}
@@ -216,7 +244,7 @@ class UserAdministration extends Component{
                                         <DropDown
                                             label={"工作职位"}
                                             // TODO: dynamically update options according to the department
-                                            options={["行政部（一级）","外联部（二级）", "人力资源部（二级）", "文案部（一级）", "签证部（二级）", "申请部（二级）", "市场部（二级）", "传媒部（二级）", "业务部（二级）"]}
+                                            options={this.role_options[this.state.new_user.department] || ["部长"]}
                                             name={"role"}
                                             value={this.state.new_user.role}
                                             handleChange={this.handleChange.bind(this)}
@@ -243,17 +271,12 @@ class UserAdministration extends Component{
                                         />
                                     </td>
                                     <td>
-                                        {/* <Input
+                                        <Input
                                             label={"账号"}
                                             type={"text"}
-                                            name={"user_name_cell"}
-                                            value={this.state.new_user.user_name_cell}
+                                            name={"user_name"}
+                                            value={this.state.new_user.user_name}
                                             handleChange={this.handleChange.bind(this)}
-                                        /> */}
-                                        <PhoneInput label={"账号"}
-                                               name={"phone"}
-                                               value={this.state.new_user.phone}
-                                               handleChange={this.handleChange}
                                         />
                                     </td>
                                     <td>
