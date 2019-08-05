@@ -4,7 +4,7 @@ import jsPDF from 'jspdf';
 import html2canvas from "html2canvas";
 
 import './PrintResult.css';
-import logo from "../../../img/logo&words1.1.png";
+import logo from "../../../img/logo.jpg";
 import email from "../../../img/email.png";
 import internet from "../../../img/internet.png";
 import phone from "../../../img/phone.png";
@@ -59,7 +59,11 @@ class PrintResult extends Component {
             name={"Preview PDF"}>
                 <div className={"print-wrapper"} ref={this.printRef}> 
                     <div className={"print-top"}>
-                        <img style={{width: "190px", height: "50px"}} src={logo}/>
+                        <div className={"logo-box"}>
+                            <img style={{width: "170px", height: "45px"}} src={logo}/>
+                            <div className={"logo-text-bottom"}> 我们能做的比你想象的更多</div>
+                            <div className={"logo-text-right"}> 加诺咨询 </div>
+                        </div>
                         <div className={"watermark"}>
                             <small>20 Amber Street, Unit 201</small>
                             <small>Markham, ON</small>
