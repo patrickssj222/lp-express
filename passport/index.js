@@ -13,9 +13,8 @@ passport.use('local-login', new Strategy(
                     username: results[0].username,
                     role: results[0].role,
                 }
-                jwt.sign(user, 'secret_key', function(err, token){
-                    done(null, results, token);
-                });
+                const token = jwt.sign(user, 'secret_key');
+                done(null, results, token);
             }
         })
     })

@@ -30,7 +30,12 @@ function* addUser(action){
         const response = yield call (axios, {
             method: 'POST',
             url: '/api/users/add',
-            data:action.user
+            data:action.user,
+            /*
+            headers: {
+                'authorization': 'Bearer ' + action.token,
+            }
+            */
         });
         if(response.data.status>=200 && response.data.status<300){
             yield getAllUsers();

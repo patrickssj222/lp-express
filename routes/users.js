@@ -1,18 +1,20 @@
 var express = require('express');
 var router = express.Router();
 var passport = require('../passport');
-
+// checkAuth is used for compapre tokens
+var checkAuth = require('../middleware/check-auth');
 /* GET users listing. */
 
 router.post('/', function(req, res, next){
     passport.authenticate('local-login', function(error, user, info){
         if (error){
-            res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
+            res.send(JSON.stringify({"status": 500, "error": error, "response": null, "token": null}));
+            //If there is error, we send the error in the error section with 500 status
         } else {
-            console.log(info);
-            res.send(JSON.stringify({"status": 200, "error": null, "response": user}));
+            res.send(JSON.stringify({"status": 200, "error": null, "response": user, "token": info}));
+            //If there is no error, all is good and response is 200OK.
         }
-    })(req, res, next); 
+    })(req, res, next);
 });
 
 router.post('/all/', function(req, res, next) {

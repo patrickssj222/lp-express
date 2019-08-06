@@ -8,7 +8,6 @@ function* logIn(action){
             method: 'POST',
             url: '/api/users',
             data:{
-                // user: action.username,
                 username: action.username,
                 password: action.password
             },
@@ -16,7 +15,7 @@ function* logIn(action){
         if(response.data.status>=200 && response.data.status<300){
             const result = response.data.response;
             if(result.length===1){
-                yield put({type:actionTypes.LOG_IN,user:result[0]});
+                yield put({type:actionTypes.LOG_IN,user:result[0],token:response.data.token});
             }
         }
         else{
