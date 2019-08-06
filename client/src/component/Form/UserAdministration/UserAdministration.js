@@ -103,19 +103,41 @@ class UserAdministration extends Component{
 
             },
             {
-                label: '职务',
+                label: '性别',
+                field: 'gender',
+                sort: 'asc',
+
+            },
+            {
+                label: '出生日期',
+                field: 'birth_date',
+                sort: 'asc',
+
+            },
+            {
+                label: '在加身份',
                 field: 'role',
                 sort: 'asc',
 
             },
             {
-                label: 'Salary',
-                field: 'salary',
+                label: '权限',
+                field: 'rights',
+                sort: 'asc',
+            },
+            {
+                label: '账号/手机号',
+                field: 'user_name',
+                sort: 'asc',
+            },
+            {
+                label: '密码',
+                field: 'pwd',
                 sort: 'asc',
             },
             {
                 label: '',
-                field: 'delete_button',
+                field: 'adjust_button',
                 sort: 'asc',
             },
         ];
@@ -125,9 +147,14 @@ class UserAdministration extends Component{
             rows = Object.keys(users_list).map((index)=>{
                 return({
                     name: users_list[index].name,
+                    gender: users_list[index].gender,
+                    birth_date: users_list[index].birth_date,
                     role: users_list[index].role,
-                    salary: users_list[index].base_salary,
-                    delete_button:<button className={"btn btn-danger"} onClick={this.handleDelete.bind(this, users_list[index].id)}>删除</button>
+                    rights: users_list[index].rights,
+                    user_name: users_list[index].user_name,
+                    pwd: users_list[index].pwd,
+                    adjust_button: <button className={"btn btn-primary"}> 修改</button>
+                    // delete_button:<button className={"btn btn-danger"} onClick={this.handleDelete.bind(this, users_list[index].id)}>删除</button>
                 })
             });
         }
