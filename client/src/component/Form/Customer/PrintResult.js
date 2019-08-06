@@ -1,13 +1,9 @@
 import React, { Component } from 'react';
 import NewWindow from 'react-new-window'
-import jsPDF from 'jspdf';
-import html2canvas from "html2canvas";
+// import jsPDF from 'jspdf';
+// import html2canvas from "html2canvas";
 
 import './PrintResult.css';
-import logo from "../../../img/logo.jpg";
-import email from "../../../img/email.png";
-import internet from "../../../img/internet.png";
-import phone from "../../../img/phone.png";
 
 
 class PrintResult extends Component {
@@ -31,38 +27,37 @@ class PrintResult extends Component {
         // dynamically update the visa type by filling in the circle.
         this.visa_types[this.props.detail.visa_type] = <p> &#9673; {this.visa_names[this.props.detail.visa_type]} </p>;
     }
+
+    componentDidMount = () => {
+        
+    }
     
-    // html2canvas + jsPDF generate PDF
-    // html -> canvas -> pdf
-    handleDownloadPDF = (callback) => {
-        html2canvas(this.printRef.current).then(function(canvas) {
-            document.body.appendChild(canvas);
-            const imgData = canvas.toDataURL("image/png");
-            const pdf = new jsPDF();
-            // pdf.addImage(imgData, "PNG", 7, 10, 199, 260); // base line
-            // pdf.addImage(imgData, "PNG", 7, 10, 199, 255);
-            pdf.addImage(imgData, "PNG", 7, 15, 199, 245);
-            pdf.save("downloadedPdf.pdf");
-            document.body.removeChild(canvas) // remove the canvas that was used to create the pdf.
-            callback(); // callback to mutate state in parent component.
-        });
-    };
+    // // html2canvas + jsPDF generate PDF
+    // // html -> canvas -> pdf
+    // handleDownloadPDF = (callback) => {
+    //     html2canvas(this.printRef.current).then(function(canvas) {
+    //         document.body.appendChild(canvas);
+    //         const imgData = canvas.toDataURL("image/png");
+    //         const pdf = new jsPDF();
+    //         // pdf.addImage(imgData, "PNG", 7, 10, 199, 260); // base line
+    //         // pdf.addImage(imgData, "PNG", 7, 10, 199, 255);
+    //         pdf.addImage(imgData, "PNG", 7, 15, 199, 245);
+    //         pdf.save("downloadedPdf.pdf");
+    //         document.body.removeChild(canvas) // remove the canvas that was used to create the pdf.
+    //         callback(); // callback to mutate state in parent component.
+    //     });
+    // };
 
     render () {
-        // const features = {
-        //     width: "600px",
-        //     height: "630px"
-        // }
         return(
             <NewWindow
-            // features={features}
             name={"Preview PDF"}>
                 <div className={"print-wrapper"} ref={this.printRef}> 
                     <div className={"print-top"}>
                         <div className={"logo-box"}>
-                            <img style={{width: "170px", height: "45px"}} src={logo}/>
-                            <div className={"logo-text-bottom"}> 我们能做的比你想象的更多</div>
-                            <div className={"logo-text-right"}> 加诺咨询 </div>
+                            <img style={{width: "400px", height: "120px"}} src={window.location.origin + '/img/logo&words1.1.png'}/>
+                            {/* <div className={"logo-text-bottom"}> 我们能做的比你想象的更多</div>
+                            <div className={"logo-text-right"}> 加诺咨询 </div> */}
                         </div>
                         <div className={"watermark"}>
                             <small>20 Amber Street, Unit 201</small>
@@ -76,7 +71,7 @@ class PrintResult extends Component {
                     <div className={"print-body"}>
                         <div className={"flex-table"}>
                             <div className={"flex-row"}>
-                                <div style={{fontSize: "12px", borderWidth:"1px 1px 1px 0px"}} className={"flex-cell"}>
+                                <div style={{fontSize: "24px", borderWidth:"1px 1px 1px 0px"}} className={"flex-cell"}>
                                     基本信息
                                 </div>
                             </div>
@@ -328,28 +323,30 @@ class PrintResult extends Component {
                 </div>
                 <div className={"print-footer"}>
                     <div className={"footer-info"}>
-                        <img className={"footer-image"} src={email} />
+                        <img className={"footer-image"} src={window.location.origin + '/img/email.png'} />
                         <div className={"footer-text"}> 
                             info@lpfirm.ca
                         </div>
                     </div>
                     <div className={"footer-info"}>
-                        <img className={"footer-image"} src={internet} />
+                        <img className={"footer-image"} src={window.location.origin + '/img/internet.png'} />
                         <div className={"footer-text"}> 
                             www.lpfirm.ca
                         </div>
                     </div>
                     <div className={"footer-info"}>
-                        <img className={"footer-image"} src={phone} />
+                        <img className={"footer-image"} src={window.location.origin + '/img/phone.png'} />
                         <div className={"footer-text"}> 
                             647-978-8567
                         </div>
                     </div>
                 </div>
             </div>
-            <div className={"btn-container"}>
-                <button className={"btn btn-primary btn-customize"} onClick={() => this.handleDownloadPDF(this.props.callback)}>Download PDF</button> 
-            </div>
+            {/* <div className={"btn-container"}> */}
+            {/* <button className={"btn btn-primary btn-customize"} onClick={() => window.print()}>Download PDF</button>  */}
+
+                {/* <button className={"btn btn-primary btn-customize"} onClick={() => this.handleDownloadPDF(this.props.callback)}>Download PDF</button>  */}
+            {/* </div> */}
             </NewWindow>
         )
     }
