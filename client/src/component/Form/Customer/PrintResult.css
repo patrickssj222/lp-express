@@ -156,10 +156,10 @@ body, html {
 }
 
 .print-wrapper small{
-    font-size: 22px;
+    font-size: 17px;
     position: relative;
-    top: 27%;
-    color: gray;
+    top: 34%;
+    color: rgb(191, 191, 191);
 }
 
 .print-wrapper .print-footer {
