@@ -10,20 +10,9 @@ class AdminCustomer extends Component{
     }
 
     componentWillMount() {
+        console.log("admin will mount");
         this.props.getAdminDataset(this.props.history);
-        if(!this.props.china_geo){
-            this.props.getChinaGeo();
-        }
     }
-
-    handleRedirect(path, index){
-        this.props.history.push({
-            pathname: path,
-            state: { index:index }
-        })
-    }
-
-
     render(){
         return(
             <div className={"form-wrapper content-wrapper"}>
@@ -74,6 +63,7 @@ const mapDispatchToProps = dispatch =>{
         getChinaGeo:()=>dispatch({type:actionTypes.SAGA_GET_CHINA_GEO}),
         getAdminDataset:(history)=>dispatch({type:actionTypes.SAGA_ADMIN_DATASET, history:history}),
         popUp: (status, message, action) => dispatch({type:actionTypes.POP_UP, message:message, status:status, action:action}),
+        removePopUp: ()=>dispatch({type:actionTypes.REMOVE_POP_UP})
     };
 };
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(AdminCustomer));

@@ -5,6 +5,7 @@ import connect from "react-redux/es/connect/connect";
 import { ClipLoader } from 'react-spinners';
 
 const LoadPopUp = (props) => {
+    console.log("LOADING POPUP", props.popUp);
     return(
         <div className={"pop-up"}>
             <div className="modal-dialog modal-confirm">

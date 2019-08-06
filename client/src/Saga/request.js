@@ -69,7 +69,7 @@ function* updatePriceConstants(action){
         console.log(e);
     }
 }
-function* getCustomers(){
+export function* getCustomers(){
     yield put({type:actionTypes.POP_UP, status:"loading", message:["获取客户列表..."],onExit:null});
     try{
         const response = yield call (axios, {
@@ -77,6 +77,7 @@ function* getCustomers(){
             url: '/api/customers/all',
         });
         if(response.data.status>=200 && response.data.status<300){
+            console.log("Done");
             const result = response.data.response;
             result.forEach((customer, index)=>{
                 Object.keys(customer).forEach((key)=>{

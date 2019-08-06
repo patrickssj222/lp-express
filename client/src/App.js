@@ -68,6 +68,7 @@ class App extends Component {
                         <Route path={'/'}>
                             <div className={"page-wrapper chiller-theme toggled"}>
                                 <Navigation/>
+                                {popUp}
                                 <main className="page-content">
                                     <Switch>
                                         <Route exact path={'/'} component={Customer}/>
@@ -83,7 +84,6 @@ class App extends Component {
                                         <Route exact path={'/china_geo'} component={ChinaGeographic}/>
                                     </Switch>
                                 </main>
-                                {popUp}
                             </div>
                         </Route>
                     </Switch>

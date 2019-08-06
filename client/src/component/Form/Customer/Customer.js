@@ -43,7 +43,6 @@ class Customer extends Component{
         }
     };
     render(){
-        console.log("CUSTOMER PROP", this.props.customer);
         const columns = [
             {
                 label: '姓名',

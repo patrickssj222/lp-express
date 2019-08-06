@@ -2,8 +2,8 @@ import * as actionTypes from '../store/action';
 import {takeEvery, put,call,delay,select} from 'redux-saga/effects';
 import axios from 'axios';
 
-function* getAllUsers(){
-    yield put({type:actionTypes.POP_UP, status:"loading", message:["获取缴款信息..."],onExit:null});
+export function* getAllUsers(){
+    yield put({type:actionTypes.POP_UP, status:"loading", message:["获取所有用户信息..."],onExit:null});
     try{
         const response = yield call (axios, {
             method: 'POST',
@@ -11,6 +11,7 @@ function* getAllUsers(){
         });
         if(response.data.status>=200 && response.data.status<300){
             const result = response.data.response;
+            console.log("ALL USER", result);
             yield put({type:actionTypes.UPDATE_USERS_LIST, users_list:result});
             yield put({type:actionTypes.REMOVE_POP_UP});
         }

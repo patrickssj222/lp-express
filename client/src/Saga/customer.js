@@ -2,7 +2,8 @@ import * as actionTypes from '../store/action';
 import {takeEvery, put,call,delay,select} from 'redux-saga/effects';
 import axios from 'axios';
 import React from "react";
-
+import {getCustomers} from "./request";
+import {getAllUsers} from "./users";
 function findNested (obj, key, value){
     // Base case
     if (obj[key] === value) {
@@ -130,14 +131,17 @@ function* populateSet(action){
 
 
 function* adminDataSet(action){
-    yield put({type:actionTypes.SAGA_GET_ALL_USERS});
-    yield put({type:actionTypes.SAGA_GET_CUSTOMERS});
     yield put({type:actionTypes.POP_UP, status:"loading", message:["正在生成公司客户列表..."],onExit:null});
-    yield delay(300);
+    const state = yield select;
+    if(!state.users_list){
+        yield call(getAllUsers);
+    }
+    yield call(getCustomers);
     const data = yield populateSet(action);
     yield put({type:actionTypes.SET_ADMIN_DATASET, admin_dataset:data});
     yield put({type:actionTypes.REMOVE_POP_UP});
 }
+
 export function* watchSagaCustomerRequests() {
     yield takeEvery(actionTypes.SAGA_ADMIN_DATASET, adminDataSet);
 }
