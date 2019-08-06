@@ -4,9 +4,10 @@ import * as actionTypes from '../../../store/action';
 import { MDBDataTable } from "mdbreact";
 import "../Form.css";
 import Input from "../Input/Input";
-import PhoneInput from "../Input/PhoneInput";
 import CustomFormatInput from "../Input/CustomFormatInput";
+import CurrencyInput from "../Input/CurrencyInput"
 import DropDown from "../DropDown/DropDown";
+
 class UserAdministration extends Component{
     constructor(props){
         super(props);
@@ -23,17 +24,6 @@ class UserAdministration extends Component{
         }
         this.state={
             add:false
-            // role_options: {
-            //     "行政部（一级）": ["部长"],
-            //     "外联部（二级）":["外联/主任", "外联/主管", "前台"],
-            //     "人力资源部（二级）":["人力资源/主任", "培训讲师/主管", "移民/讲师", "留学/讲师", "招聘/主管", "见习规划师"],
-            //     "文案部（一级）":["部长"],
-            //     "签证部（二级）":["主任", "文案助理"],
-            //     "申请部（二级）":["主任", "文案助理", "申请助理"],
-            //      "市场部（一级）":["部长"],
-            //      "传媒部（二级）":["主任", "设计/主管", "设计师", "IT/主管", "网络工程师", "新媒体/主管", "文字编辑"],
-            //      "业务部（二级）":[null]
-            // }
         }
     }
 
@@ -62,6 +52,15 @@ class UserAdministration extends Component{
         }));
     }
 
+    handleCurrencyChange = (event, maskedvalue, floatvalue) => {
+        this.setState((prevState) => ({
+            ...prevState,
+            new_user: {
+                ...prevState.new_user,
+                base_salary: maskedvalue
+            }
+        }));
+    }
 
     handleAdd(){
         this.setState({
@@ -243,7 +242,6 @@ class UserAdministration extends Component{
                                     <td>
                                         <DropDown
                                             label={"工作职位"}
-                                            // TODO: dynamically update options according to the department
                                             options={this.role_options[this.state.new_user.department] || ["部长"]}
                                             name={"role"}
                                             value={this.state.new_user.role}
@@ -251,7 +249,7 @@ class UserAdministration extends Component{
                                         />
                                     </td>
                                     <td>
-                                        <CustomFormatInput
+                                        {/* <CustomFormatInput
                                             label={"固定底薪"}
                                             name={"base_salary"}
                                             value={this.state.new_user.base_salary}
@@ -264,14 +262,17 @@ class UserAdministration extends Component{
                                             placeholder={"0000.00$"}
                                             // handleChange={this.handleChange.bind(this)}
                                             handleChange={this.handleSpecialChange}
-                                        />
-                                        {/* <Input
+                                        /> */}
+                                        <CurrencyInput
                                             label={"固定底薪"}
+                                            prefix="$"
+                                            precision="2"
                                             type={"text"}
                                             name={"base_salary"}
                                             value={this.state.new_user.base_salary}
-                                            handleChange={this.handleChange.bind(this)}
-                                        /> */}
+                                            // handleChange={this.handleChange.bind(this)}
+                                            onChangeEvent={this.handleCurrencyChange}
+                                        />
                                     </td>
                                 </tr>
                                 <tr>
