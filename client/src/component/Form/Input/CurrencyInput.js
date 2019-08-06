@@ -6,9 +6,10 @@ const CurrencyInput = (props) => {
         <div className={"input-group"}>
             <h5>{props.label}</h5>
             <ReactCurrencyInput 
-                decimalSeparator={","} 
-                thousandSeparator={"."} 
+                decimalSeparator={"."} 
+                thousandSeparator={","} 
                 prefix={props.prefix} // "$"
+                suffix={props.suffix}
                 precision={props.precision}
                 style={props.style} 
                 type={props.type} 
@@ -17,7 +18,6 @@ const CurrencyInput = (props) => {
                 disabled={props.disabled} 
                 className="form-control" 
                 value={props.value} 
-                onChange={props.handleChange.bind(this)} // deprecated "onChange"
                 onChangeEvent={props.onChangeEvent}
                 />
         </div>

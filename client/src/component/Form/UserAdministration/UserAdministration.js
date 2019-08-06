@@ -265,7 +265,7 @@ class UserAdministration extends Component{
                                         /> */}
                                         <CurrencyInput
                                             label={"固定底薪"}
-                                            prefix="$"
+                                            suffix="$"
                                             precision="2"
                                             type={"text"}
                                             name={"base_salary"}
