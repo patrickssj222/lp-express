@@ -30,15 +30,23 @@ class LogIn extends Component {
                             <input type="password" id="inputPassword" className="form-control" placeholder="Password" name="password" value={password} onChange={this.handleChange} required/>
                             <button className="btn btn-lg btn-primary btn-block btn-signin" onClick={this.props.logIn.bind(this,email,password)}>Sign in</button>
                         </div>
+                        {this.props.LoginError && <p className="login-error">{this.props.LoginError}</p>}
                     </div>
                 </div>
             </div>
         );
     }
 }
+
+const mapStateToProps = state => {
+    return{
+        LoginError:state.LoginError,
+    };
+};
+
 const mapDispatchToProps = dispatch => {
     return{
         logIn: (username,password) => dispatch({type:actionTypes.SAGA_LOG_IN, username:username, password:password}),
     };
 };
-export default connect(null,mapDispatchToProps)(LogIn);
+export default connect(mapStateToProps,mapDispatchToProps)(LogIn);

@@ -6,7 +6,7 @@ passport.use('local-login', new Strategy(
     {passReqToCallback: true},
     function(req, username, password, done) {
         req.res.locals.pool.query("SELECT * FROM user WHERE username = '"+ username + "' AND password = '"+ password + "'" , function (error, results, fields) {
-            if (error){
+            if (results.length === 0){
                 done("Incorrect Email Address or Password");
             } else {
                 const user = {

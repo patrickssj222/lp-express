@@ -15,10 +15,11 @@ function* logIn(action){
         if(response.data.status>=200 && response.data.status<300){
             const result = response.data.response;
             if(result.length===1){
-                yield put({type:actionTypes.LOG_IN,user:result[0],token:response.data.token});
+                yield put({type:actionTypes.LOG_IN,user:result[0],token:response.data.token,LoginError:null});
             }
         }
         else{
+            yield put({type:actionTypes.LOG_IN_ERROR, LoginError:response.data.error});
             console.log("Error " + response.data.status);
         }
     }

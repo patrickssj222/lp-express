@@ -16,6 +16,7 @@ const initialState = {
     business_payment:null,
     china_geo:null,
     users_list:null,
+    LoginError: null,
     token: null,
 };
 
@@ -28,9 +29,14 @@ const reducer = (store = initialState, action) => {
             return{
                 ...store,
                 user:action.user,
+                LoginError: action.LoginError,
                 token:action.token
             };
-
+        case actionTypes.LOG_IN_ERROR:
+            return{
+                ...store,
+                LoginError:action.LoginError,
+            };
         case actionTypes.UPDATE_PRICE_CONSTANTS:
             return{
                 ...store,
