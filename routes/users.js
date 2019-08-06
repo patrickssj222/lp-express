@@ -11,6 +11,8 @@ router.post('/', function(req, res, next){
             res.send(JSON.stringify({"status": 500, "error": error, "response": null, "token": null}));
             //If there is error, we send the error in the error section with 500 status
         } else {
+            req.session.name = user[0].name;
+            req.session.role = user[0].role;
             res.send(JSON.stringify({"status": 200, "error": null, "response": user, "token": info}));
             //If there is no error, all is good and response is 200OK.
         }

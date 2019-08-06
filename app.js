@@ -7,6 +7,7 @@ var mysql = require("mysql");
 var cors = require('cors');
 var bodyParser = require('body-parser');
 var pdf = require('html-pdf');
+var session = require('express-session');
 var pdfTemplate = require('./documents');
 // Passport update
 var passport = require('./passport');
@@ -49,6 +50,19 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json());
 
+// Session Update
+app.use(session({
+    name: "La Promesse Inc.",
+    resave: false,
+    saveUninitialized: false,
+    secret: "this_is_secret_key",
+    cookie: {
+        maxAge: 1000 * 60 * 30, // 30 minutes
+        sameSite: true,
+        secure: true,
+    }
+}));
+
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var constantsRouter = require('./routes/constants');
@@ -65,6 +79,8 @@ app.use('/api/geographic',geographicRouter);
 // Passport update
 app.use(passport.initialize());
 app.use(passport.session());
+
+// Session update
 
 app.post('/create-pdf',(req,res)=>{
     pdf.create(pdfTemplate(req.body),{}).toFile('result.pdf',(err)=>{

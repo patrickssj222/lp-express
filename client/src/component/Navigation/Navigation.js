@@ -145,7 +145,7 @@ class Navigation extends Component {
                         </div>
                     </div>
                     {
-                        this.props.user .role==="管理员"?adminContent:wenanContent
+                        this.props.user.role==="管理员"?adminContent:wenanContent
                     }
                 </div>
             </nav>

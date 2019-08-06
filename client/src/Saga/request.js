@@ -15,6 +15,7 @@ function* logIn(action){
         if(response.data.status>=200 && response.data.status<300){
             const result = response.data.response;
             if(result.length===1){
+                // localStorage.setItem('Name', result[0].name);
                 yield put({type:actionTypes.LOG_IN,user:result[0],token:response.data.token,LoginError:null});
             }
         }
