@@ -46,6 +46,28 @@ function* addUser(action){
     }
 }
 
+function* editUser(action){
+    yield put({type:actionTypes.POP_UP, status:"loading", message:["正在更新用户..."],onExit:null});
+    try{
+        const response = yield call (axios, {
+            method: 'POST',
+            url: '/api/users/edit',
+            data:action.user
+        });
+        if(response.data.status>=200 && response.data.status<300){
+            yield getAllUsers();
+            yield put({type:actionTypes.REMOVE_POP_UP});
+        }
+        else{
+            yield put({type:actionTypes.REMOVE_POP_UP});
+            yield put({type:actionTypes.POP_UP, status:"failure", message:["Error: "+response.data.status],onExit:null});
+        }
+    }
+    catch(e){
+        console.log(e);
+    }
+}
+
 function* deleteUser(action){
     yield put({type:actionTypes.POP_UP, status:"loading", message:["正在删除用户..."],onExit:null});
     try{
@@ -73,5 +95,6 @@ function* deleteUser(action){
 export function* watchSagaUserRequests() {
     yield takeEvery(actionTypes.SAGA_GET_ALL_USERS, getAllUsers);
     yield takeEvery(actionTypes.SAGA_ADD_USER, addUser);
+    yield takeEvery(actionTypes.SAGA_EDIT_USER, editUser);
     yield takeEvery(actionTypes.SAGA_DELETE_USER, deleteUser);
 }

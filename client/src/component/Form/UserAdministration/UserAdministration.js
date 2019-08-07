@@ -84,7 +84,13 @@ class UserAdministration extends Component{
                     rights: users_list[index].rights,
                     user_name: users_list[index].user_name,
                     pwd: users_list[index].pwd,
-                    adjust_button: <button className={"btn btn-primary"} onClick={this.handleEdit}> 修改</button>
+                    adjust_button: 
+                    <Link to={{
+                        pathname: "/user/edit/",
+                        user: users_list[index]
+                    }}> 
+                        <button className={"btn btn-primary"}> 修改</button>
+                    </Link>
                     // delete_button:<button className={"btn btn-danger"} onClick={this.handleDelete.bind(this, users_list[index].id)}>删除</button>
                 })
             });
