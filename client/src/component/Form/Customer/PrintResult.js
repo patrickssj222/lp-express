@@ -27,10 +27,6 @@ class PrintResult extends Component {
         // dynamically update the visa type by filling in the circle.
         this.visa_types[this.props.detail.visa_type] = <p> &#9673; {this.visa_names[this.props.detail.visa_type]} </p>;
     }
-
-    componentDidMount = () => {
-        
-    }
     
     // // html2canvas + jsPDF generate PDF
     // // html -> canvas -> pdf
@@ -342,11 +338,6 @@ class PrintResult extends Component {
                     </div>
                 </div>
             </div>
-            {/* <div className={"btn-container"}> */}
-            {/* <button className={"btn btn-primary btn-customize"} onClick={() => window.print()}>Download PDF</button>  */}
-
-                {/* <button className={"btn btn-primary btn-customize"} onClick={() => this.handleDownloadPDF(this.props.callback)}>Download PDF</button>  */}
-            {/* </div> */}
             </NewWindow>
         )
     }

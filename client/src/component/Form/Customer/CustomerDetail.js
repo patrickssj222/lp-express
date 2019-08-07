@@ -220,10 +220,15 @@ class CustomerDetail extends Component{
     }
 
     handlePrintLayoutRedirect(){
-        console.log("creating a pdf now");
-        this.setState({
-            pdfCreated: true
-        })
+        if (this.state.pdfCreated == true) {
+            this.setState({
+                pdfCreated:false
+            })
+        } else {
+            this.setState({
+                pdfCreated: true
+            })
+        }
     }
 
     findNested (obj, key, value){
@@ -243,12 +248,6 @@ class CustomerDetail extends Component{
             }
         }
     };
-
-    printFinishCallback = () => {
-        this.setState({
-            pdfCreated: false // set the value to false so as prepare to reprint again.
-        })
-    }
 
     render(){
         let newWindow = null;
@@ -313,10 +312,7 @@ class CustomerDetail extends Component{
                     <div className={"section-header"}>
                         <h3>基础信息</h3>
                         <div className={"button-group"}>
-{/*
-                            <button className={"btn btn-primary"} onClick={this.handlePrintDetail.bind(this)}>下载pdf文档</button>
-*/}
-                            <button className={"btn btn-primary"} onClick={this.handlePrintLayoutRedirect.bind(this)}>打印界面</button>
+                            <button className={"btn btn-primary"} onClick={this.handlePrintLayoutRedirect.bind(this)}>{this.state.pdfCreated ? "再次打印" : "打印界面"}</button>
                             {
                                 this.props.user.role==="管理员"?<button onClick={this.props.optionPopUp.bind(this, ["删除方式？"],[{name:"彻底删除",handler:this.props.forceDeleteCustomer.bind(this,this.props.customer[this.props.location.state.index])}])} className={"btn btn-danger"}>删除</button>:null
                             }
