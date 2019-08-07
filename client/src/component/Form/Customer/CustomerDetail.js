@@ -224,6 +224,12 @@ class CustomerDetail extends Component{
             this.setState({
                 pdfCreated:false
             })
+            // work around to enable reprint
+            setTimeout(() => {
+                this.setState({
+                    pdfCreated: true
+                })
+            }, 150);
         } else {
             this.setState({
                 pdfCreated: true
@@ -312,7 +318,7 @@ class CustomerDetail extends Component{
                     <div className={"section-header"}>
                         <h3>基础信息</h3>
                         <div className={"button-group"}>
-                            <button className={"btn btn-primary"} onClick={this.handlePrintLayoutRedirect.bind(this)}>{this.state.pdfCreated ? "再次打印" : "打印界面"}</button>
+                            <button className={"btn btn-primary"} onClick={this.handlePrintLayoutRedirect.bind(this)}>打印界面</button>
                             {
                                 this.props.user.role==="管理员"?<button onClick={this.props.optionPopUp.bind(this, ["删除方式？"],[{name:"彻底删除",handler:this.props.forceDeleteCustomer.bind(this,this.props.customer[this.props.location.state.index])}])} className={"btn btn-danger"}>删除</button>:null
                             }
