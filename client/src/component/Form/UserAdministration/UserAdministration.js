@@ -111,7 +111,7 @@ class UserAdministration extends Component{
                         />
                     </div>
                     <Link to={"/user/new/"}> 
-                        <button> 添加用户 </button>
+                        <button className={"btn btn-primary"}> 添加用户 </button>
                     </Link>
                 </div>
             </div>

@@ -6,6 +6,7 @@ import CurrencyInput from "../Input/CurrencyInput"
 import DropDown from "../DropDown/DropDown";
 import connect from "react-redux/es/connect/connect";
 import * as actionTypes from '../../../store/action';
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 
 
 class NewUser extends Component {
@@ -23,20 +24,21 @@ class NewUser extends Component {
             "传媒部（二级）":["主任", "设计/主管", "设计师", "IT/主管", "网络工程师", "新媒体/主管", "文字编辑"],
             "业务部（二级）":[null]
         }
+        
         this.state = {
             new_user:{
-                name: "",
-                gender: "",
-                birth_date: "",
-                visa_type: "",
+                name: " ",
+                gender: " ",
+                birth_date: " ",
+                visa_type: " ",
                 sin_num: 0,
-                enter_date: "",
-                department: "",
-                role: "",
-                base_salary: "",
-                rights: "",
-                user_name: "",
-                pwd: "",
+                enter_date: " ",
+                department: " ",
+                role: " ",
+                base_salary: " ",
+                rights: " ",
+                user_name: " ",
+                pwd: " ",
             }
         }
     }
@@ -75,17 +77,15 @@ class NewUser extends Component {
 
 
     handleAddSubmit(){
+        console.log("submit");
         this.props.addUser(this.state.new_user);
-        this.setState({
-            add:false,
-            new_user:null
-        })
     }
 
 
     render() {
         return (
-            <table className={"business-detail-table"}>
+            <div className={"form-wrapper content-wrapper"}>
+           <table className={"business-detail-table"}>
             <tbody>
             <tr>
                 <td>
@@ -222,10 +222,14 @@ class NewUser extends Component {
                     />
                 </td>
             </tr>
-            <button className={"btn btn-primary"} onClick={this.handleAddSubmit.bind(this)}>确认添加</button>
+            <Link to={"/user"}> 
+                <button className={"btn btn-primary"} onClick={this.handleAddSubmit.bind(this)}>确认添加</button>
+            </Link>
             </tbody>
             </table>
-        )
+
+            </div>
+         )
     }
 }
 
