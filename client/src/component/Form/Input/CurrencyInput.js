@@ -18,7 +18,7 @@ const CurrencyInput = (props) => {
                 disabled={props.disabled} 
                 className="form-control" 
                 value={props.value} 
-                onChangeEvent={props.onChangeEvent}
+                onChangeEvent={props.onChangeEvent}  // new way of onChange, old onChange is deprecated.
                 />
         </div>
     );
