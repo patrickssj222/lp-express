@@ -16,10 +16,6 @@ class UserAdministration extends Component{
     componentWillMount() {
         this.props.getAllUsers();
     }
-    
-    handleDelete(id){
-        this.props.deleteUser(id);
-    }
 
     handleEdit = (id) => {
         
@@ -91,7 +87,6 @@ class UserAdministration extends Component{
                     }}> 
                         <button className={"btn btn-primary"}> 修改</button>
                     </Link>
-                    // delete_button:<button className={"btn btn-danger"} onClick={this.handleDelete.bind(this, users_list[index].id)}>删除</button>
                 })
             });
         }

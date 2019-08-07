@@ -25,22 +25,38 @@ class EditUser extends Component {
             "业务部（二级）":[null]
         }
         
-        this.state = {
+        this.state = { 
             new_user:{
-                name: this.props.location.user.name,
-                gender: this.props.location.user.gender,
-                birth_date: this.props.location.user.birth_date,
-                visa_type: this.props.location.user.visa_type,
-                sin_num: this.props.location.user.sin_num,
-                enter_date: this.props.location.user.enter_date,
-                department: this.props.location.user.department,
-                role: this.props.location.user.role,
-                base_salary: this.props.location.user.base_salary,
-                rights: this.props.location.user.rights,
-                user_name: this.props.location.user.user_name,
-                pwd: this.props.location.user.pwd,
+                name: "",
+                gender: "",
+                birth_date: "",
+                visa_type: "",
+                sin_num: "" ,
+                enter_date: "",
+                department: "",
+                role: "",
+                base_salary: "",
+                rights: "",
+                user_name: "",
+                pwd: "" ,
+                // name: this.props.location.user.name,
+                // gender: this.props.location.user.gender,
+                // birth_date: this.props.location.user.birth_date,
+                // visa_type: this.props.location.user.visa_type,
+                // sin_num: this.props.location.user.sin_num,
+                // enter_date: this.props.location.user.enter_date,
+                // department: this.props.location.user.department,
+                // role: this.props.location.user.role,
+                // base_salary: this.props.location.user.base_salary,
+                // rights: this.props.location.user.rights,
+                // user_name: this.props.location.user.user_name,
+                // pwd: this.props.location.user.pwd,
             }
         }
+    }
+
+    handleDelete(id){
+        this.props.deleteUser(id);
     }
 
 
@@ -177,9 +193,20 @@ class EditUser extends Component {
                     />
                 </td>
             </tr>
-            <Link to={"/user"}> 
-                <button className={"btn btn-primary"} onClick={this.handleAddSubmit.bind(this)}>确认添加</button>
-            </Link>
+            <tr> 
+                <td>
+                    <Link to={"/user"}> 
+                    <button className={"btn btn-primary"} onClick={this.handleAddSubmit.bind(this)}>确认修改</button>
+                    </Link>
+                </td>
+                <td>
+                    <Link to={"/user"}> 
+                    <button className={"btn btn-danger"}>删除</button> 
+                    {/* onClick={this.handleDelete.bind(this, users_list[index].id)} */}
+                    </Link>   
+                </td>
+            </tr>
+
             </tbody>
             </table>
 
@@ -199,7 +226,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch =>{
     return{
-        editUser: (user) => dispatch({type:actionTypes.SAGA_EDIT_USER, user:user})
+        editUser: (user) => dispatch({type:actionTypes.SAGA_EDIT_USER, user:user}),
+        deleteUser: (id) => dispatch({type:actionTypes.SAGA_DELETE_USER, id:id}),
     };
 };
 
