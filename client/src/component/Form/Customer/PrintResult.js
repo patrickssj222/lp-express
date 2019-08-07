@@ -47,7 +47,11 @@ class PrintResult extends Component {
     render () {
         return(
             <NewWindow
-            name={"Preview PDF"}>
+            name={"Preview PDF"}
+            features={{
+                width: "1200px",
+                height: "1000px"
+            }}>
                 <div className={"print-wrapper"} ref={this.printRef}> 
                     <div className={"print-top"}>
                         <div className={"logo-box"}>
