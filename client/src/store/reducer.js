@@ -17,7 +17,6 @@ const initialState = {
     china_geo:null,
     users_list:null,
     LoginError: null,
-    token: null,
 };
 
 const reducer = (store = initialState, action) => {
@@ -30,7 +29,6 @@ const reducer = (store = initialState, action) => {
                 ...store,
                 user:action.user,
                 LoginError: action.LoginError,
-                token:action.token
             };
         case actionTypes.LOG_IN_ERROR:
             return{
@@ -107,6 +105,20 @@ const reducer = (store = initialState, action) => {
             return{
                 ...store,
                 china_geo: action.china_geo
+            };
+        case actionTypes.SIGN_OUT:
+            return{
+                user:initialState.user,
+                constants:initialState.constants,
+                popUp:initialState.popUp,
+                view:initialState.view,
+                customer:initialState.customer,
+                business:initialState.business,
+                business_detail:initialState.business_detail,
+                business_payment:initialState.business_payment,
+                china_geo:initialState.china_geo,
+                users_list:initialState.users_list,
+                LoginError: initialState.LoginError,
             };
         default:
             return store;

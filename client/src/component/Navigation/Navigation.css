@@ -256,16 +256,16 @@ body {
     top: 14px;
 }
 
-.sidebar-wrapper .sidebar-menu .sidebar-dropdown .sidebar-submenu ul {
+.sidebar-wrapper .sidebar-menu .sidebar-dropdown .sidebar-signout .sidebar-submenu ul {
     padding: 5px 0;
 }
 
-.sidebar-wrapper .sidebar-menu .sidebar-dropdown .sidebar-submenu li {
+.sidebar-wrapper .sidebar-menu .sidebar-dropdown .sidebar-signout .sidebar-submenu li {
     padding-left: 25px;
     font-size: 13px;
 }
 
-.sidebar-wrapper .sidebar-menu .sidebar-dropdown .sidebar-submenu li a:before {
+.sidebar-wrapper .sidebar-menu .sidebar-dropdown .sidebar-signout .sidebar-submenu li a:before {
     content: "\f111";
     font-family: "Font Awesome 5 Free";
     font-weight: 400;
@@ -286,8 +286,8 @@ body {
     margin-left: 5px;
 }
 
-.sidebar-wrapper .sidebar-menu .sidebar-dropdown .sidebar-submenu li a .badge,
-.sidebar-wrapper .sidebar-menu .sidebar-dropdown .sidebar-submenu li a .label {
+.sidebar-wrapper .sidebar-menu .sidebar-dropdown .sidebar-signout .sidebar-submenu li a .badge,
+.sidebar-wrapper .sidebar-menu .sidebar-dropdown .sidebar-signout .sidebar-submenu li a .label {
     float: right;
     margin-top: 0px;
 }

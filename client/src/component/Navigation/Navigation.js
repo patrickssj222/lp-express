@@ -125,7 +125,7 @@ class Navigation extends Component {
                         </div>
                         <div className="user-info">
                               <span className="user-name">{this.props.user.name}</span>
-                                    <span className="user-role">{this.props.user.position_name}</span>
+                                    <span className="user-role">{this.props.user.role}</span>
                                     <span className="user-status">
                                     <i className="fa fa-circle"/>
                                     <span>Online</span>
@@ -147,6 +147,16 @@ class Navigation extends Component {
                     {
                         this.props.user.role==="管理员"?adminContent:wenanContent
                     }
+                    <div className="sidebar-menu">
+                        <ul>
+                            <li className="sidebar-signout">
+                                <Link to={'/'} onClick={this.props.signout}>
+                                    <i className="fas fa-sign-out-alt"/>
+                                    <span>注销</span>
+                                </Link>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </nav>
         );
@@ -161,6 +171,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return{
         switchView: (component, payload) => dispatch({type: actionTypes.SWITCH_VIEW, component:component, payload:null}),
+        signout: () => dispatch({type: actionTypes.SAGA_SIGN_OUT}),
     };
 };
 

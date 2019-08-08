@@ -50,16 +50,20 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json());
 
-// Session Update
+// Passport update
+app.use(passport.initialize());
+// app.use(passport.session());
+
+
 app.use(session({
-    name: "La Promesse Inc.",
+    name: "La Promesse Inc",
     resave: false,
     saveUninitialized: false,
     secret: "this_is_secret_key",
     cookie: {
         maxAge: 1000 * 60 * 30, // 30 minutes
         sameSite: true,
-        secure: true,
+        secure: false,
     }
 }));
 
@@ -76,9 +80,6 @@ app.use('/api/customers', customersRouter);
 app.use('/api/business',businessRouter);
 app.use('/api/geographic',geographicRouter);
 
-// Passport update
-app.use(passport.initialize());
-app.use(passport.session());
 
 // Session update
 
