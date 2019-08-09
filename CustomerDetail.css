@@ -1,0 +1,42 @@
+.form-wrapper .customer-detail-table{
+    width:100%;
+}
+.form-wrapper .customer-detail-table td{
+    border: 1px solid black;
+    width:auto;
+    padding-left:10px;
+    padding-right:10px;
+}
+.form-wrapper .customer-detail-table .input-group{
+    margin:0;
+    padding:0;
+}
+.form-wrapper .customer-detail-table h5{
+    font-size: 16px;
+}
+.form-wrapper .customer-detail-table td input{
+    border:none;
+    margin:0;
+    padding:0;
+    width:100px;
+}
+
+.customer-detail .section-wrapper{
+    margin-bottom: 50px;
+}
+
+.customer-detail .section-wrapper .section-header{
+    display:flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-bottom: 10px;
+}
+
+.customer-detail .section-wrapper .section-header .button-group{
+    display: flex;
+    flex-direction: row;
+}
+
+.customer-detail .section-wrapper .section-header .button-group button{
+    margin-right:30px;
+}
