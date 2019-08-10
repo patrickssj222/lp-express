@@ -34,6 +34,7 @@ class App extends Component {
     componentDidMount(){
         this.props.checkUser();
     }
+
     render() {
         let popUp = null;
         if(this.props.popUp!=null){
@@ -96,7 +97,7 @@ class App extends Component {
                 </Router>
 
         } else {
-            content = <LogIn/>;
+            content = <LogIn />
         }
 
         return (
@@ -106,6 +107,7 @@ class App extends Component {
         );
     }
 }
+
 const mapStateToProps = state => {
     return{
         user:state.user,

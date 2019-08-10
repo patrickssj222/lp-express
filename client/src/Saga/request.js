@@ -460,6 +460,8 @@ function* checkUser(){
             const result = response.data.response;
             if(result){
                 yield put({type:actionTypes.LOG_IN,user:result[0],LoginError:null});
+            } else {
+                // Do something
             }
         }
         else{

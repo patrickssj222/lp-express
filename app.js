@@ -80,7 +80,6 @@ app.use('/api/customers', customersRouter);
 app.use('/api/business',businessRouter);
 app.use('/api/geographic',geographicRouter);
 
-
 // Session update
 
 app.post('/create-pdf',(req,res)=>{
