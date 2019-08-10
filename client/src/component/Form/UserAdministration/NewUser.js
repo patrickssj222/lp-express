@@ -37,8 +37,8 @@ class NewUser extends Component {
                 role: " ",
                 base_salary: " ",
                 rights: " ",
-                user_name: " ",
-                pwd: " ",
+                username: " ",
+                password: " ",
             }
         }
     }
@@ -75,12 +75,15 @@ class NewUser extends Component {
         }));
     }
 
-
     handleAddSubmit(){
         console.log("submit");
         this.props.addUser(this.state.new_user);
+        setTimeout(() => {
+            this.props.history.push({
+                pathname: "/user"
+            })
+        }, 300);
     }
-
 
     render() {
         return (
@@ -207,8 +210,8 @@ class NewUser extends Component {
                     <Input
                         label={"账号"}
                         type={"text"}
-                        name={"user_name"}
-                        value={this.state.new_user.user_name}
+                        name={"username"}
+                        value={this.state.new_user.username}
                         handleChange={this.handleChange.bind(this)}
                     />
                 </td>
@@ -216,17 +219,15 @@ class NewUser extends Component {
                     <Input
                         label={"密码"}
                         type={"password"}
-                        name={"pwd"}
-                        value={this.state.new_user.pwd}
+                        name={"password"}
+                        value={this.state.new_user.password}
                         handleChange={this.handleChange.bind(this)}
                     />
                 </td>
             </tr>
-            <Link to={"/user"}> 
-                <button className={"btn btn-primary"} onClick={this.handleAddSubmit.bind(this)}>确认添加</button>
-            </Link>
             </tbody>
             </table>
+            <button className={"btn btn-primary"} onClick={this.handleAddSubmit.bind(this)}>确认添加</button>
 
             </div>
          )
