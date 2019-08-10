@@ -9,7 +9,8 @@ class UserAdministration extends Component{
     constructor(props){
         super(props);
         this.state={
-            add:false
+            add:false,
+            edit:false,
         }
     }
 
@@ -22,6 +23,10 @@ class UserAdministration extends Component{
             ...prevState,
             new_user:{
                 ...prevState.new_user,
+                [name]:value,
+            },
+            update_user:{
+                ...prevState.update_user,
                 [name]:value,
             }
         }));
@@ -44,6 +49,26 @@ class UserAdministration extends Component{
             new_user:null
         })
     }
+
+    handleEdit(user){
+        this.setState({
+            edit:true,
+            update_user:{
+                id: user.id,
+                role:user.role,
+                name:user.name,
+            }
+        })
+    }
+
+    handleEditSubmit(){
+        this.props.editUser(this.state.update_user);
+        this.setState({
+            edit:false,
+            update_user:null
+        })
+    }
+
     handleDelete(id){
         this.props.deleteUser(id);
     }
@@ -75,7 +100,11 @@ class UserAdministration extends Component{
                 return({
                     name: users_list[index].name,
                     role:users_list[index].role,
-                    delete_button:<button className={"btn btn-danger"} onClick={this.handleDelete.bind(this, users_list[index].id)}>删除</button>
+                    delete_button:
+                    <div className="form-button">
+                        <button className={"btn btn-primary btn-edit"} onClick={this.handleEdit.bind(this, users_list[index])}>编辑用户</button>
+                        <button className={"btn btn-danger"} onClick={this.handleDelete.bind(this, users_list[index].id)}>删除用户</button>
+                    </div>
                 })
             });
         }
@@ -83,6 +112,7 @@ class UserAdministration extends Component{
             columns:columns,
             rows:rows
         };
+        console.log(this.state.edit);
         return(
             <div className={"form-wrapper content-wrapper"}>
                 <div className={"section-wrapper"}>
@@ -98,6 +128,35 @@ class UserAdministration extends Component{
                             data={data}
                             entries={10}
                         />
+                        {this.state.edit&&<table className={"business-detail-table"}>
+                                <thead/>
+                                <tbody>
+                                <tr>
+                                    <td>
+                                        <Input
+                                            label={"用户姓名"}
+                                            type={"text"}
+                                            name={"name"}
+                                            value={this.state.update_user.name}
+                                            handleChange={this.handleChange.bind(this)}
+                                        />
+                                    </td>
+                                    <td>
+                                        <DropDown
+                                            label={"用户权限"}
+                                            options={["管理员","规划师"]}
+                                            name={"role"}
+                                            value={this.state.update_user.role}
+                                            handleChange={this.handleChange.bind(this)}
+                                        />
+                                    </td>
+                                    <td>
+                                        <button className={"btn btn-primary"} onClick={this.handleEditSubmit.bind(this)}>确认编辑</button>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        }
                         {
                             this.state.add?<table className={"business-detail-table"}>
                                 <thead/>
@@ -166,6 +225,7 @@ const mapDispatchToProps = dispatch =>{
     return{
         getAllUsers: () => dispatch({type:actionTypes.SAGA_GET_ALL_USERS}),
         deleteUser: (id) => dispatch({type:actionTypes.SAGA_DELETE_USER, id:id}),
+        editUser: (user) => dispatch({type:actionTypes.SAGA_EDIT_USER, user:user}),
         addUser: (user) => dispatch({type:actionTypes.SAGA_ADD_USER, user:user}),
         popUp: (status, message, action) => dispatch({type:actionTypes.POP_UP, message:message, status:status, action:action}),
     };

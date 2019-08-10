@@ -154,3 +154,11 @@
     background-color: #e9ecef;
     opacity: 1;
 }
+
+.form-button {
+    display: flex;
+}
+
+.btn-edit{
+    margin-right: 100px;
+}

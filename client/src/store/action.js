@@ -36,3 +36,4 @@ export const LOG_IN_ERROR = 'LOG_IN_ERROR';
 export const SIGN_OUT = 'SIGN_OUT';
 export const SAGA_SIGN_OUT = 'SAGA_SIGN_OUT';
 export const SAGA_CHECK_USER = 'SAGA_CHECK_USER';
+export const SAGA_EDIT_USER = 'SAGA_EDIT_USER';
