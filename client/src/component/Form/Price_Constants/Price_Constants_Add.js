@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import DropDown from '../DropDown/DropDown';
 import '../Form.css';
-import './PriceDetail.css';
+import './PriceConstants.css';
 import Input from "../Input/Input";
 import connect from "react-redux/es/connect/connect";
 import * as actionTypes from "../../../store/action";
@@ -12,7 +12,7 @@ class Price_Constants_Add extends Component{
         super(props);
         this.state={
             detail:{
-                type:"",
+                type:"签证申请",
                 name:"",
                 service_fee:"",
                 government_fee:"",
@@ -85,7 +85,7 @@ class Price_Constants_Add extends Component{
                                     value={this.state.detail.copywrite_percentage}
                                     options={["10%","20%","30%","40%"]}
                                     handleChange={this.handleChange}
-                                    />
+                                />
                             </td>
                             </tr>
                             <tr>
@@ -120,7 +120,7 @@ class Price_Constants_Add extends Component{
                 </div>
                 <div className={"footer"}>
                     <div className={"form-confirmation button-group"}>
-                        <button className={"btn btn-primary"} onClick={this.handleSubmit.bind(this)}>添加客户</button>
+                        <button className={"btn btn-primary"} onClick={this.handleSubmit.bind(this)}>添加常量</button>
                     </div>
                 </div>
             </div>
@@ -135,8 +135,8 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch =>{
-    return{
-        addPriceConstant:()=>dispatch(),
-        }
+    return {
+        addPriceConstant: (constants)=>dispatch({type:actionTypes.SAGA_ADD_PRICE_CONSTANTS, constants:constants})
+    }
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Price_Constants_Add);

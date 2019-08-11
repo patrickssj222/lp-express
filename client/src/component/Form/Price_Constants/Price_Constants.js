@@ -3,7 +3,7 @@ import connect from "react-redux/es/connect/connect";
 import * as actionTypes from '../../../store/action';
 import { MDBDataTable } from "mdbreact";
 import "../Form.css";
-import "./Tab.css";
+import "./PriceConstants.css";
 import DropDown from "../DropDown/DropDown";
 import {Link, withRouter} from "react-router-dom";
 import PriceInput from "./Price_Constants_Add";
@@ -23,7 +23,7 @@ class Price_Constants extends Component{
     }
 
     handleDelete(id){
-        this.props.deleteEntry(id);
+        this.props.deletePriceConstants(id);
     }
 
     handleAdd(){
@@ -44,7 +44,7 @@ class Price_Constants extends Component{
         this.setState({
             tab: e.target.value
         })
-    }
+    };
 
     handleChange = (index, e) => {
         console.log(e);
@@ -53,13 +53,12 @@ class Price_Constants extends Component{
         const temp = this.props.constants.fee;
         temp[index][name] = value;
         this.props.updatePriceConstants(temp);
-    }
+    };
 
-    handleSubmit(){
+    handleSubmit=()=>{
         this.props.submitPriceConstants(this.props.constants.fee);
-    }
+    };
     render(){
-    
         const columns = [
             {
                 label: '具体业务',
@@ -111,10 +110,10 @@ class Price_Constants extends Component{
                     misc_fee: <input className={"mdb-editable"} type={"number"} step={".01"} name={"misc_fee"} onChange={this.handleChange.bind(this,index)} value={fee[index].misc_fee!=null?fee[index].misc_fee:""}/>,
                     copywrite_percentage: 
                     <DropDown
-                    options={["10%","20%","30%","40%"]}
-                    name={"copywrite_percentage"}
-                    value={fee[index].copywrite_percentage!=null?fee[index].copywrite_percentage:" "}
-                    handleChange={this.handleChange.bind(this,index)}
+                        options={["10%","20%","30%","40%"]}
+                        name={"copywrite_percentage"}
+                        value={fee[index].copywrite_percentage!=null?fee[index].copywrite_percentage:" "}
+                        handleChange={this.handleChange.bind(this,index)}
                     />,
                     delete_button:<button className={"btn btn-danger"} onClick={this.handleDelete.bind(this, fee[index].id)}>删除</button>
                 })
@@ -132,34 +131,27 @@ class Price_Constants extends Component{
                 <div className={"section-wrapper"}>
                     <div className={"section-header"}>
                         <h3>基础价格常量</h3>
-                        <ul class="nav nav-tabs mt-4">
-                        <li class="nav-item">
-                            <button style={{outline: "none"}} class="nav-link" onClick={this.changeTab} value="签证申请">签证申请</button>
-                        </li>
-                        <li class="nav-item">
-                            <button style={{outline: "none"}} class="nav-link" onClick={this.changeTab} value="学校申请">学校申请</button>
-                        </li>
-                        <li class="nav-item">
-                            <button style={{outline: "none"}} class="nav-link" onClick={this.changeTab} value="换发/公证">换发公证</button>
-                        </li>
-                        <li class="nav-item">
-                            <button style={{outline: "none"}} class="nav-link" onClick={this.changeTab} value="移民申请">移民申请</button>
-                        </li>
-                        <li class="nav-item">
-                            <button style={{outline: "none"}} class="nav-link" onClick={this.changeTab} value="交通告票">交通告票</button>
-                        </li>
-                        <li class="nav-item">
-                            <button style={{outline: "none"}} class="nav-link" onClick={this.changeTab} value="其他">其他</button>
-                        </li>
+                        <ul className="nav nav-tabs mt-4">
+                            <li className="nav-item">
+                                <button className={"nav-link"+(this.state.tab==="签证申请"?" active":"")} onClick={this.changeTab} value="签证申请">签证申请</button>
+                            </li>
+                            <li className="nav-item">
+                                <button className={"nav-link"+(this.state.tab==="学校申请"?" active":"")} onClick={this.changeTab} value="学校申请">学校申请</button>
+                            </li>
+                            <li className="nav-item">
+                                <button className={"nav-link"+(this.state.tab==="换发公证"?" active":"")} onClick={this.changeTab} value="换发公证">换发公证</button>
+                            </li>
+                            <li className="nav-item">
+                                <button className={"nav-link"+(this.state.tab==="移民申请"?" active":"")} onClick={this.changeTab} value="移民申请">移民申请</button>
+                            </li>
+                            <li className="nav-item">
+                                <button className={"nav-link"+(this.state.tab==="交通告票"?" active":"")} onClick={this.changeTab} value="交通告票">交通告票</button>
+                            </li>
+                            <li className="nav-item">
+                                <button className={"nav-link"+(this.state.tab==="其他"?" active":"")} onClick={this.changeTab} value="其他">其他</button>
+                            </li>
                         </ul>
-                        {/* <button className={"nav-item"} >签证申请</button>
-                        <button className={"btn btn-primary"} onClick={this.changeTab} value="学校申请">学校申请</button>
-                        <button className={"btn btn-primary"} onClick={this.changeTab} value="换发/公证">换发公证</button>
-                        <button className={"btn btn-primary"} onClick={this.changeTab} value="移民申请">移民申请</button>
-                        <button className={"btn btn-primary"} onClick={this.changeTab} value="交通告票">交通告票</button>
-                        <button className={"btn btn-primary"} onClick={this.changeTab} value="其他">其他</button> */}
                     </div>
-                    <hr className={"style1"}/>
                     <div className={"section-body"}>
                         <MDBDataTable
                             striped
@@ -192,8 +184,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch =>{
     return{
         getPriceConstants: () => dispatch({type:actionTypes.SAGA_GET_PRICE_CONSTANTS}),
-        //Delete 
         updatePriceConstants: (constants) => dispatch({type:actionTypes.UPDATE_PRICE_CONSTANTS, constants:constants}),
+        deletePriceConstants: (id) => dispatch({type:actionTypes.SAGA_DELETE_PRICE_CONSTANTS, id:id}),
         submitPriceConstants: (constants) => dispatch({type:actionTypes.SAGA_UPDATE_PRICE_CONSTANTS, constants:constants}),
         popUp: (status, message, action) => dispatch({type:actionTypes.POP_UP, message:message, status:status, action:action}),
     };
