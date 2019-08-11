@@ -1,0 +1,13 @@
+.nav-tabs{
+    border-bottom: none !important;
+}
+.nav-link{
+    background-color: #007bff;
+    color:white;
+    border-radius: 0 !important;
+}
+
+.nav-link .active{
+    background-color: white;
+    color:black;
+}

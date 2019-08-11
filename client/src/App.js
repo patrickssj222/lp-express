@@ -3,6 +3,8 @@ import './App.css';
 import LogIn from "./component/LogIn/LogIn";
 import connect from "react-redux/es/connect/connect";
 import Price_Constants from "./component/Form/Price_Constants/Price_Constants";
+import Add_Price_Constants from "./component/Form/Price_Constants/Price_Constants_Add";
+
 import Customer from "./component/Form/Customer/Customer";
 import Navigation from "./component/Navigation/Navigation";
 import { library } from '@fortawesome/fontawesome-svg-core'
@@ -80,6 +82,7 @@ class App extends Component {
                                         <Route exact path={'/business/add'} component={AddBusiness}/>
                                         <Route exact path={'/business/detail'} component={BusinessDetail}/>
                                         <Route exact path={'/constants/price'} component={Price_Constants}/>
+                                        <Route exact path={'/constants/price/add'} component={Add_Price_Constants}/>
                                         <Route exact path={'/user'} component={UserAdministration}/>
                                         <Route exact path={'/china_geo'} component={ChinaGeographic}/>
                                     </Switch>
