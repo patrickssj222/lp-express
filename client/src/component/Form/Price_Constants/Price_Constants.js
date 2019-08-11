@@ -42,7 +42,7 @@ class Price_Constants extends Component{
 
     changeTab = (e) =>{
         this.setState({
-            tab:e.target.value
+            tab: e.target.value
         })
     }
 
@@ -132,12 +132,32 @@ class Price_Constants extends Component{
                 <div className={"section-wrapper"}>
                     <div className={"section-header"}>
                         <h3>基础价格常量</h3>
-                        <button className={"tab"} onClick={this.changeTab} value="签证申请">签证申请</button>
-                        <button className={"tab"} onClick={this.changeTab} value="学校申请">学校申请</button>
-                        <button className={"tab"} onClick={this.changeTab} value="换发/公证">换发公证</button>
-                        <button className={"tab"} onClick={this.changeTab} value="移民申请">移民申请</button>
-                        <button className={"tab"} onClick={this.changeTab} value="交通告票">交通告票</button>
-                        <button className={"tab"} onClick={this.changeTab} value="其他">其他</button>
+                        <ul class="nav nav-tabs mt-4">
+                        <li class="nav-item">
+                            <button style={{outline: "none"}} class="nav-link" onClick={this.changeTab} value="签证申请">签证申请</button>
+                        </li>
+                        <li class="nav-item">
+                            <button style={{outline: "none"}} class="nav-link" onClick={this.changeTab} value="学校申请">学校申请</button>
+                        </li>
+                        <li class="nav-item">
+                            <button style={{outline: "none"}} class="nav-link" onClick={this.changeTab} value="换发/公证">换发公证</button>
+                        </li>
+                        <li class="nav-item">
+                            <button style={{outline: "none"}} class="nav-link" onClick={this.changeTab} value="移民申请">移民申请</button>
+                        </li>
+                        <li class="nav-item">
+                            <button style={{outline: "none"}} class="nav-link" onClick={this.changeTab} value="交通告票">交通告票</button>
+                        </li>
+                        <li class="nav-item">
+                            <button style={{outline: "none"}} class="nav-link" onClick={this.changeTab} value="其他">其他</button>
+                        </li>
+                        </ul>
+                        {/* <button className={"nav-item"} >签证申请</button>
+                        <button className={"btn btn-primary"} onClick={this.changeTab} value="学校申请">学校申请</button>
+                        <button className={"btn btn-primary"} onClick={this.changeTab} value="换发/公证">换发公证</button>
+                        <button className={"btn btn-primary"} onClick={this.changeTab} value="移民申请">移民申请</button>
+                        <button className={"btn btn-primary"} onClick={this.changeTab} value="交通告票">交通告票</button>
+                        <button className={"btn btn-primary"} onClick={this.changeTab} value="其他">其他</button> */}
                     </div>
                     <hr className={"style1"}/>
                     <div className={"section-body"}>
@@ -151,7 +171,7 @@ class Price_Constants extends Component{
                         <div className={"footer"}>
                             <div className={"form-confirmation button-group"}>
                             <Link to={"/constants/price/add"}>
-                                <button className={"btn btn-primary"}>添加客户</button>
+                                <button className={"btn btn-primary"}>添加常量</button>
                             </Link>                            
                             <button className={"btn btn-primary"} onClick={this.handleSubmit.bind(this)}>确认</button>
                             </div>
