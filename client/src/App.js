@@ -26,12 +26,19 @@ import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import AdminCustomer from "./component/Form/Customer/AdminCustomer";
 import PrintCustomerDetail from "./component/Form/Customer/PrintCustomerDetail";
 
+import * as actionTypes from './store/action';
+
 library.add(faIgloo);
 
 class App extends Component {
     constructor(props){
         super(props);
     }
+
+    componentDidMount(){
+        this.props.checkUser();
+    }
+
     render() {
         let popUp = null;
         if(this.props.popUp!=null){
@@ -63,7 +70,7 @@ class App extends Component {
             default:
                 view = null;
         }
-        let content = <LogIn/>;
+        let content;
         if(this.props.user!=null){
             content =
                 <Router>
@@ -96,6 +103,8 @@ class App extends Component {
                     </Switch>
                 </Router>
 
+        } else {
+            content = <LogIn />
         }
 
         return (
@@ -105,11 +114,18 @@ class App extends Component {
         );
     }
 }
+
 const mapStateToProps = state => {
     return{
         user:state.user,
         popUp:state.popUp,
-        view:state.view
+        view:state.view,
     };
 };
-export default connect(mapStateToProps, null)(App);
+const mapDispatchToProps = dispatch => {
+    return{
+        checkUser: () => dispatch({type:actionTypes.SAGA_CHECK_USER}),
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

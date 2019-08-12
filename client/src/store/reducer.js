@@ -17,20 +17,25 @@ const initialState = {
     china_geo:null,
     users_list:null,
     admin_dataset: null,
+    LoginError: null,
 };
 
 const reducer = (store = initialState, action) => {
 /*
     let state = deepCopy(store);
 */
-
     switch (action.type) {
         case actionTypes.LOG_IN:
             return{
                 ...store,
-                user:action.user
+                user:action.user,
+                LoginError: action.LoginError,
             };
-
+        case actionTypes.LOG_IN_ERROR:
+            return{
+                ...store,
+                LoginError:action.LoginError,
+            };
         case actionTypes.UPDATE_PRICE_CONSTANTS:
             return{
                 ...store,
@@ -107,6 +112,20 @@ const reducer = (store = initialState, action) => {
                 ...store,
                 admin_dataset:action.admin_dataset
             }
+        case actionTypes.SIGN_OUT:
+            return{
+                user:initialState.user,
+                constants:initialState.constants,
+                popUp:initialState.popUp,
+                view:initialState.view,
+                customer:initialState.customer,
+                business:initialState.business,
+                business_detail:initialState.business_detail,
+                business_payment:initialState.business_payment,
+                china_geo:initialState.china_geo,
+                users_list:initialState.users_list,
+                LoginError: initialState.LoginError,
+            };
         default:
             return store;
     }

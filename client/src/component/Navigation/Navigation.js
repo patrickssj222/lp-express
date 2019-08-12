@@ -42,10 +42,10 @@ class Navigation extends Component {
                     <div className="sidebar-submenu">
                         <ul>
                             <li>
-                                <Link to={'/customer'}>私人客户列表</Link>
+                                <Link to={'/customer'}><i className="fas fa-angle-right"/>私人客户列表</Link>
                             </li>
                             <li>
-                                <Link to={'/all-customer'}>公司客户列表</Link>
+                                <Link to={'/all-customer'}><i className="fas fa-angle-right"/>公司客户列表</Link>
                             </li>
                         </ul>
                     </div>
@@ -58,7 +58,7 @@ class Navigation extends Component {
                     <div className="sidebar-submenu">
                         <ul>
                             <li>
-                                <Link to={'/business'}>业务列表</Link>
+                                <Link to={'/business'}><i className="fas fa-angle-right"/>业务列表</Link>
                             </li>
                         </ul>
                     </div>
@@ -71,7 +71,7 @@ class Navigation extends Component {
                     <div className="sidebar-submenu">
                         <ul>
                             <li>
-                                <Link to={'/constants/price'}>基础价格</Link>
+                                <Link to={'/constants/price'}><i className="fas fa-angle-right"/>基础价格</Link>
                             </li>
                         </ul>
                     </div>
@@ -84,10 +84,10 @@ class Navigation extends Component {
                     <div className="sidebar-submenu">
                         <ul>
                             <li>
-                                <Link to={'/user'}>用户管理</Link>
+                                <Link to={'/user'}><i className="fas fa-angle-right"/>用户管理</Link>
                             </li>
                             <li>
-                                <Link to={'/china_geo'}>中国地理管理</Link>
+                                <Link to={'/china_geo'}><i className="fas fa-angle-right"/>中国地理管理</Link>
                             </li>
                         </ul>
                     </div>
@@ -104,7 +104,7 @@ class Navigation extends Component {
                     <div className="sidebar-submenu">
                         <ul>
                             <li>
-                                <Link to={'/customer'}>客户列表</Link>
+                                <Link to={'/customer'}><i className="fas fa-angle-right"/>客户列表</Link>
                             </li>
                         </ul>
                     </div>
@@ -125,7 +125,7 @@ class Navigation extends Component {
                         </div>
                         <div className="user-info">
                               <span className="user-name">{this.props.user.name}</span>
-                                    <span className="user-role">{this.props.user.position_name}</span>
+                                    <span className="user-role">{this.props.user.role}</span>
                                     <span className="user-status">
                                     <i className="fa fa-circle"/>
                                     <span>Online</span>
@@ -145,8 +145,18 @@ class Navigation extends Component {
                         </div>
                     </div>
                     {
-                        this.props.user .role==="管理员"?adminContent:wenanContent
+                        this.props.user.role==="管理员"?adminContent:wenanContent
                     }
+                    <div className="sidebar-menu">
+                        <ul>
+                            <li className="sidebar-signout">
+                                <Link to={'/'} onClick={this.props.signout}>
+                                    <i className="fas fa-sign-out-alt"/>
+                                    <span>注销</span>
+                                </Link>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </nav>
         );
@@ -161,6 +171,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return{
         switchView: (component, payload) => dispatch({type: actionTypes.SWITCH_VIEW, component:component, payload:null}),
+        signout: () => dispatch({type: actionTypes.SAGA_SIGN_OUT}),
     };
 };
 

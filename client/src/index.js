@@ -10,23 +10,36 @@ import reducer from './store/reducer';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import createSagaMiddleware from 'redux-saga';
 import rootSaga from './Saga/root';
-import { BrowserRouter } from 'react-router-dom'
-
+import { BrowserRouter } from 'react-router-dom';
+import { persistStore, persistReducer} from 'redux-persist';
+import storage from 'redux-persist/lib/storage'
+import { PersistGate } from 'redux-persist/lib/integration/react';
 
 const sagaMiddleware = createSagaMiddleware();
 
-const store = createStore(reducer, composeWithDevTools(
+const persistConfig = {
+    key: 'root',
+    storage,
+};
+
+const persistedReducer = persistReducer(persistConfig, reducer);
+
+const store = createStore(persistedReducer, composeWithDevTools(
     applyMiddleware(sagaMiddleware),
     // other store enhancers if any
 ));
+
+const persistor = persistStore(store)
 
 sagaMiddleware.run(rootSaga);
 
 const app = (
     <Provider store={store}>
-        <BrowserRouter>
-            <App/>
-        </BrowserRouter>
+        <PersistGate loading={null} persistor={persistor}>
+            <BrowserRouter>
+                <App/>
+            </BrowserRouter>
+        </PersistGate>
     </Provider>
 );
 

@@ -9,17 +9,18 @@ function* logIn(action){
             method: 'POST',
             url: '/api/users',
             data:{
-                user: action.username,
+                username: action.username,
                 password: action.password
             },
         });
         if(response.data.status>=200 && response.data.status<300){
             const result = response.data.response;
             if(result.length===1){
-                yield put({type:actionTypes.LOG_IN,user:result[0]});
+                yield put({type:actionTypes.LOG_IN,user:result[0],LoginError:null});
             }
         }
         else{
+            yield put({type:actionTypes.LOG_IN_ERROR, LoginError:response.data.error});
             console.log("Error " + response.data.status);
         }
     }
@@ -409,6 +410,47 @@ function* deleteChinaGeo(action){
     }
 }
 
+function* checkUser(){
+    try{
+        const response = yield call (axios, {
+            method: 'POST',
+            url: '/api/users/check',
+        });
+        if(response.data.status>=200 && response.data.status<300){
+            const result = response.data.response;
+            if(result){
+                yield put({type:actionTypes.LOG_IN,user:result[0],LoginError:null});
+            } else {
+                // Do something
+            }
+        }
+        else{
+            console.log("Error " + response.data.status);
+        }
+    }
+    catch(e){
+        console.log(e);
+    }
+}
+
+function* signout(){
+    try{
+        const response = yield call (axios, {
+            method: 'POST',
+            url: '/api/users/signout',
+        });
+        if(response.data.status>=200 && response.data.status<300){
+            yield put({type:actionTypes.SIGN_OUT});
+        }
+        else{
+            console.log("Error " + response.data.status);
+        }
+    }
+    catch(e){
+        console.log(e);
+    }
+}
+
 export function* watchSagaRequests() {
     yield takeEvery(actionTypes.SAGA_LOG_IN, logIn);
 
@@ -429,5 +471,7 @@ export function* watchSagaRequests() {
     yield takeEvery(actionTypes.SAGA_ADD_CHINA_GEOGRAPHIC, addChinaGeo);
     yield takeEvery(actionTypes.SAGA_DELETE_CHINA_GEOGRAPHIC, deleteChinaGeo);
 
+    yield takeEvery(actionTypes.SAGA_CHECK_USER, checkUser);
+    yield takeEvery(actionTypes.SAGA_SIGN_OUT, signout);
 }
 
