@@ -18,6 +18,8 @@ import BusinessDetail from "./component/Form/Business/BusinessDetail";
 import AddCustomer from "./component/Form/Customer/AddCustomer";
 import AddBusiness from "./component/Form/Business/AddBusiness";
 import UserAdministration from "./component/Form/UserAdministration/UserAdministration";
+import NewUser from "./component/Form/UserAdministration/NewUser";
+import EditUser from "./component/Form/UserAdministration/EditUser";
 import OptionPopUp from "./component/PopUp/OptionPopUp";
 import ChinaGeographic from "./component/Form/Geographics/ChinaGeographic";
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
@@ -84,6 +86,8 @@ class App extends Component {
                                         <Route exact path={'/constants/price'} component={Price_Constants}/>
                                         <Route exact path={'/constants/price/add'} component={Add_Price_Constants}/>
                                         <Route exact path={'/user'} component={UserAdministration}/>
+                                        <Route exact path={'/user/new'} component={NewUser}/>
+                                        <Route exact path={'/user/edit'} component={EditUser}/>
                                         <Route exact path={'/china_geo'} component={ChinaGeographic}/>
                                     </Switch>
                                 </main>

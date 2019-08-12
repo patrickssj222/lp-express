@@ -2,9 +2,9 @@ import React, { Component } from 'react'
 import connect from "react-redux/es/connect/connect";
 import * as actionTypes from '../../../store/action';
 import { MDBDataTable } from "mdbreact";
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import "../Form.css";
-import Input from "../Input/Input";
-import DropDown from "../DropDown/DropDown";
+
 class UserAdministration extends Component{
 
     constructor(props){
@@ -59,14 +59,36 @@ class UserAdministration extends Component{
 
             },
             {
-                label: '职务',
-                field: 'role',
+                label: '性别',
+                field: 'gender',
                 sort: 'asc',
 
             },
             {
+                label: '出生日期',
+                field: 'birth_date',
+                sort: 'asc',
+
+            },
+            {
+                label: '在加身份',
+                field: 'identity',
+                sort: 'asc',
+
+            },
+            {
+                label: '权限',
+                field: 'role',
+                sort: 'asc',
+            },
+            {
+                label: '账号/手机号',
+                field: 'username',
+                sort: 'asc',
+            },
+            {
                 label: '',
-                field: 'delete_button',
+                field: 'adjust_button',
                 sort: 'asc',
             },
         ];
@@ -76,8 +98,18 @@ class UserAdministration extends Component{
             rows = Object.keys(users_list).map((index)=>{
                 return({
                     name: users_list[index].name,
-                    role:users_list[index].role,
-                    delete_button:<button className={"btn btn-danger"} onClick={this.handleDelete.bind(this, users_list[index].id)}>删除</button>
+                    gender: users_list[index].gender,
+                    dob: users_list[index].dob,
+                    visa_type: users_list[index].visa_type,
+                    role: users_list[index].role,
+                    username: users_list[index].username,
+                    adjust_button: 
+                    <Link to={{
+                        pathname: "/user/edit/",
+                        user: users_list[index]
+                    }}> 
+                        <button className={"btn btn-primary"}> 修改</button>
+                    </Link>
                 })
             });
         }
@@ -85,6 +117,7 @@ class UserAdministration extends Component{
             columns:columns,
             rows:rows
         };
+        
         return(
             <div className={"form-wrapper content-wrapper"}>
                 <div className={"section-wrapper"}>
@@ -100,63 +133,16 @@ class UserAdministration extends Component{
                             data={data}
                             entries={10}
                         />
-                        {
-                            this.state.add?<table className={"business-detail-table"}>
-                                <thead/>
-                                <tbody>
-                                <tr>
-                                    <td>
-                                        <Input
-                                            label={"用户名"}
-                                            type={"text"}
-                                            name={"username"}
-                                            value={this.state.new_user.username}
-                                            handleChange={this.handleChange.bind(this)}
-                                        />
-                                    </td>
-                                    <td>
-                                        <Input
-                                            label={"密码"}
-                                            type={"password"}
-                                            name={"password"}
-                                            value={this.state.new_user.password}
-                                            handleChange={this.handleChange.bind(this)}
-                                        />
-                                    </td>
-
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <Input
-                                            label={"用户姓名"}
-                                            type={"text"}
-                                            name={"name"}
-                                            value={this.state.new_user.name}
-                                            handleChange={this.handleChange.bind(this)}
-                                        />
-                                    </td>
-                                    <td>
-                                        <DropDown
-                                            label={"用户权限"}
-                                            options={["管理员","规划师"]}
-                                            name={"role"}
-                                            value={this.state.new_user.role}
-                                            handleChange={this.handleChange.bind(this)}
-                                        />
-                                    </td>
-                                    <td>
-                                        <button className={"btn btn-primary"} onClick={this.handleAddSubmit.bind(this)}>确认添加</button>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>:<button className={"btn btn-primary"} onClick={this.handleAdd.bind(this)}>添加用户</button>
-                        }
                     </div>
+                    <Link to={"/user/new/"}> 
+                        <button className={"btn btn-primary"}> 添加用户 </button>
+                    </Link>
                 </div>
             </div>
         );
     }
 }
+
 const mapStateToProps = state => {
     return{
         user:state.user,
@@ -172,4 +158,5 @@ const mapDispatchToProps = dispatch =>{
         popUp: (status, message, action) => dispatch({type:actionTypes.POP_UP, message:message, status:status, action:action}),
     };
 };
+
 export default connect(mapStateToProps, mapDispatchToProps)(UserAdministration);
