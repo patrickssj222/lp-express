@@ -141,6 +141,9 @@ class Customer extends Component{
                             <Link to={"/customer/add"}>
                                 <button className={"btn btn-primary"}>添加客户</button>
                             </Link>
+                            <Link to={"/customer/unlock"}>
+                                <button className={"btn btn-primary"}>解锁客户</button>
+                            </Link>
                         </div>
                     </div>
                     <div className={"section-body"}>

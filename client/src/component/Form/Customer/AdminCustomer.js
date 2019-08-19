@@ -22,11 +22,6 @@ class AdminCustomer extends Component{
                     </div>
                     <hr className={"style1"}/>
                     <div className={"footer"}>
-                        <div className={"form-confirmation button-group"}>
-                            <Link to={"/customer/add"}>
-                                <button className={"btn btn-primary"}>添加客户</button>
-                            </Link>
-                        </div>
                     </div>
                     <div className={"section-body"}>
                         {

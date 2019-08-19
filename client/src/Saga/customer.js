@@ -4,6 +4,7 @@ import axios from 'axios';
 import React from "react";
 import {getCustomers} from "./request";
 import {getAllUsers} from "./users";
+
 function findNested (obj, key, value){
     // Base case
     if (obj[key] === value) {
@@ -21,7 +22,6 @@ function findNested (obj, key, value){
         }
     }
 }
-
 function* populateSet(action){
     const state = yield select();
     const columns = [
@@ -130,7 +130,7 @@ function* populateSet(action){
 }
 
 
-function* adminDataSet(action){
+function* getAdminDataSet(action){
     yield put({type:actionTypes.POP_UP, status:"loading", message:["正在生成公司客户列表..."],onExit:null});
     const state = yield select;
     if(!state.users_list){
@@ -142,6 +142,89 @@ function* adminDataSet(action){
     yield put({type:actionTypes.REMOVE_POP_UP});
 }
 
+function* findCustomer(data){
+    yield put({type:actionTypes.POP_UP, status:"loading", message:["搜索对应客户..."],onExit:null});
+    try {
+        const response = yield call(axios, {
+            method: 'POST',
+            url: '/api/customers/find',
+            data: data,
+        });
+        if(response.data.status>=200 && response.data.status<300){
+            yield put({type:actionTypes.REMOVE_POP_UP});
+            return response.data.response;
+        }
+        else{
+            yield put({type:actionTypes.POP_UP, status:"failure", message:["Error: "+response.data.error.message],onExit:null});
+        }
+    }
+    catch(e){
+        yield put({type:actionTypes.POP_UP, status:"failure", message:["搜索客户时出现意外, 请确认网络链接."],onExit:null});
+    }
+}
+
+function* unlockCustomers(action){
+    yield put({type:actionTypes.POP_UP, status:"loading", message:["正在解锁客户..."],onExit:null});
+    let check = true;
+    let missing = "";
+    if(action.customer.name===""){
+        check = false;
+        missing = missing+"姓名 ";
+    }
+    if(action.customer.gender===""){
+        check = false;
+        missing = missing+"性别 ";
+    }
+    if(action.customer.dob===""){
+        check = false;
+        missing = missing+"出生日期 ";
+    }
+    if(action.customer.passport_number===""){
+        check = false;
+        missing = missing+"护照号码 ";
+    }
+    console.log(check);
+    if(!check){
+        yield put({type:actionTypes.POP_UP, status:"failure", message:["请填入 "+missing+"信息."],onExit:null});
+    }
+    else{
+        const result = yield findCustomer(action.customer);
+        if(result.length === 0){
+            yield put({type:actionTypes.POP_UP, status:"failure", message:["数据库内没有对应客户."],onExit:null});
+        }
+        else{
+            check = true;
+            result.forEach((item)=>{
+                if(item.created_by === action.user.id){
+                    check = false;
+                }
+            });
+            if(!check){
+                yield put({type:actionTypes.POP_UP, status:"failure", message:["你已解锁过此客户."],onExit:null});
+            }
+            else{
+                try {
+                    const response = yield call(axios, {
+                        method: 'POST',
+                        url: '/api/customers/add/customer_user',
+                        data: {customer_id:result[0].id, user_id:action.user.id},
+                    });
+                    if(response.data.status>=200 && response.data.status<300){
+                        yield put({type:actionTypes.POP_UP, status:"success", message:["成功解锁客户"],onExit:"/customer"});
+                    }
+                    else{
+                        yield put({type:actionTypes.POP_UP, status:"failure", message:["Error: "+response.data.error.message],onExit:null});
+                    }
+                }
+                catch(e){
+                    yield put({type:actionTypes.POP_UP, status:"failure", message:["解锁客户时出现意外, 请确认网络链接."],onExit:null});
+                }
+            }
+        }
+    }
+    console.log(action);
+}
 export function* watchSagaCustomerRequests() {
-    yield takeEvery(actionTypes.SAGA_ADMIN_DATASET, adminDataSet);
+    yield takeEvery(actionTypes.SAGA_ADMIN_DATASET, getAdminDataSet);
+    yield takeEvery(actionTypes.SAGA_UNLOCK_CUSTOMERS, unlockCustomers);
 }

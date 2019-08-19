@@ -259,11 +259,11 @@ class AddCustomer extends Component{
                                 </tr>
                                 <tr>
                                     <td>
-                                        <Input label={"国籍："}
-                                               name={"citizenship"}
-                                               value={this.state.detail.citizenship}
-                                               type={"text"}
-                                               handleChange={this.handleChange}
+                                        <DropDown label={"国籍："}
+                                                  name={"citizenship"}
+                                                  value={this.state.detail.citizenship}
+                                                  options={["","中国","加拿大","越南","美国","印度","韩国","日本","柬埔寨"]}
+                                                  handleChange={this.handleChange}
                                         />
                                     </td>
                                 </tr>

@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
+//Get All Customer
 router.post('/all/', function(req, res, next) {
     res.locals.pool.query("SELECT c.*, u.name AS user_name, u.id AS created_by FROM customer c INNER JOIN customer_user cu ON cu.customer_id = c.id INNER JOIN user u ON cu.user_id = u.id" , function (error, results, fields) {
         if(error){
@@ -13,6 +14,60 @@ router.post('/all/', function(req, res, next) {
     });
 });
 
+//Find customer
+router.post('/find/', function(req, res, next) {
+    let body = req.body;
+    console.log(body);
+    let query = "SELECT c.*, u.name AS user_name, u.id AS created_by " +
+        "FROM customer c " +
+        "INNER JOIN customer_user cu " +
+        "ON cu.customer_id = c.id " +
+        "INNER JOIN user u " +
+        "ON cu.user_id = u.id " +
+        "WHERE ";
+    Object.keys(body).forEach((key)=>{
+       query = query+ "c."+key+" = '"+body[key]+"' AND ";
+    });
+    query = query.slice(0,-5);
+    query = query+";";
+    console.log(query);
+    res.locals.pool.query(query, function (error, results, fields) {
+        if(error){
+            console.log(error);
+            res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
+            //If there is error, we send the error in the error section with 500 status
+        } else {
+            res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
+            //If there is no error, all is good and response is 200OK.
+        }
+    });
+});
+
+router.post('/delete/customer_user', function(req, res, next) {
+    let body = req.body;
+    res.locals.pool.query("DELETE FROM customer_user WHERE customer_id = "+body.id+"" , function (error, results, fields) {
+        if(error){
+            res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
+            //If there is error, we send the error in the error section with 500 status
+        } else {
+            res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
+            //If there is no error, all is good and response is 200OK.
+        }
+    });
+});
+
+router.post('/add/customer_user', function(req, res, next) {
+    let body = req.body;
+    res.locals.pool.query("INSERT INTO customer_user (customer_id, user_id) VALUES ("+body.customer_id+", "+body.user_id+");" , function (error, results, fields) {
+        if(error){
+            res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
+            //If there is error, we send the error in the error section with 500 status
+        } else {
+            res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
+            //If there is no error, all is good and response is 200OK.
+        }
+    });
+});
 router.post('/contact/', function(req, res, next) {
     let body = req.body;
     res.locals.pool.query("SELECT * FROM customer_emergency_contact WHERE customer_id = "+body.id+"" , function (error, results, fields) {
@@ -63,7 +118,7 @@ router.post('/delete/force/', function(req, res, next) {
     });
 });
 
-router.post('/add/one/', function(req,res,next){
+router.post('/add/', function(req,res,next){
     let body = req.body;
     let query = null;
     if(body.passport_number!=="" || body.passport_number!==null || body.passport_number!=="null"){

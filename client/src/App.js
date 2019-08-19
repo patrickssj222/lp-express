@@ -16,6 +16,7 @@ import CustomerDetail from "./component/Form/Customer/CustomerDetail";
 import Business from "./component/Form/Business/Business";
 import BusinessDetail from "./component/Form/Business/BusinessDetail";
 import AddCustomer from "./component/Form/Customer/AddCustomer";
+import UnlockCustomer from "./component/Form/Customer/UnlockCustomer";
 import AddBusiness from "./component/Form/Business/AddBusiness";
 import UserAdministration from "./component/Form/UserAdministration/UserAdministration";
 import NewUser from "./component/Form/UserAdministration/AddUser";
@@ -75,7 +76,6 @@ class App extends Component {
             content =
                 <Router>
                     <Switch>
-                        <Route exact path={'/customer/detail/print'} component={PrintCustomerDetail}/>
                         <Route path={'/'}>
                             <div className={"page-wrapper chiller-theme toggled"}>
                                 <Navigation/>
@@ -87,6 +87,7 @@ class App extends Component {
                                         <Route exact path={'/all-customer'} component={AdminCustomer}/>
                                         <Route exact path={'/customer/detail'} component={CustomerDetail}/>
                                         <Route exact path={'/customer/add'} component={AddCustomer}/>
+                                        <Route exact path={'/customer/unlock'} component={UnlockCustomer}/>
                                         <Route exact path={'/business'} component={Business}/>
                                         <Route exact path={'/business/add'} component={AddBusiness}/>
                                         <Route exact path={'/business/detail'} component={BusinessDetail}/>
@@ -96,6 +97,7 @@ class App extends Component {
                                         <Route exact path={'/user/new'} component={NewUser}/>
                                         <Route exact path={'/user/edit'} component={EditUser}/>
                                         <Route exact path={'/china_geo'} component={ChinaGeographic}/>
+
                                     </Switch>
                                 </main>
                             </div>
