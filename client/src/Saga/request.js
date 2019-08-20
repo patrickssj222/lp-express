@@ -60,34 +60,7 @@ export function* getCustomers(){
     }
 }
 
-function* addCustomers(action){
-    yield put({type:actionTypes.POP_UP, status:"loading", message:["添加新客户..."],onExit:null});
-    if(action.customer.name!== ""){
-        try{
-            const response = yield call (axios, {
-                method: 'POST',
-                url: '/api/customers/add/one',
-                data:action.customer,
-            });
-            if(response.data.status>=200 && response.data.status<300){
-                yield put({type:actionTypes.REMOVE_POP_UP});
-                yield put({type:actionTypes.POP_UP, status:"success", message:["成功添加客户"],onExit:"/customer"});
-            }
-            else{
-                yield put({type:actionTypes.REMOVE_POP_UP});
-                yield put({type:actionTypes.POP_UP, status:"failure", message:["Error: "+response.data.error.message],onExit:null});
-            }
-        }
-        catch(e){
-            yield put({type:actionTypes.REMOVE_POP_UP});
-            yield put({type:actionTypes.POP_UP, status:"failure", message:["Error: Client Side Error."],onExit:null});
-        }
-    }
-    else{
-        yield put({type:actionTypes.REMOVE_POP_UP});
-        yield put({type:actionTypes.POP_UP, status:"failure", message:["请填入客户姓名."],onExit:null});
-    }
-}
+
 function* updateCustomers(action){
     yield put({type:actionTypes.POP_UP, status:"loading", message:["更新客户信息..."],onExit:null});
     try{
@@ -456,7 +429,6 @@ export function* watchSagaRequests() {
 
     yield takeEvery(actionTypes.SAGA_GET_CUSTOMERS, getCustomers);
     yield takeEvery(actionTypes.SAGA_UPDATE_CUSTOMERS, updateCustomers);
-    yield takeEvery(actionTypes.SAGA_ADD_CUSTOMERS, addCustomers);
     yield takeEvery(actionTypes.SAGA_FORCE_DELETE_CUSTOMER, forceDeleteCustomers);
 
     yield takeEvery(actionTypes.SAGA_GET_BUSINESS,getBusiness);

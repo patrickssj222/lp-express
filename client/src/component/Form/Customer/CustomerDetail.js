@@ -621,6 +621,13 @@ class CustomerDetail extends Component{
                         </table>
                     </div>
                 </div>
+                <div className={"section-wrapper"}>
+                    <div className={"section-header"}>
+                        <h3>家长信息</h3>
+                    </div>
+                    <div className={"section-body"}>
+                    </div>
+                </div>
                 <div className={"footer"}>
                     <div className={"form-confirmation button-group"}>
                         <small>完成值: {Math.round(this.state.total_completion/this.state.max_total*100)}%</small>
@@ -648,7 +655,8 @@ class CustomerDetail extends Component{
                     </div>:null
                 }
 
-            </div>          
+            </div>
+
             </div>
         );
     }

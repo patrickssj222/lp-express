@@ -493,6 +493,13 @@ class AddCustomer extends Component{
                         </table>
                     </div>
                 </div>
+                <div className={"section-wrapper"}>
+                    <div className={"section-header"}>
+                        <h3>家长信息</h3>
+                    </div>
+                    <div className={"section-body"}>
+                    </div>
+                </div>
                 {/*<div className={"section-wrapper"}>
                     <div className={"section-header"}>
                         <h3>紧急联系人信息</h3>

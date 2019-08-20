@@ -224,7 +224,45 @@ function* unlockCustomers(action){
     }
     console.log(action);
 }
+
+function* addCustomers(action){
+    yield put({type:actionTypes.POP_UP, status:"loading", message:["添加新客户..."],onExit:null});
+    let check = true;
+    let missing = "";
+    if(action.customer.name=== "") {
+        yield put({type:actionTypes.POP_UP, status:"failure", message:["请填入客户姓名."],onExit:null});
+        check = false;
+    }
+    if(action.customer.passport_number && action.customer.passport_number!==""){
+        const find = yield findCustomer({passport_number:action.customer.passport_number})
+        if(find.length>0){
+            check = false;
+            yield put({type:actionTypes.POP_UP, status:"failure", message:["对应护照号码的客户已存在,请通过解锁界面解锁该客户"],onExit:"/customer/unlock"});
+        }
+    }
+
+    if(check){
+        try{
+            const response = yield call (axios, {
+                method: 'POST',
+                url: '/api/customers/add',
+                data:action.customer,
+            });
+            if(response.data.status>=200 && response.data.status<300){
+                yield put({type:actionTypes.POP_UP, status:"success", message:["成功添加客户"],onExit:"/customer"});
+            }
+            else{
+                yield put({type:actionTypes.POP_UP, status:"failure", message:["Error: "+response.data.error.message],onExit:null});
+            }
+        }
+        catch(e){
+            yield put({type:actionTypes.POP_UP, status:"failure", message:["Error: Client Side Error."],onExit:null});
+        }
+    }
+
+}
 export function* watchSagaCustomerRequests() {
     yield takeEvery(actionTypes.SAGA_ADMIN_DATASET, getAdminDataSet);
     yield takeEvery(actionTypes.SAGA_UNLOCK_CUSTOMERS, unlockCustomers);
+    yield takeEvery(actionTypes.SAGA_ADD_CUSTOMERS, addCustomers);
 }
