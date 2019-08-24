@@ -8,6 +8,8 @@ import * as actionTypes from "../../../store/action";
 import findObject from "../../../utility/findObject";
 import { withRouter } from 'react-router-dom';
 import FirstTimeStudentVisa from './FirstTimeStudentVisa';
+import VisaRenewal from './VisaRenewal';
+import TemporaryVisaRenewal from './TemporaryVisaRenewal';
 
 
 class addBusiness extends Component{
@@ -30,6 +32,7 @@ class addBusiness extends Component{
             },
             service_type:"",
             service_name:"",
+            service_level:"",
             service:null,
         };
         this.handleChange = this.handleChange.bind(this);
@@ -215,6 +218,20 @@ class addBusiness extends Component{
             });
             service_option.unshift("");
         }
+        var form = null;
+            if(this.state.service_name ==="首次学签"){
+                form = <FirstTimeStudentVisa service_level={this.state.detail.service_level || "普通"} location={this.props.location.state} updateState={this.updateStateHandler}></FirstTimeStudentVisa>
+            }else if (this.state.service_name ==="小签续签"){
+                form = <TemporaryVisaRenewal service_level={this.state.detail.service_level || "普通"} location={this.props.location.state} updateState={this.updateStateHandler}></TemporaryVisaRenewal>
+            }else if (this.state.service_name ==="学签续签"){
+                form = <h1>hello</h1>
+            }
+            else if (this.state.service_name ==="学签和小签"){
+                form = <h1>hey</h1>
+            }
+            else if (this.state.service_name ==="护照换发"){
+                form = <VisaRenewal service_level={this.state.detail.service_level || "普通"} location={this.props.location.state} updateState={this.updateStateHandler}></VisaRenewal>
+            }
         return(
             <div className={"form-wrapper content-wrapper business-detail"}>
                 <div className={"section-wrapper"}>
@@ -241,9 +258,7 @@ class addBusiness extends Component{
                                         label={"具体业务"}
                                         value={this.state.service_name}
                                         name={"service_name"}
-                                        options={
-                                            service_option
-                                        }
+                                        options={service_option}
                                         handleChange={this.handleServiceChange}
                                     />
                                 </td>
@@ -252,26 +267,16 @@ class addBusiness extends Component{
                                         label={"业务等级"}
                                         value={this.state.detail.service_level}
                                         name={"service_level"}
-                                        options={
-                                            ["普通","特殊"]
-                                        }
+                                        options={["普通","特殊"]}
                                         handleChange={this.handleChange}
                                     />
                                 </td>
                             </tr>
-                            <FirstTimeStudentVisa updateState={this.updateStateHandler}></FirstTimeStudentVisa>
                             </tbody>
                         </table>
                     </div>
                 </div>
-                <div className={"footer"}>
-                    <div className={"form-confirmation button-group"}>
-                        <small>完成值: {Math.round(this.state.total_completion/this.state.max_total*100)}%</small>
-                        <small>目前状态:{this.state.confirmed?"已认证":"未认证"}</small>
-                        <button className={"btn btn-primary"} onClick={this.handleSubmit.bind(this)}>添加业务</button>
-                    </div>
-                </div>
-            </div>
+                {form}</div>
         );
     }
 }
