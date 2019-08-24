@@ -31,14 +31,14 @@ class FirstTimeStudentVisa extends Component{
                 guihuashi:"",
                 shoukuan:"",
                 payment_amount:"",
-                payment_method:"",
+                payment_method: "公司信用卡",
                 wenan_type:"",
                 refundable_amount:"",
             },
             service: this.props.parentState.service,
             service_type:"",
             service_name:"",
-            test_role: "规划师",
+            test_role: "文案",
             payment_table: []
         }
     };
@@ -151,7 +151,9 @@ class FirstTimeStudentVisa extends Component{
             }
         });
     }
+
     handleChange= (e) =>{
+        console.log(1)
         const { name, value } = e.target;
         this.setState((prevState) => {
             return {
@@ -165,7 +167,6 @@ class FirstTimeStudentVisa extends Component{
     }
 
     handleSpecialChange = (name, value) => {
-        // console.log(1);
         this.setState((prevState) => ({
             ...prevState,
             detail:{
@@ -175,7 +176,7 @@ class FirstTimeStudentVisa extends Component{
         }));
     }
 
-    handleSubmit= (e) =>{
+    handleSubmit = (e) =>{
         console.log("Adding business: ", this.state.detail);
         this.props.addNewBusiness(this.state.detail);
         this.props.history.push({
@@ -198,11 +199,12 @@ class FirstTimeStudentVisa extends Component{
     }
 
     handlePayment = () => {
-        var payment_amount = this.state.detail.payment_amount;
-        var payment_method = this.state.detail.payment_method;
         var date = new Date();
-        var payment_people = this.props.user.name;
-        var new_payment = {payment_amount, payment_method, date: date.toString(), payment_people}
+        var new_payment = {
+            payment_amount: this.state.detail.payment_amount, 
+            payment_method: this.state.detail.payment_method, 
+            date: date.toString(),
+            payment_people: this.props.user.name}
         this.setState((prevState) => {
             return {
                 ...prevState,
@@ -212,7 +214,6 @@ class FirstTimeStudentVisa extends Component{
                 ]
             }
         })
-        console.log(this.state.payment_table)
     }
 
 

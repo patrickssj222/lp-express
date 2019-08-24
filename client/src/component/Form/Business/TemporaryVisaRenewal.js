@@ -13,15 +13,15 @@ class TemporaryVisaRenewal extends Component{
             detail:{
                 customer_id: this.props.location.customer_id,
                 customer_name: this.props.location.customer_name,
-                service_constants_id:null,
-                other_fee: 0,
-                total_fee: 0,
-                misc_fee_payment_method: "",
-                government_fee_payment_method: "",
-                government_fee:"",
+                service_constants_id: this.props.parentState.detail.service_constants_id,
+                other_fee: this.props.parentState.detail.other_fee,
+                total_fee: this.props.parentState.detail.total_fee,
+                misc_fee_payment_method: this.props.parentState.detail.misc_fee_payment_method,
+                government_fee_payment_method: this.props.parentState.detail.government_fee_payment_method,
+                government_fee: this.props.parentState.detail.government_fee,
                 service_fee:"",
                 company_fee:"",
-                misc_fee:"",
+                misc_fee: this.props.parentState.detail.misc_fee,
                 progress:"收集材料",
                 service_creation_date:"",
                 visa_submit_date:"",
@@ -31,7 +31,7 @@ class TemporaryVisaRenewal extends Component{
                 guihuashi:"",
                 shoukuan:"",
                 payment_amount:"",
-                payment_method:"",
+                payment_method:  "公司信用卡",
                 wenan_type:"",
                 refundable_amount:"",
                 mailing_fee:"",
@@ -39,9 +39,11 @@ class TemporaryVisaRenewal extends Component{
                 passport_received_date:"",
                 passport_status:"",
             },
+            service: this.props.parentState.service,
             service_type:"",
             service_name:"",
-            service:null,
+            test_role: "规划师",
+            payment_table: []
         }
     };
     handleServiceTypeChange = (e) =>{
@@ -169,19 +171,50 @@ class TemporaryVisaRenewal extends Component{
     handleSpecialChange = (name, value) => {
         this.setState((prevState) => ({
             ...prevState,
-            new_user:{
-                ...prevState.new_user,
+            detail:{
+                ...prevState.detail,
                 [name]: value,
             }
         }));
     }
 
-    handleSubmit= (e) =>{
+    handleSubmit= (e) => {
         console.log("Adding business: ", this.state.detail);
         this.props.addNewBusiness(this.state.detail);
         this.props.history.push({
             pathname: "/customer/detail",
             state: { index: this.props.location.state.index}
+        })
+    }
+
+    paymentTable2React = (table) => {
+        return table.map((t, index) => {
+            return (
+                <tr key={index}>
+                    <th> {t.payment_amount} </th>
+                    <th> {t.payment_method} </th> 
+                    <th> {t.date} </th>
+                    <th> {t.payment_people} </th>
+                </tr>
+            )
+        })
+    }
+
+    handlePayment = () => {
+        var date = new Date();
+        var new_payment = {
+            payment_amount: this.state.detail.payment_amount, 
+            payment_method: this.state.detail.payment_method, 
+            date: date.toString(),
+            payment_people: this.props.user.name}
+        this.setState((prevState) => {
+            return {
+                ...prevState,
+                payment_table: [
+                    ...prevState.payment_table,
+                    new_payment
+                ]
+            }
         })
     }
 
@@ -205,7 +238,7 @@ class TemporaryVisaRenewal extends Component{
                 handleChange={this.handleChange}
                 disabled={true}
                 />
-        } else if (this.props.service_level!=="普通" && this.props.user.role==="业务员"){
+        } else if (this.props.service_level!=="普通" && this.state.test_role ==="业务员"){
             service_level_input =
             <Input
                 label={"服务费"}
@@ -241,8 +274,16 @@ class TemporaryVisaRenewal extends Component{
                         />
                         </td>
                             <td>
-                                {this.props.user.role!=="规划师"||this.props.user.role!=="收款员"?
+                                {this.state.test_role  ==="规划师"||this.state.test_role  ==="收款员"?
                                 (<DropDown
+                                    label={"支付方式"}
+                                    value={this.state.detail.government_fee_payment_method}
+                                    name={"government_fee_payment_method"}
+                                    options={
+                                        this.state.detail.service_constants_id?["公司信用卡","客人信用卡"]:[""]
+                                    }
+                                    handleChange={this.handleGovernmentPaymentMethodChange}
+                                />) : (<DropDown
                                     label={"支付方式"}
                                     value={"仅规划师/收款员可选"}
                                     name={"government_fee_payment_method"}   
@@ -251,14 +292,6 @@ class TemporaryVisaRenewal extends Component{
                                     }
                                     handleChange={this.handleGovernmentPaymentMethodChange}                        
                                     disabled={true}
-                                />):(<DropDown
-                                    label={"支付方式"}
-                                    value={this.state.detail.government_fee_payment_method}
-                                    name={"government_fee_payment_method"}
-                                    options={
-                                        this.state.detail.service_constants_id?["公司信用卡","客人信用卡"]:[""]
-                                    }
-                                    handleChange={this.handleGovernmentPaymentMethodChange}
                                 />)
                             }    
                             </td>
@@ -287,8 +320,16 @@ class TemporaryVisaRenewal extends Component{
                             />
                             </td>
                             <td>
-                                {this.props.user.role!=="规划师"||this.props.user.role!=="收款员"?
+                                {this.state.test_role ==="规划师"||this.state.test_role ==="收款员"?
                                 (<DropDown
+                                    label={"邮寄方式"}
+                                    value={this.state.detail.mailing_method}
+                                    name={"mailing_method"}
+                                    options={
+                                        this.state.detail.service_constants_id?["公司支付","客人支付"]:[""]
+                                    }
+                                    handleChange={this.handleChange}
+                                />): (<DropDown
                                     label={"邮寄方式"}
                                     value={"仅规划师/收款员可选"}
                                     name={"mailing_method"}   
@@ -297,14 +338,6 @@ class TemporaryVisaRenewal extends Component{
                                     }
                                     handleChange={this.handleChange}                        
                                     disabled={true}
-                                />):(<DropDown
-                                    label={"邮寄方式"}
-                                    value={this.state.detail.mailing_method}
-                                    name={"mailing_method"}
-                                    options={
-                                        this.state.detail.service_constants_id?["公司支付","客人支付"]:[""]
-                                    }
-                                    handleChange={this.handleChange}
                                 />)
                             }    
                             </td>
@@ -377,7 +410,7 @@ class TemporaryVisaRenewal extends Component{
                         {this.props.service_level==="特殊" &&
                            <tr>
                             <td>
-                            {this.props.user.role!== "业务员"?
+                            {this.state.test_role !== "业务员"?
                             (<Input
                                 label={"可退款金额"}
                                 value={"仅业务员可选"}
@@ -412,7 +445,7 @@ class TemporaryVisaRenewal extends Component{
                 <div className={"section-header"}>
                     <h3>收款员操作</h3>
                     <small>负责收款:{this.state.detail.shoukuan}</small>
-                    <button className={"btn btn-primary"} onClick={this.handleSubmit.bind(this)}>添加缴费按键</button>
+                    <button className={"btn btn-primary float-right"} onClick={this.handlePayment.bind(this)}>添加缴费按键</button>
                 </div>
                 <div className={"section-body"}>
                     <table className={"business-detail-table"}>
@@ -440,7 +473,7 @@ class TemporaryVisaRenewal extends Component{
                         </tr>
                         <tr>
                         <td>
-                        {this.props.user.role==="收款员"?(
+                        {this.state.test_role ==="收款员"?(
                             <Input
                             label={"选择文案"}
                             value={this.state.detail.wenan_type}
@@ -471,7 +504,7 @@ class TemporaryVisaRenewal extends Component{
                             </tr>
                         <tr>
                         <td>
-                        {this.props.user.role==="收款员"?(
+                        {this.state.test_role ==="收款员"?(
                             <CustomFormatInput
                             label={"护照寄出时间"}
                             value={this.state.detail.passport_mailed_date}
@@ -497,7 +530,7 @@ class TemporaryVisaRenewal extends Component{
                             />)}
                         </td>
                         <td>
-                        {this.props.user.role==="收款员"?(
+                        {this.state.test_role ==="收款员"?(
                             <CustomFormatInput
                             label={"护照收到时间"}
                             value={this.state.detail.passport_received_date}
@@ -523,7 +556,7 @@ class TemporaryVisaRenewal extends Component{
                             />)}
                         </td>
                         <td>
-                        {this.props.user.role==="收款员"?(
+                        {this.state.test_role ==="收款员"?(
                             <DropDown
                             label={"护照状态"}
                             value={this.state.detail.passport_status}
@@ -548,6 +581,17 @@ class TemporaryVisaRenewal extends Component{
                         </tr>
                         </tbody>
                     </table>
+                    <table className="table">
+                    <tbody>
+                        <tr>
+                            <th scope="col">缴费金额</th>
+                            <th scope="col">缴费方式</th> 
+                            <th scope="col">缴费日期</th>
+                            <th scope="col">收款员</th>
+                        </tr>
+                        {this.paymentTable2React(this.state.payment_table)}
+                        </tbody>
+                    </table>
                 </div>
             </div>
             <div className={"footer"}>
@@ -568,7 +612,7 @@ class TemporaryVisaRenewal extends Component{
                         <tbody>
                         <tr>
                             <td>
-                            {this.props.user.role==="文案"?(
+                            {this.state.test_role ==="文案"?(
                                 <DropDown
                                     label={"签证进度"}
                                     value={this.state.detail.progress}

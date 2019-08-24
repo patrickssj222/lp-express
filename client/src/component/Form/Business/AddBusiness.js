@@ -8,7 +8,7 @@ import * as actionTypes from "../../../store/action";
 import findObject from "../../../utility/findObject";
 import { withRouter } from 'react-router-dom';
 import FirstTimeStudentVisa from './FirstTimeStudentVisa';
-import VisaRenewal from './VisaRenewal';
+import PassportRenewal from './PassportRenewal';
 import TemporaryVisaRenewal from './TemporaryVisaRenewal';
 import StudentVisaRenewal from './StudentVisaRenewal';
 import StudentAndTemporaryVisa from './StudentAndTemporaryVisa';
@@ -230,7 +230,7 @@ class addBusiness extends Component{
                 form = <StudentAndTemporaryVisa parentState={this.state} service_level={this.state.detail.service_level || "普通"} location={this.props.location.state} updateState={this.updateStateHandler}></StudentAndTemporaryVisa>
             }
             else if (this.state.service_name ==="护照换发"){
-                form = <VisaRenewal parentState={this.state} service_level={this.state.detail.service_level || "普通"} location={this.props.location.state} updateState={this.updateStateHandler}></VisaRenewal>
+                form = <PassportRenewal parentState={this.state} service_level={this.state.detail.service_level || "普通"} location={this.props.location.state} updateState={this.updateStateHandler}></PassportRenewal>
             }
         return(
             <div className={"form-wrapper content-wrapper business-detail"}>
