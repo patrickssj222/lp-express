@@ -17,18 +17,18 @@ class addBusiness extends Component{
         super(props);
         this.state={
             detail:{
-                // customer_id: "",
-                // service_constants_id:null,
-                // other_fee: 0,
-                // total_fee: 0,
-                // misc_fee_payment_method: "",
-                // government_fee_payment_method: "",
-                // government_fee:"",
-                // misc_fee:"",
-                // progress:"收集材料",
-                // visa_submit_date:"",
-                // visa_expire_date:"",
-                // service_level: "普通",
+                customer_id: "",
+                service_constants_id:null,
+                other_fee: 0,
+                total_fee: 0,
+                misc_fee_payment_method: "",
+                government_fee_payment_method: "",
+                government_fee:"",
+                misc_fee:"",
+                progress:"收集材料",
+                visa_submit_date:"",
+                visa_expire_date:"",
+                service_level: "普通",
             },
             service_type:"",
             service_name:"",
@@ -220,17 +220,17 @@ class addBusiness extends Component{
         }
         var form = null;
             if(this.state.service_name ==="首次学签"){
-                form = <FirstTimeStudentVisa service_level={this.state.detail.service_level || "普通"} location={this.props.location.state} updateState={this.updateStateHandler}></FirstTimeStudentVisa>
+                form = <FirstTimeStudentVisa parentState={this.state} service_level={this.state.detail.service_level || "普通"} location={this.props.location.state} updateState={this.updateStateHandler}></FirstTimeStudentVisa>
             }else if (this.state.service_name ==="小签续签"){
-                form = <TemporaryVisaRenewal service_level={this.state.detail.service_level || "普通"} location={this.props.location.state} updateState={this.updateStateHandler}></TemporaryVisaRenewal>
+                form = <TemporaryVisaRenewal parentState={this.state} service_level={this.state.detail.service_level || "普通"} location={this.props.location.state} updateState={this.updateStateHandler}></TemporaryVisaRenewal>
             }else if (this.state.service_name ==="学签续签"){
-                form = <StudentVisaRenewal service_level={this.state.detail.service_level || "普通"} location={this.props.location.state} updateState={this.updateStateHandler}></StudentVisaRenewal>
+                form = <StudentVisaRenewal parentState={this.state} service_level={this.state.detail.service_level || "普通"} location={this.props.location.state} updateState={this.updateStateHandler}></StudentVisaRenewal>
             }
             else if (this.state.service_name ==="学签和小签"){
-                form = <StudentAndTemporaryVisa service_level={this.state.detail.service_level || "普通"} location={this.props.location.state} updateState={this.updateStateHandler}></StudentAndTemporaryVisa>
+                form = <StudentAndTemporaryVisa parentState={this.state} service_level={this.state.detail.service_level || "普通"} location={this.props.location.state} updateState={this.updateStateHandler}></StudentAndTemporaryVisa>
             }
             else if (this.state.service_name ==="护照换发"){
-                form = <VisaRenewal service_level={this.state.detail.service_level || "普通"} location={this.props.location.state} updateState={this.updateStateHandler}></VisaRenewal>
+                form = <VisaRenewal parentState={this.state} service_level={this.state.detail.service_level || "普通"} location={this.props.location.state} updateState={this.updateStateHandler}></VisaRenewal>
             }
         return(
             <div className={"form-wrapper content-wrapper business-detail"}>
