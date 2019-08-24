@@ -10,8 +10,8 @@ import { withRouter } from 'react-router-dom';
 import FirstTimeStudentVisa from './FirstTimeStudentVisa';
 import VisaRenewal from './VisaRenewal';
 import TemporaryVisaRenewal from './TemporaryVisaRenewal';
-
-
+import StudentVisaRenewal from './StudentVisaRenewal';
+import StudentAndTemporaryVisa from './StudentAndTemporaryVisa';
 class addBusiness extends Component{
     constructor(props){
         super(props);
@@ -224,10 +224,10 @@ class addBusiness extends Component{
             }else if (this.state.service_name ==="小签续签"){
                 form = <TemporaryVisaRenewal service_level={this.state.detail.service_level || "普通"} location={this.props.location.state} updateState={this.updateStateHandler}></TemporaryVisaRenewal>
             }else if (this.state.service_name ==="学签续签"){
-                form = <h1>hello</h1>
+                form = <StudentVisaRenewal service_level={this.state.detail.service_level || "普通"} location={this.props.location.state} updateState={this.updateStateHandler}></StudentVisaRenewal>
             }
             else if (this.state.service_name ==="学签和小签"){
-                form = <h1>hey</h1>
+                form = <StudentAndTemporaryVisa service_level={this.state.detail.service_level || "普通"} location={this.props.location.state} updateState={this.updateStateHandler}></StudentAndTemporaryVisa>
             }
             else if (this.state.service_name ==="护照换发"){
                 form = <VisaRenewal service_level={this.state.detail.service_level || "普通"} location={this.props.location.state} updateState={this.updateStateHandler}></VisaRenewal>

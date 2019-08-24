@@ -6,7 +6,7 @@ import findObject from "../../../utility/findObject";
 import CustomFormatInput from "../Input/CustomFormatInput";
 import connect from "react-redux/es/connect/connect";
 
-class StudentVisaRenewal extends Component{
+class FirstTimeStudentVisa extends Component{
     constructor(props){
         super(props);
         this.state={
@@ -22,10 +22,14 @@ class StudentVisaRenewal extends Component{
                 service_fee:"",
                 company_fee:"",
                 misc_fee:"",
-                progress:"收集材料",
+                study_visa_progress:"收集材料",
+                temporary_visa_progress:"收集材料",
                 service_creation_date:"",
-                visa_submit_date:"",
-                visa_approved_date:"",
+                student_visa_submit_date:"",
+                temporary_visa_submit_date:"",
+                student_visa_approved_date:"",
+                temporary_visa_approved_date:"",
+                visa_expire_date:"",
                 service_level: "普通",
                 wenan:"",
                 guihuashi:"",
@@ -34,13 +38,6 @@ class StudentVisaRenewal extends Component{
                 payment_method:"",
                 wenan_type:"",
                 refundable_amount:"",
-                mailing_fee:"",
-                passport_mailed_date:"",
-                passport_received_date:"",
-                passport_status:"",
-                visa_received_date:"",
-                customer_pickup_date:"",
-
             },
             service_type:"",
             service_name:"",
@@ -189,6 +186,7 @@ class StudentVisaRenewal extends Component{
     }
 
     render(){
+
         var service_level_input = 
         <Input
             label={"服务费"}
@@ -217,88 +215,8 @@ class StudentVisaRenewal extends Component{
                 handleChange={this.handleChange}
             /> 
         }
-        var visa_received_date = 
-        <CustomFormatInput
-        label={"签证收到时间"}
-        name={"visa_received_date"}
-        value={this.state.detail.visa_received_date.replace(/\//g, '-')}
-        format={[
-            {char: /\d/, repeat:4},
-            { exactly: "-" },
-            {char: /\d/, repeat:2},
-            { exactly: "-" },
-            {char: /\d/, repeat:2},
-        ]}
-        placeholder={"YYYY-MM-DD"}
-        handleChange={this.handleSpecialChange}
-        disabled={true}/>
-        if (this.props.service_level==="特殊"){
-            if(this.props.user.role==="收款员"){
-            visa_received_date = 
-            <CustomFormatInput
-                label={"签证收到时间"}
-                name={"visa_received_date"}
-                value={this.state.detail.visa_received_date.replace(/\//g, '-')}
-                format={[
-                    {char: /\d/, repeat:4},
-                    { exactly: "-" },
-                    {char: /\d/, repeat:2},
-                    { exactly: "-" },
-                    {char: /\d/, repeat:2},
-                ]}
-                placeholder={"YYYY-MM-DD"}
-                handleChange={this.handleSpecialChange}/>
-            } else {
-            visa_received_date =
-            <Input
-                label={"签证收到时间"}
-                value={"仅收款员可选"}
-                type={"text"}
-                handleChange={this.handleChange}
-                disabled={true}
-            /> 
-        }}
-        var customer_pickup_date = 
-        <CustomFormatInput
-        label={"客人取件时间"}
-        name={"customer_pickup_date"}
-        value={this.state.detail.customer_pickup_date.replace(/\//g, '-')}
-        format={[
-            {char: /\d/, repeat:4},
-            { exactly: "-" },
-            {char: /\d/, repeat:2},
-            { exactly: "-" },
-            {char: /\d/, repeat:2},
-        ]}
-        placeholder={"YYYY-MM-DD"}
-        handleChange={this.handleSpecialChange}
-        disabled={true}/>
-        if (this.props.service_level==="特殊"){
-            if(this.props.user.role==="收款员"){
-            customer_pickup_date = 
-            <CustomFormatInput
-                label={"客人取件时间"}
-                name={"customer_pickup_date"}
-                value={this.state.detail.customer_pickup_date.replace(/\//g, '-')}
-                format={[
-                    {char: /\d/, repeat:4},
-                    { exactly: "-" },
-                    {char: /\d/, repeat:2},
-                    { exactly: "-" },
-                    {char: /\d/, repeat:2},
-                ]}
-                placeholder={"YYYY-MM-DD"}
-                handleChange={this.handleSpecialChange}/>
-        } else {
-            customer_pickup_date =
-            <Input
-                label={"客人取件时间"}
-                value={"仅收款员可选"}
-                type={"text"}
-                handleChange={this.handleChange}
-                disabled={true}
-            /> 
-        }}
+
+        
         return(
         <div>
             <div className={"section-wrapper"}>
@@ -341,6 +259,52 @@ class StudentVisaRenewal extends Component{
                                         this.state.detail.service_constants_id?["公司信用卡","客人信用卡"]:[""]
                                     }
                                     handleChange={this.handleGovernmentPaymentMethodChange}
+                                />)
+                            }    
+                            </td>
+                            <td>
+                                <Input
+                                    label={"公司收费"}
+                                    name={"company_fee"}
+                                    value={this.state.detail.company_fee}
+                                    type={"number"}
+                                    step={".01"}
+                                    handleChange={this.handleChange}
+                                    disabled={true}
+                                />
+                            </td>
+                        </tr>
+<tr>
+<td>
+                            <Input
+                                label={"邮寄费"}
+                                name={"mailing_fee"}
+                                value={this.state.detail.mailing_fee}
+                                type={"number"}
+                                step={".01"}
+                                handleChange={this.handleChange}
+                                disabled={true}
+                            />
+                            </td>
+                            <td>
+                                {this.props.user.role!=="规划师"||this.props.user.role!=="收款员"?
+                                (<DropDown
+                                    label={"邮寄方式"}
+                                    value={"仅规划师/收款员可选"}
+                                    name={"mailing_method"}   
+                                    options={
+                                        ["仅规划师/收款员可选"]
+                                    }
+                                    handleChange={this.handleChange}                        
+                                    disabled={true}
+                                />):(<DropDown
+                                    label={"邮寄方式"}
+                                    value={this.state.detail.mailing_method}
+                                    name={"mailing_method"}
+                                    options={
+                                        this.state.detail.service_constants_id?["公司支付","客人支付"]:[""]
+                                    }
+                                    handleChange={this.handleChange}
                                 />)
                             }    
                             </td>
@@ -409,7 +373,9 @@ class StudentVisaRenewal extends Component{
                                 disabled={true}
                             />
                         </td>
+                        </tr>
                         {this.props.service_level==="特殊" &&
+                           <tr>
                             <td>
                             {this.props.user.role!== "业务员"?
                             (<Input
@@ -429,8 +395,8 @@ class StudentVisaRenewal extends Component{
                             />
                             )}
                             </td>
+                            </tr> 
                         }
-                        </tr>
                         </tbody>
                     </table>
                 </div>
@@ -502,22 +468,75 @@ class StudentVisaRenewal extends Component{
                                 disabled={true}
                             />
                             </td>
-                            </tr>
-                        <tr>
-                            <td>
-                            {this.props.user.role==="收款员"?(
-                                <DropDown
-                                label={"签证状态"}
-                                value={this.state.detail.visa_status}
-                                name={"passport_status"}
-                                options={
-                                    ["收集材料","申请递交","签证获批","签证被拒"]
-                                }
+                            </tr>             
+                            <tr>
+                        <td>
+                        {this.props.user.role==="收款员"?(
+                            <CustomFormatInput
+                            label={"护照寄出时间"}
+                            value={this.state.detail.passport_mailed_date}
+                            name={"passport_mailed_date"}
+                            format={[
+                                {char: /\d/, repeat:4},
+                                { exactly: "-" },
+                                {char: /\d/, repeat:2},
+                                { exactly: "-" },
+                                {char: /\d/, repeat:2},
+                            ]}
+                            placeholder={"YYYY-MM-DD"}
+                            handleChange={this.handleSpecialChange}
+                        />):
+                            (
+                            <Input
+                                label={"护照寄出时间"}
+                                value={"仅收款员可选"}
+                                name={"passport_mailed_date"}
+                                type={"text"}
                                 handleChange={this.handleChange}
-                            />):(
+                                disabled={true}
+                            />)}
+                        </td>
+                        <td>
+                        {this.props.user.role==="收款员"?(
+                            <CustomFormatInput
+                            label={"护照收到时间"}
+                            value={this.state.detail.passport_received_date}
+                            name={"passport_received_date"}
+                            format={[
+                                {char: /\d/, repeat:4},
+                                { exactly: "-" },
+                                {char: /\d/, repeat:2},
+                                { exactly: "-" },
+                                {char: /\d/, repeat:2},
+                            ]}
+                            placeholder={"YYYY-MM-DD"}
+                            handleChange={this.handleSpecialChange}
+                        />):
+                            (
+                            <Input
+                                label={"护照收到时间"}
+                                value={"仅收款员可选"}
+                                name={"passport_received_date"}
+                                type={"text"}
+                                handleChange={this.handleChange}
+                                disabled={true}
+                            />)}
+                        </td>
+                        <td>
+                        {this.props.user.role==="收款员"?(
                             <DropDown
-                                label={"签证状态"}
-                                value={this.state.detail.visa_status}
+                            label={"护照状态"}
+                            value={this.state.detail.passport_status}
+                            name={"passport_status"}
+                            options={
+                                ["收集材料","申请递交","护照获批","护照被拒"]
+                            }
+                            handleChange={this.handleChange}
+                        />):
+                            (
+                            <DropDown
+                                label={"护照状态"}
+                                value={this.state.detail.passport_status}
                                 name={"passport_status"}
                                 options={
                                     ["仅收款员可选"]
@@ -526,13 +545,8 @@ class StudentVisaRenewal extends Component{
                                 disabled={true}
                             />)}
                         </td>
-                        <td>
-                            {visa_received_date}
-                        </td>
-                        <td>
-                            {customer_pickup_date}
-                        </td>
                         </tr>
+
                         </tbody>
                     </table>
                 </div>
@@ -541,7 +555,7 @@ class StudentVisaRenewal extends Component{
                     <div className={"form-confirmation button-group"}>
                         <small>完成值: {Math.round(this.state.total_completion/this.state.max_total*100)}%</small>
                         <small>目前状态:{this.state.confirmed?"已认证":"未认证"}</small>
-                        <button className={"btn btn-primary"} onClick={this.handleSubmit.bind(this)}>确认递交</button>
+                        <button className={"btn btn-primary"} onClick={this.handleSubmit.bind(this)}>添加业务</button>
                     </div>
             </div>
             <div className={"section-wrapper"}>
@@ -557,18 +571,18 @@ class StudentVisaRenewal extends Component{
                             <td>
                             {this.props.user.role==="文案"?(
                                 <DropDown
-                                    label={"签证进度"}
-                                    value={this.state.detail.progress}
-                                    name={"progress"}
+                                    label={"学签/签证进度"}
+                                    value={this.state.detail.study_visa_progress}
+                                    name={"study_visa_progress"}
                                     options={
                                         ["收集材料","申请递交","签证获批","签证被拒"]
                                     }
                                     handleChange={this.handleChange}
                                 />):(
                                     <DropDown
-                                    label={"签证进度"}
-                                    value={this.state.detail.progress}
-                                    name={"progress"}
+                                    label={"学签/签证进度"}
+                                    value={this.state.detail.study_visa_progress}
+                                    name={"study_visa_progress"}
                                     options={
                                         ["仅文案可选"]
                                     }
@@ -577,10 +591,42 @@ class StudentVisaRenewal extends Component{
                                 />)}
                             </td>
                             <td>
-                            <CustomFormatInput
+                            {this.props.user.role==="文案"?(
+                                <DropDown
+                                    label={"小签/签证进度"}
+                                    value={this.state.detail.temporary_visa_progress}
+                                    name={"temporary_visa_progress"}
+                                    options={
+                                        ["收集材料","申请递交","签证获批","签证被拒"]
+                                    }
+                                    handleChange={this.handleChange}
+                                />):(
+                                    <DropDown
+                                    label={"小签/签证进度"}
+                                    value={this.state.detail.temporary_visa_progress}
+                                    name={"temporary_visa_progress"}
+                                    options={
+                                        ["仅文案可选"]
+                                    }
+                                    handleChange={this.handleChange}
+                                    disabled={true}
+                                />)}
+                            </td>
+                            </tr><tr>
+                            <td>
+                            {this.props.user.role!=="文案"?(
+                            <Input
                                 label={"递交日期"}
-                                name={"visa_submit_date"}
-                                value={this.state.detail.visa_submit_date.replace(/\//g, '-')}
+                                name={"student_visa_submit_date"}
+                                value={"仅文案可选"}
+                                type={"text"}
+                                handleChange={this.handleChange}
+                                disabled={true}
+                            />):(
+                                <CustomFormatInput
+                                label={"递交日期"}
+                                name={"student_visa_submit_date"}
+                                value={this.state.detail.student_visa_submit_date.replace(/\//g, '-')}
                                 format={[
                                     {char: /\d/, repeat:4},
                                     { exactly: "-" },
@@ -590,14 +636,23 @@ class StudentVisaRenewal extends Component{
                                 ]}
                                 placeholder={"YYYY-MM-DD"}
                                 handleChange={this.handleSpecialChange}
-                                disabled={true}
                             />
+                            )}
                             </td>
                             <td>
-                            <CustomFormatInput
-                                label={"获批日期"}
-                                name={"visa_approved_date"}
-                                value={this.state.detail.visa_approved_date.replace(/\//g, '-')}
+                            {this.props.user.role!=="文案"?(
+                            <Input
+                                label={"递交日期"}
+                                name={"temporary_visa_submit_date"}
+                                value={"仅文案可选"}
+                                type={"text"}
+                                handleChange={this.handleChange}
+                                disabled={true}
+                            />):(
+                                <CustomFormatInput
+                                label={"递交日期"}
+                                name={"temporary_visa_submit_date"}
+                                value={this.state.detail.temporary_visa_submit_date.replace(/\//g, '-')}
                                 format={[
                                     {char: /\d/, repeat:4},
                                     { exactly: "-" },
@@ -607,8 +662,62 @@ class StudentVisaRenewal extends Component{
                                 ]}
                                 placeholder={"YYYY-MM-DD"}
                                 handleChange={this.handleSpecialChange}
-                                disabled={true}
                             />
+                            )}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                            {this.props.user.role!=="文案"?(
+                            <Input
+                                label={"获批日期"}
+                                name={"student_visa_approved_date"}
+                                value={"仅文案可选"}
+                                type={"text"}
+                                handleChange={this.handleChange}
+                                disabled={true}
+                            />):(
+                                <CustomFormatInput
+                                label={"获批日期"}
+                                name={"student_visa_approved_date"}
+                                value={this.state.detail.student_visa_approved_date.replace(/\//g, '-')}
+                                format={[
+                                    {char: /\d/, repeat:4},
+                                    { exactly: "-" },
+                                    {char: /\d/, repeat:2},
+                                    { exactly: "-" },
+                                    {char: /\d/, repeat:2},
+                                ]}
+                                placeholder={"YYYY-MM-DD"}
+                                handleChange={this.handleSpecialChange}
+                            />
+                            )}
+                            </td>
+                            <td>
+                            {this.props.user.role!=="文案"?(
+                            <Input
+                                label={"获批日期"}
+                                name={"temporary_visa_approved_date"}
+                                value={"仅文案可选"}
+                                type={"text"}
+                                handleChange={this.handleChange}
+                                disabled={true}
+                            />):(
+                                <CustomFormatInput
+                                label={"获批日期"}
+                                name={"temporary_visa_approved_date"}
+                                value={this.state.detail.temporary_visa_approved_date.replace(/\//g, '-')}
+                                format={[
+                                    {char: /\d/, repeat:4},
+                                    { exactly: "-" },
+                                    {char: /\d/, repeat:2},
+                                    { exactly: "-" },
+                                    {char: /\d/, repeat:2},
+                                ]}
+                                placeholder={"YYYY-MM-DD"}
+                                handleChange={this.handleSpecialChange}
+                            />
+                            )}
                             </td>
                         </tr>
                         <tr>
@@ -637,6 +746,8 @@ class StudentVisaRenewal extends Component{
                                 disabled={true}
                             />)}
                         </td>
+                        </tr>
+                        <tr>
                         <td>
                             <Input
                                 label={"负责文案"}
@@ -656,7 +767,7 @@ class StudentVisaRenewal extends Component{
                     <div className={"form-confirmation button-group"}>
                         <small>完成值: {Math.round(this.state.total_completion/this.state.max_total*100)}%</small>
                         <small>目前状态:{this.state.confirmed?"已认证":"未认证"}</small>
-                        <button className={"btn btn-primary"} onClick={this.handleSubmit.bind(this)}>确认递交</button>
+                        <button className={"btn btn-primary"} onClick={this.handleSubmit.bind(this)}>添加业务</button>
                     </div>
             </div>
         </div>
@@ -668,4 +779,4 @@ const mapStateToProps = state => {
         user: state.user,
     };
 };
-export default connect(mapStateToProps)(StudentVisaRenewal);
+export default connect(mapStateToProps)(FirstTimeStudentVisa);
