@@ -46,6 +46,7 @@ class TemporaryVisaRenewal extends Component{
             payment_table: []
         }
     };
+    
     handleServiceTypeChange = (e) =>{
         const { name, value } = e.target;
         this.setState((prevState) => {
@@ -56,6 +57,7 @@ class TemporaryVisaRenewal extends Component{
             }
         });
     }
+
     handleServiceChange= (e) =>{
         const { name, value } = e.target;
         const service = findObject(this.props.constants.fee,"name",value)[0];
@@ -79,6 +81,7 @@ class TemporaryVisaRenewal extends Component{
             }
         });
     }
+
     handleGovernmentPaymentMethodChange= (e) =>{
         const { name, value } = e.target;
         if(value === "公司信用卡"){
@@ -223,29 +226,29 @@ class TemporaryVisaRenewal extends Component{
         var service_level_input = 
         <Input
             label={"服务费"}
-            value={"仅业务员可选"}
+            value={this.state.service.other_fee}
             type={"text"}
-            handleChange={this.handleChange}
+            handleChange={this.handleOtherFeeChange}
             disabled={true}
             />
         if (this.props.service_level==="普通"){
             service_level_input = 
             <Input
                 label={"服务费"}
-                value={this.state.service_fee}
+                value={this.state.service.other_fee}
                 type={"number"}
                 step={".01"}
-                handleChange={this.handleChange}
+                handleChange={this.handleOtherFeeChange}
                 disabled={true}
                 />
         } else if (this.props.service_level!=="普通" && this.state.test_role ==="业务员"){
             service_level_input =
             <Input
                 label={"服务费"}
-                value={this.state.service_fee}
+                value={this.state.service.other_fee}
                 type={"number"}
                 step={".01"}
-                handleChange={this.handleChange}
+                handleChange={this.handleOtherFeeChange}
             /> 
         }
 
@@ -299,7 +302,7 @@ class TemporaryVisaRenewal extends Component{
                                 <Input
                                     label={"公司收费"}
                                     name={"company_fee"}
-                                    value={this.state.detail.company_fee}
+                                    value={this.state.detail.government_fee}
                                     type={"number"}
                                     step={".01"}
                                     handleChange={this.handleChange}
@@ -311,8 +314,8 @@ class TemporaryVisaRenewal extends Component{
                         <td>
                             <Input
                                 label={"邮寄费"}
-                                name={"mailing_fee"}
-                                value={this.state.detail.mailing_fee}
+                                name={"misc_fee"}
+                                value={this.state.detail.misc_fee}
                                 type={"number"}
                                 step={".01"}
                                 handleChange={this.handleChange}
@@ -326,9 +329,9 @@ class TemporaryVisaRenewal extends Component{
                                     value={this.state.detail.mailing_method}
                                     name={"mailing_method"}
                                     options={
-                                        this.state.detail.service_constants_id?["公司支付","客人支付"]:[""]
+                                        this.state.detail.service_constants_id?["公司邮寄","客人邮寄"]:[""]
                                     }
-                                    handleChange={this.handleChange}
+                                    handleChange={this.handleMiscPaymentMethodChange}
                                 />): (<DropDown
                                     label={"邮寄方式"}
                                     value={"仅规划师/收款员可选"}
@@ -336,7 +339,7 @@ class TemporaryVisaRenewal extends Component{
                                     options={
                                         ["仅规划师/收款员可选"]
                                     }
-                                    handleChange={this.handleChange}                        
+                                    handleChange={this.handleMiscPaymentMethodChange}                        
                                     disabled={true}
                                 />)
                             }    
@@ -345,7 +348,7 @@ class TemporaryVisaRenewal extends Component{
                                 <Input
                                     label={"公司收费"}
                                     name={"company_fee"}
-                                    value={this.state.detail.company_fee}
+                                    value={this.state.detail.misc_fee}
                                     type={"number"}
                                     step={".01"}
                                     handleChange={this.handleChange}
