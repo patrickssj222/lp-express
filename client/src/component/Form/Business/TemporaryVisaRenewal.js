@@ -30,14 +30,15 @@ class TemporaryVisaRenewal extends Component{
                 wenan:"",
                 guihuashi:"",
                 shoukuan:"",
-                payment_amount:"",
-                payment_method:  "公司信用卡",
+                payment_amount: 0,
+                payment_method: "Cash",
                 wenan_type:"",
                 refundable_amount:"",
                 mailing_fee:"",
                 passport_mailed_date:"",
                 passport_received_date:"",
                 passport_status:"",
+                total_payment: 0
             },
             service: this.props.parentState.service,
             service_type:"",
@@ -45,6 +46,7 @@ class TemporaryVisaRenewal extends Component{
             test_role: "规划师",
             payment_table: []
         }
+        console.log(this.state.service)
     };
     
     handleServiceTypeChange = (e) =>{
@@ -216,7 +218,11 @@ class TemporaryVisaRenewal extends Component{
                 payment_table: [
                     ...prevState.payment_table,
                     new_payment
-                ]
+                ],
+                detail: {
+                    ...prevState.detail,
+                    total_payment: parseFloat(prevState.detail.total_payment) + parseFloat(this.state.detail.payment_amount)
+                }
             }
         })
     }
@@ -226,7 +232,7 @@ class TemporaryVisaRenewal extends Component{
         var service_level_input = 
         <Input
             label={"服务费"}
-            value={this.state.service.other_fee}
+            value={this.state.service.service_fee}
             type={"text"}
             handleChange={this.handleOtherFeeChange}
             disabled={true}
@@ -235,7 +241,7 @@ class TemporaryVisaRenewal extends Component{
             service_level_input = 
             <Input
                 label={"服务费"}
-                value={this.state.service.other_fee}
+                value={this.state.service.service_fee}
                 type={"number"}
                 step={".01"}
                 handleChange={this.handleOtherFeeChange}
@@ -245,7 +251,7 @@ class TemporaryVisaRenewal extends Component{
             service_level_input =
             <Input
                 label={"服务费"}
-                value={this.state.service.other_fee}
+                value={this.state.service.service_fee}
                 type={"number"}
                 step={".01"}
                 handleChange={this.handleOtherFeeChange}
@@ -363,7 +369,7 @@ class TemporaryVisaRenewal extends Component{
                             <td>
                                 <Input
                                     label={"其他"}
-                                    value={this.state.service?this.state.misc_fee:""}
+                                    value={this.state.service?this.state.service.misc_fee:""}
                                     type={"number"}
                                     step={".01"}
                                     handleChange={this.handleChange}
@@ -373,7 +379,7 @@ class TemporaryVisaRenewal extends Component{
                             <td>
                                 <Input
                                     label={"收费总计"}
-                                    value={this.state.detail.misc_fee+this.state.detail.government_fee+this.state.detail.service_fee+this.state.detail.company_fee}
+                                    value={this.state.detail.total_fee}
                                     type={"number"}
                                     step={".01"}
                                     handleChange={this.handleChange}
@@ -460,7 +466,7 @@ class TemporaryVisaRenewal extends Component{
                                     label={"缴费金额"}
                                     value={this.state.detail.payment_amount}
                                     name={"payment_amount"}
-                                    type={"text"}
+                                    type={"number"}
                                     handleChange={this.handleChange}
                                 />
                             </td>
@@ -469,7 +475,7 @@ class TemporaryVisaRenewal extends Component{
                                     label={"缴费方式"}
                                     value={this.state.detail.payment_method}
                                     name={"payment_method"}
-                                    options={this.state.detail.service_constants_id?["公司信用卡","客人信用卡"]:[""]}
+                                    options={this.state.detail.service_constants_id?["Cash","Debit"]:[""]}
                                     handleChange={this.handleChange}
                                 />
                             </td>
@@ -595,6 +601,7 @@ class TemporaryVisaRenewal extends Component{
                         {this.paymentTable2React(this.state.payment_table)}
                         </tbody>
                     </table>
+                    <p> 当前业务余额: {this.state.detail.total_payment - this.state.detail.total_fee} </p>
                 </div>
             </div>
             <div className={"footer"}>

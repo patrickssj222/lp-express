@@ -32,7 +32,7 @@ class StudentVisaRenewal extends Component{
                 guihuashi:"",
                 shoukuan:"",
                 payment_amount: 0,
-                payment_method:"公司信用卡",
+                payment_method:"Cash",
                 wenan_type:"",
                 refundable_amount:"",
                 mailing_fee:"",
@@ -508,7 +508,7 @@ class StudentVisaRenewal extends Component{
                                     label={"缴费方式"}
                                     value={this.state.detail.payment_method}
                                     name={"payment_method"}
-                                    options={this.state.detail.service_constants_id?["公司信用卡","客人信用卡"]:[""]}
+                                    options={this.state.detail.service_constants_id?["Cash","Debit"]:[""]}
                                     handleChange={this.handleChange}
                                 />
                             </td>
