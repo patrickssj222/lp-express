@@ -369,7 +369,7 @@ class TemporaryVisaRenewal extends Component{
                             <td>
                                 <Input
                                     label={"其他"}
-                                    value={this.state.service?this.state.service.misc_fee:""}
+                                    value={this.state.service?this.state.detail.other_fee:""}
                                     type={"number"}
                                     step={".01"}
                                     handleChange={this.handleChange}
