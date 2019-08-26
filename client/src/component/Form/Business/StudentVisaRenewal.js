@@ -46,7 +46,7 @@ class StudentVisaRenewal extends Component{
             service: this.props.parentState.service,
             service_type:"",
             service_name:"",
-            test_role: "规划师",
+            test_role: "文案",
             payment_table: []
         }
         console.log(this.state.service)
@@ -643,7 +643,7 @@ class StudentVisaRenewal extends Component{
                                 ]}
                                 placeholder={"YYYY-MM-DD"}
                                 handleChange={this.handleSpecialChange}
-                                disabled={true}
+                                disabled={this.state.detail.progress !== "申请递交" && this.state.detail.progress !== "签证获批"}
                             />
                             </td>
                             <td>
@@ -660,7 +660,7 @@ class StudentVisaRenewal extends Component{
                                 ]}
                                 placeholder={"YYYY-MM-DD"}
                                 handleChange={this.handleSpecialChange}
-                                disabled={true}
+                                disabled={this.state.detail.progress !== "签证获批"}
                             />
                             </td>
                         </tr>

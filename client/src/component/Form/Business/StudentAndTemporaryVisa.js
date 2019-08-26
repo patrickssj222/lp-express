@@ -22,7 +22,7 @@ class FirstTimeStudentVisa extends Component{
                 service_fee:"",
                 company_fee:"",
                 misc_fee: this.props.parentState.detail.misc_fee,
-                study_visa_progress:"收集材料",
+                student_visa_progress:"收集材料",
                 temporary_visa_progress:"收集材料",
                 service_creation_date:"",
                 student_visa_submit_date:"",
@@ -43,7 +43,7 @@ class FirstTimeStudentVisa extends Component{
             service: this.props.parentState.service,
             service_type:"",
             service_name:"",
-            test_role: "规划师",
+            test_role: "文案",
             payment_table: []
         }
     };
@@ -624,8 +624,8 @@ class FirstTimeStudentVisa extends Component{
                             {this.state.test_role ==="文案"?(
                                 <DropDown
                                     label={"学签/签证进度"}
-                                    value={this.state.detail.study_visa_progress}
-                                    name={"study_visa_progress"}
+                                    value={this.state.detail.student_visa_progress}
+                                    name={"student_visa_progress"}
                                     options={
                                         ["收集材料","申请递交","签证获批","签证被拒"]
                                     }
@@ -633,8 +633,8 @@ class FirstTimeStudentVisa extends Component{
                                 />):(
                                     <DropDown
                                     label={"学签/签证进度"}
-                                    value={this.state.detail.study_visa_progress}
-                                    name={"study_visa_progress"}
+                                    value={this.state.detail.student_visa_progress}
+                                    name={"student_visa_progress"}
                                     options={
                                         ["仅文案可选"]
                                     }
@@ -673,8 +673,8 @@ class FirstTimeStudentVisa extends Component{
                                 value={"仅文案可选"}
                                 type={"text"}
                                 handleChange={this.handleChange}
-                                disabled={true}
-                            />):(
+                                disabled={true} /> 
+                                ) : (
                                 <CustomFormatInput
                                 label={"递交日期"}
                                 name={"student_visa_submit_date"}
@@ -688,6 +688,7 @@ class FirstTimeStudentVisa extends Component{
                                 ]}
                                 placeholder={"YYYY-MM-DD"}
                                 handleChange={this.handleSpecialChange}
+                                disabled={this.state.detail.student_visa_progress !== "申请递交" && this.state.detail.student_visa_progress !== "签证获批"}
                             />
                             )}
                             </td>
@@ -714,6 +715,7 @@ class FirstTimeStudentVisa extends Component{
                                 ]}
                                 placeholder={"YYYY-MM-DD"}
                                 handleChange={this.handleSpecialChange}
+                                disabled={this.state.detail.temporary_visa_progress !== "申请递交" && this.state.detail.temporary_visa_progress !== "签证获批"}
                             />
                             )}
                             </td>
@@ -742,6 +744,7 @@ class FirstTimeStudentVisa extends Component{
                                 ]}
                                 placeholder={"YYYY-MM-DD"}
                                 handleChange={this.handleSpecialChange}
+                                disabled={this.state.detail.student_visa_progress !== "签证获批"}
                             />
                             )}
                             </td>
@@ -768,6 +771,7 @@ class FirstTimeStudentVisa extends Component{
                                 ]}
                                 placeholder={"YYYY-MM-DD"}
                                 handleChange={this.handleSpecialChange}
+                                disabled={this.state.detail.temporary_visa_progress !== "签证获批"}
                             />
                             )}
                             </td>
@@ -798,8 +802,6 @@ class FirstTimeStudentVisa extends Component{
                                 disabled={true}
                             />)}
                         </td>
-                        </tr>
-                        <tr>
                         <td>
                             <Input
                                 label={"负责文案"}
