@@ -42,7 +42,7 @@ class FirstTimeStudentVisa extends Component{
             service: this.props.parentState.service,
             service_type:"",
             service_name:"",
-            test_role: "文案",
+            test_role: "规划师",
             payment_table: []
         }
     };
@@ -300,7 +300,7 @@ class FirstTimeStudentVisa extends Component{
                                 <Input
                                     label={"公司收费"}
                                     name={"company_fee"}
-                                    value={this.state.detail.company_fee}
+                                    value={this.state.detail.government_fee}
                                     type={"number"}
                                     step={".01"}
                                     handleChange={this.handleChange}
@@ -308,8 +308,8 @@ class FirstTimeStudentVisa extends Component{
                                 />
                             </td>
                         </tr>
-<tr>
-<td>
+                        <tr>
+                        <td>
                             <Input
                                 label={"邮寄费"}
                                 name={"mailing_fee"}

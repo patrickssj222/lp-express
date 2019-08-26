@@ -31,7 +31,7 @@ class StudentVisaRenewal extends Component{
                 wenan:"",
                 guihuashi:"",
                 shoukuan:"",
-                payment_amount:"",
+                payment_amount: 0,
                 payment_method:"公司信用卡",
                 wenan_type:"",
                 refundable_amount:"",
@@ -41,14 +41,15 @@ class StudentVisaRenewal extends Component{
                 passport_status:"",
                 visa_received_date:"",
                 customer_pickup_date:"",
-
+                total_payment: 0
             },
             service: this.props.parentState.service,
             service_type:"",
             service_name:"",
-            test_role: "文案",
+            test_role: "规划师",
             payment_table: []
         }
+        console.log(this.state.service)
     };
     handleServiceTypeChange = (e) =>{
         const { name, value } = e.target;
@@ -214,6 +215,10 @@ class StudentVisaRenewal extends Component{
         this.setState((prevState) => {
             return {
                 ...prevState,
+                detail: {
+                    ...prevState.detail,
+                    total_payment: parseFloat(prevState.detail.total_payment) + parseFloat(this.state.detail.payment_amount)
+                },
                 payment_table: [
                     ...prevState.payment_table,
                     new_payment
@@ -235,7 +240,7 @@ class StudentVisaRenewal extends Component{
             service_level_input = 
             <Input
                 label={"服务费"}
-                value={this.state.service_fee}
+                value={this.state.service.service_fee}
                 type={"number"}
                 step={".01"}
                 handleChange={this.handleChange}
@@ -245,7 +250,7 @@ class StudentVisaRenewal extends Component{
             service_level_input =
             <Input
                 label={"服务费"}
-                value={this.state.service_fee}
+                value={this.state.service.service_fee}
                 type={"number"}
                 step={".01"}
                 handleChange={this.handleChange}
@@ -382,8 +387,8 @@ class StudentVisaRenewal extends Component{
                             <td>
                                 <Input
                                     label={"公司收费"}
-                                    name={"company_fee"}
-                                    value={this.state.detail.company_fee}
+                                    name={"government_fee"}
+                                    value={this.state.detail.government_fee}
                                     type={"number"}
                                     step={".01"}
                                     handleChange={this.handleChange}
@@ -398,7 +403,7 @@ class StudentVisaRenewal extends Component{
                             <td>
                                 <Input
                                     label={"其他"}
-                                    value={this.state.service?this.state.misc_fee:""}
+                                    value={this.state.service?this.state.service.misc_fee:""}
                                     type={"number"}
                                     step={".01"}
                                     handleChange={this.handleChange}
@@ -408,7 +413,7 @@ class StudentVisaRenewal extends Component{
                             <td>
                                 <Input
                                     label={"收费总计"}
-                                    value={this.state.detail.misc_fee+this.state.detail.government_fee+this.state.detail.service_fee+this.state.detail.company_fee}
+                                    value={this.state.detail.total_fee}
                                     type={"number"}
                                     step={".01"}
                                     handleChange={this.handleChange}
@@ -493,7 +498,8 @@ class StudentVisaRenewal extends Component{
                                     label={"缴费金额"}
                                     value={this.state.detail.payment_amount}
                                     name={"payment_amount"}
-                                    type={"text"}
+                                    type={"number"}
+                                    step={".01"}
                                     handleChange={this.handleChange}
                                 />
                             </td>
@@ -581,6 +587,7 @@ class StudentVisaRenewal extends Component{
                         {this.paymentTable2React(this.state.payment_table)}
                         </tbody>
                     </table>
+                    <p> 当前业务余额: {this.state.detail.total_payment - this.state.detail.total_fee} </p>
                 </div>
             </div>
             <div className={"footer"}>
