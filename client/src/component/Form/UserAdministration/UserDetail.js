@@ -45,14 +45,21 @@ class UserDetail extends Component {
         }
     }
     componentWillMount() {
-        console.log(this.props);
-        let user_info = this.props.history.location.user;
-        Object.keys(user_info).forEach((key)=>{
-            if(!user_info[key]){
-                user_info[key] = "";
-            }
-        });
-        this.setState({new_user:user_info});
+        try{
+            let user_info = this.props.history.location.user;
+            Object.keys(user_info).forEach((key)=>{
+                if(!user_info[key]){
+                    user_info[key] = "";
+                }
+            });
+            this.setState({new_user:user_info});
+        }
+        catch (e) {
+            this.props.history.push({
+                pathname: "/customer",
+            });
+        }
+
     }
 
 

@@ -109,6 +109,19 @@ class Navigation extends Component {
                         </ul>
                     </div>
                 </li>
+                <li className="sidebar-dropdown">
+                    <a>
+                        <i className={"fas fa-tools"}/>
+                        <span>管理</span>
+                    </a>
+                    <div className="sidebar-submenu">
+                        <ul>
+                            <li>
+                                <Link to={'/user/self'}><i className="fas fa-angle-right"/>账户管理</Link>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
             </ul>
         </div>;
         return (

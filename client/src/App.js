@@ -19,8 +19,8 @@ import AddCustomer from "./component/Form/Customer/AddCustomer";
 import UnlockCustomer from "./component/Form/Customer/UnlockCustomer";
 import AddBusiness from "./component/Form/Business/AddBusiness";
 import UserAdministration from "./component/Form/UserAdministration/UserAdministration";
-import NewUser from "./component/Form/UserAdministration/AddUser";
-import EditUser from "./component/Form/UserAdministration/UserDetail";
+import AddUser from "./component/Form/UserAdministration/AddUser";
+import UserDetail from "./component/Form/UserAdministration/UserDetail";
 import OptionPopUp from "./component/PopUp/OptionPopUp";
 import ChinaGeographic from "./component/Form/Geographics/ChinaGeographic";
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
@@ -28,6 +28,7 @@ import AdminCustomer from "./component/Form/Customer/AdminCustomer";
 import PrintCustomerDetail from "./component/Form/Customer/PrintCustomerDetail";
 
 import * as actionTypes from './store/action';
+import SelfDetail from "./component/Form/UserAdministration/SelfDetail";
 
 library.add(faIgloo);
 
@@ -94,10 +95,10 @@ class App extends Component {
                                         <Route exact path={'/constants/price'} component={Price_Constants}/>
                                         <Route exact path={'/constants/price/add'} component={Add_Price_Constants}/>
                                         <Route exact path={'/user'} component={UserAdministration}/>
-                                        <Route exact path={'/user/new'} component={NewUser}/>
-                                        <Route exact path={'/user/edit'} component={EditUser}/>
+                                        <Route exact path={'/user/self'} component={SelfDetail}/>
+                                        <Route exact path={'/user/new'} component={AddUser}/>
+                                        <Route exact path={'/user/edit'} component={UserDetail}/>
                                         <Route exact path={'/china_geo'} component={ChinaGeographic}/>
-
                                     </Switch>
                                 </main>
                             </div>
