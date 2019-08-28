@@ -5,6 +5,7 @@ import Input from "../Input/Input";
 import findObject from "../../../utility/findObject";
 import CustomFormatInput from "../Input/CustomFormatInput";
 import connect from "react-redux/es/connect/connect";
+import update from 'immutability-helper';
 
 class FirstTimeStudentVisa extends Component{
     constructor(props){
@@ -39,12 +40,54 @@ class FirstTimeStudentVisa extends Component{
             service: this.props.parentState.service,
             service_type:"",
             service_name:"",
-            test_role: "文案",
-            payment_table: []
-        }
+            test_role: "收款员",
+            payment_table: [],
+            clicked: {
+                service_type: false, 
+                service_name: false,
+                service_level: false,
+                wenan_type: false,
+                progress:false,
+            }, 
+            ghslevel: 75,
+            skylevel: 0,
+            walevel: 0,
+        };
+        this.ghstable = ["service_type", "service_name", "service_level", "government_fee_payment_method"];
+        this.skytable = ["wenan_type"];
+        this.watable = ["progress"];
     };
+
+    addC = (name) => {
+        if (!this.state.clicked[name]) {
+
+            const newClicked = update(this.state.clicked, {
+                [name]: {$set: true}
+            })
+
+            this.setState({
+                clicked: newClicked
+            })
+            
+            if (this.ghstable.includes(name)) {
+                this.setState({
+                    ghslevel: this.state.ghslevel + (1.0 / this.ghstable.length * 100.0)
+                })
+            } else if (this.skytable.includes(name)) {
+                this.setState({
+                    skylevel: this.state.skylevel + (1.0 / this.skytable.length * 100.0)
+                }) 
+            } else if (this.watable.includes(name)) {
+                this.setState({
+                    walevel: this.state.walevel + (1.0 / this.watable.length * 100.0)
+                })
+            }
+        }
+    }
+
     handleServiceTypeChange = (e) =>{
         const { name, value } = e.target;
+        this.addC(name);
         this.setState((prevState) => {
             return{
                 ...prevState,
@@ -55,6 +98,7 @@ class FirstTimeStudentVisa extends Component{
     }
     handleServiceChange= (e) =>{
         const { name, value } = e.target;
+        this.addC(name);
         const service = findObject(this.props.constants.fee,"name",value)[0];
         this.setState((prevState) => {
             return{
@@ -78,6 +122,7 @@ class FirstTimeStudentVisa extends Component{
     }
     handleGovernmentPaymentMethodChange= (e) =>{
         const { name, value } = e.target;
+        this.addC(name);
         if(value === "公司信用卡"){
             this.setState((prevState) => {
                 const parsedValue = parseFloat(prevState.detail.other_fee);
@@ -154,8 +199,8 @@ class FirstTimeStudentVisa extends Component{
     }
 
     handleChange= (e) =>{
-        console.log(1)
         const { name, value } = e.target;
+        this.addC(name);
         this.setState((prevState) => {
             return {
                 ...prevState,
@@ -168,6 +213,7 @@ class FirstTimeStudentVisa extends Component{
     }
 
     handleSpecialChange = (name, value) => {
+        this.addC(name);
         this.setState((prevState) => ({
             ...prevState,
             detail:{
@@ -257,10 +303,6 @@ class FirstTimeStudentVisa extends Component{
         return(
         <div>
             <div className={"section-wrapper"}>
-                <div className={"section-header"}>
-                    <h3>规划师操作</h3>
-                    <small>负责规划师:{this.state.detail.guihuashi}</small>
-                </div>
                 <div className={"section-body"}>
                     <table className={"business-detail-table"}>
                         <thead/>
@@ -421,7 +463,7 @@ class FirstTimeStudentVisa extends Component{
             </div>
             <div className={"footer"}>
                     <div className={"form-confirmation button-group"}>
-                        <small>完成值: {Math.round(this.state.total_completion/this.state.max_total*100)}%</small>
+                        <small>完成值: {this.state.ghslevel}%</small>
                         <small>目前状态:{this.state.confirmed?"已认证":"未认证"}</small>
                         <button className={"btn btn-primary"} onClick={this.handleSubmit.bind(this)}>添加业务</button>
                     </div>
@@ -505,7 +547,7 @@ class FirstTimeStudentVisa extends Component{
             </div>
             <div className={"footer"}>
                     <div className={"form-confirmation button-group"}>
-                        <small>完成值: {Math.round(this.state.total_completion/this.state.max_total*100)}%</small>
+                        <small>完成值: {this.state.skylevel}%</small>
                         <small>目前状态:{this.state.confirmed?"已认证":"未认证"}</small>
                         <button className={"btn btn-primary"} onClick={this.handleSubmit.bind(this)}>添加业务</button>
                     </div>
@@ -595,7 +637,7 @@ class FirstTimeStudentVisa extends Component{
             </div>
             <div className={"footer"}>
                     <div className={"form-confirmation button-group"}>
-                        <small>完成值: {Math.round(this.state.total_completion/this.state.max_total*100)}%</small>
+                        <small>完成值: {this.state.walevel}%</small>
                         <small>目前状态:{this.state.confirmed?"已认证":"未认证"}</small>
                         <button className={"btn btn-primary"} onClick={this.handleSubmit.bind(this)}>添加业务</button>
                     </div>

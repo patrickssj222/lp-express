@@ -236,7 +236,7 @@ class addBusiness extends Component{
             <div className={"form-wrapper content-wrapper business-detail"}>
                 <div className={"section-wrapper"}>
                     <div className={"section-header"}>
-                        <h3>业务信息</h3>
+                        <h3>规划师操作</h3>
                         <small>客户姓名:{this.props.location.state.customer_name}</small>
                     </div>
                     <div className={"section-body"}>
@@ -275,8 +275,9 @@ class addBusiness extends Component{
                             </tbody>
                         </table>
                     </div>
+                    {form}
                 </div>
-                {form}</div>
+                </div>
         );
     }
 }

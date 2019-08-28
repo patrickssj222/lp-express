@@ -258,10 +258,6 @@ class FirstTimeStudentVisa extends Component{
         return(
         <div>
             <div className={"section-wrapper"}>
-                <div className={"section-header"}>
-                    <h3>规划师操作</h3>
-                    <small>负责规划师:{this.state.detail.guihuashi}</small>
-                </div>
                 <div className={"section-body"}>
                     <table className={"business-detail-table"}>
                         <thead/>
