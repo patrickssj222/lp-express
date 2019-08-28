@@ -5,6 +5,7 @@ import Input from "../Input/Input";
 import findObject from "../../../utility/findObject";
 import CustomFormatInput from "../Input/CustomFormatInput";
 import connect from "react-redux/es/connect/connect";
+import update from 'immutability-helper';
 
 class StudentVisaRenewal extends Component{
     constructor(props){
@@ -47,12 +48,60 @@ class StudentVisaRenewal extends Component{
             service_type:"",
             service_name:"",
             test_role: "文案",
-            payment_table: []
+            payment_table: [],
+            clicked: {
+                service_type: false, 
+                service_name: false,
+                service_level: false,
+                wenan_type: false,
+                progress:false,
+            }, 
+            ghslevel: 60,
+            skylevel: 0,
+            walevel: 0,
         }
-        console.log(this.state.service)
+        this.ghstable = ["service_type", "service_name", "service_level", "mailing_method","government_fee_payment_method"];
+        this.skytable = ["wenan_type","passport_mailed_date","passport_received_date","passport_status"];
+        this.watable = ["progress", "visa_submit_date", "visa_approved_date"];
     };
+
+    addC = (name) => {
+        if (!this.state.clicked[name]) {
+            const newClicked = update(this.state.clicked, {
+                [name]: {$set: true}
+            })
+            this.setState({
+                clicked: newClicked
+            })
+            if (this.ghstable.includes(name)) {
+                this.setState({
+                    ghslevel: this.state.ghslevel + (1.0 / this.ghstable.length * 100.0)
+                })
+            } else if (this.skytable.includes(name)) {
+                this.setState({
+                    skylevel: this.state.skylevel + (1.0 / this.skytable.length * 100.0)
+                }) 
+            } else if (this.watable.includes(name)) {
+                // handle 文案 special case
+                if (this.state.detail.progress === "申请递交") {
+                    if (name === "visa_submit_date") {
+                        this.setState({walevel: 50})
+                    }
+                } else if (this.state.detail.progress === "签证获批") {
+                    this.setState({walevel: 50})
+                    if (name === "visa_approved_date") {
+                        this.setState({walevel: 100})
+                    }
+                } else if (this.state.detail.progress === "签证被拒") {
+                    this.setState({walevel: 100})   
+                }
+            }
+        }
+    }
+
     handleServiceTypeChange = (e) =>{
         const { name, value } = e.target;
+        this.addC(name);
         this.setState((prevState) => {
             return{
                 ...prevState,
@@ -63,6 +112,7 @@ class StudentVisaRenewal extends Component{
     }
     handleServiceChange= (e) =>{
         const { name, value } = e.target;
+        this.addC(name);
         const service = findObject(this.props.constants.fee,"name",value)[0];
         this.setState((prevState) => {
             return{
@@ -86,6 +136,7 @@ class StudentVisaRenewal extends Component{
     }
     handleGovernmentPaymentMethodChange= (e) =>{
         const { name, value } = e.target;
+        this.addC(name);
         if(value === "公司信用卡"){
             this.setState((prevState) => {
                 const parsedValue = parseFloat(prevState.detail.other_fee);
@@ -117,6 +168,7 @@ class StudentVisaRenewal extends Component{
     }
     handleMiscPaymentMethodChange= (e) =>{
         const { name, value } = e.target;
+        this.addC(name);
         if(value === "公司邮寄"){
             this.setState((prevState) => {
                 const parsedValue = parseFloat(prevState.detail.other_fee);
@@ -148,6 +200,7 @@ class StudentVisaRenewal extends Component{
     }
     handleOtherFeeChange= (e) =>{
         const { name, value } = e.target;
+        this.addC(name);
         const parsedValue = parseFloat(value);
         this.setState((prevState) => {
             return{
@@ -162,6 +215,7 @@ class StudentVisaRenewal extends Component{
     }
     handleChange= (e) =>{
         const { name, value } = e.target;
+        this.addC(name);
         this.setState((prevState) => {
             return{
                 ...prevState,
@@ -174,6 +228,7 @@ class StudentVisaRenewal extends Component{
     }
 
     handleSpecialChange = (name, value) => {
+        this.addC(name);
         this.setState((prevState) => ({
             ...prevState,
             detail:{
@@ -473,7 +528,7 @@ class StudentVisaRenewal extends Component{
             </div>
             <div className={"footer"}>
                     <div className={"form-confirmation button-group"}>
-                        <small>完成值: {Math.round(this.state.total_completion/this.state.max_total*100)}%</small>
+                        <small>完成值: {this.state.ghslevel}%</small>
                         <small>目前状态:{this.state.confirmed?"已认证":"未认证"}</small>
                         <button className={"btn btn-primary"} onClick={this.handleSubmit.bind(this)}>添加业务</button>
                     </div>
@@ -588,7 +643,7 @@ class StudentVisaRenewal extends Component{
             </div>
             <div className={"footer"}>
                     <div className={"form-confirmation button-group"}>
-                        <small>完成值: {Math.round(this.state.total_completion/this.state.max_total*100)}%</small>
+                        <small>完成值: {this.state.skylevel}%</small>
                         <small>目前状态:{this.state.confirmed?"已认证":"未认证"}</small>
                         <button className={"btn btn-primary"} onClick={this.handleSubmit.bind(this)}>确认递交</button>
                     </div>
@@ -703,7 +758,7 @@ class StudentVisaRenewal extends Component{
             </div>
             <div className={"footer"}>
                     <div className={"form-confirmation button-group"}>
-                        <small>完成值: {Math.round(this.state.total_completion/this.state.max_total*100)}%</small>
+                        <small>完成值: {this.state.walevel}%</small>
                         <small>目前状态:{this.state.confirmed?"已认证":"未认证"}</small>
                         <button className={"btn btn-primary"} onClick={this.handleSubmit.bind(this)}>确认递交</button>
                     </div>

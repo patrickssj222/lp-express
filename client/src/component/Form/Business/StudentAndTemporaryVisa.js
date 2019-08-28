@@ -5,6 +5,7 @@ import Input from "../Input/Input";
 import findObject from "../../../utility/findObject";
 import CustomFormatInput from "../Input/CustomFormatInput";
 import connect from "react-redux/es/connect/connect";
+import update from 'immutability-helper';
 
 class FirstTimeStudentVisa extends Component{
     constructor(props){
@@ -17,7 +18,7 @@ class FirstTimeStudentVisa extends Component{
                 other_fee: this.props.parentState.detail.other_fee,
                 total_fee: this.props.parentState.detail.total_fee,
                 misc_fee_payment_method: this.props.parentState.detail.misc_fee_payment_method,
-                government_fee_payment_method: this.props.parentState.detail.government_fee_payment_method,
+                government_fee_payment_method: "",
                 government_fee: this.props.parentState.detail.government_fee,
                 service_fee:"",
                 company_fee:"",
@@ -44,11 +45,58 @@ class FirstTimeStudentVisa extends Component{
             service_type:"",
             service_name:"",
             test_role: "文案",
-            payment_table: []
+            payment_table: [],            
+            clicked: {
+                service_type: false, 
+                service_name: false,
+                service_level: false,
+                wenan_type: false,
+                progress:false,
+            }, 
+            ghslevel: 60,
+            skylevel: 0,
+            walevel: 0,
         }
+        this.ghstable = ["service_type", "service_name", "service_level", "mailing_method","government_fee_payment_method"];
+        this.skytable = ["wenan_type","passport_mailed_date","passport_received_date","passport_status"];
+        this.watable = ["progress", "visa_submit_date", "visa_approved_date"];
+
     };
+
+    addC = (name) => {
+        if (!this.state.clicked[name]) {
+            const newClicked = update(this.state.clicked, {
+                [name]: {$set: true}
+            })
+            this.setState({
+                clicked: newClicked
+            })
+            if (this.ghstable.includes(name)) {
+                this.setState({
+                    ghslevel: this.state.ghslevel + (1.0 / this.ghstable.length * 100.0)
+                })
+            } else if (this.skytable.includes(name)) {
+                this.setState({
+                    skylevel: this.state.skylevel + (1.0 / this.skytable.length * 100.0)
+                }) 
+            } else if (this.watable.includes(name)) {
+                // handle 文案 special case
+                // TODO: 文案具体specification？
+                if (name === "progress") {
+                    this.setState({walevel: this.state.walevel + 30})
+                } else if (name === "visa_submit_date") {
+                    this.setState({walevel: this.state.walevel + 30})
+                } else {
+                    this.setState({walevel: this.state.walevel + 40})
+                }
+            }
+        }
+    }
+
+
     handleServiceTypeChange = (e) =>{
         const { name, value } = e.target;
+        this.addC(name);
         this.setState((prevState) => {
             return{
                 ...prevState,
@@ -59,6 +107,7 @@ class FirstTimeStudentVisa extends Component{
     }
     handleServiceChange= (e) =>{
         const { name, value } = e.target;
+        this.addC(name);
         const service = findObject(this.props.constants.fee,"name",value)[0];
         this.setState((prevState) => {
             return{
@@ -82,6 +131,7 @@ class FirstTimeStudentVisa extends Component{
     }
     handleGovernmentPaymentMethodChange= (e) =>{
         const { name, value } = e.target;
+        this.addC(name);
         if(value === "公司信用卡"){
             this.setState((prevState) => {
                 const parsedValue = parseFloat(prevState.detail.other_fee);
@@ -113,6 +163,7 @@ class FirstTimeStudentVisa extends Component{
     }
     handleMiscPaymentMethodChange= (e) =>{
         const { name, value } = e.target;
+        this.addC(name);
         if(value === "公司邮寄"){
             this.setState((prevState) => {
                 const parsedValue = parseFloat(prevState.detail.other_fee);
@@ -144,6 +195,7 @@ class FirstTimeStudentVisa extends Component{
     }
     handleOtherFeeChange= (e) =>{
         const { name, value } = e.target;
+        this.addC(name);
         const parsedValue = parseFloat(value);
         this.setState((prevState) => {
             return{
@@ -158,6 +210,7 @@ class FirstTimeStudentVisa extends Component{
     }
     handleChange= (e) =>{
         const { name, value } = e.target;
+        this.addC(name);
         this.setState((prevState) => {
             return{
                 ...prevState,
@@ -170,6 +223,7 @@ class FirstTimeStudentVisa extends Component{
     }
 
     handleSpecialChange = (name, value) => {
+        this.addC(name);
         this.setState((prevState) => ({
             ...prevState,
             detail:{
@@ -281,7 +335,7 @@ class FirstTimeStudentVisa extends Component{
                                     value={this.state.detail.government_fee_payment_method}
                                     name={"government_fee_payment_method"}
                                     options={
-                                        this.state.detail.service_constants_id?["公司信用卡","客人信用卡"]:[""]
+                                        this.state.detail.service_constants_id?["", "公司信用卡","客人信用卡"]:[""]
                                     }
                                     handleChange={this.handleGovernmentPaymentMethodChange}
                                 />) :
@@ -328,7 +382,7 @@ class FirstTimeStudentVisa extends Component{
                                     value={this.state.detail.mailing_method}
                                     name={"mailing_method"}
                                     options={
-                                        this.state.detail.service_constants_id?["公司支付","客人支付"]:[""]
+                                        this.state.detail.service_constants_id?["", "公司支付","客人支付"]:[""]
                                     }
                                     handleChange={this.handleChange}
                                 />) :
@@ -439,7 +493,7 @@ class FirstTimeStudentVisa extends Component{
             </div>
             <div className={"footer"}>
                     <div className={"form-confirmation button-group"}>
-                        <small>完成值: {Math.round(this.state.total_completion/this.state.max_total*100)}%</small>
+                        <small>完成值: {this.state.ghslevel}%</small>
                         <small>目前状态:{this.state.confirmed?"已认证":"未认证"}</small>
                         <button className={"btn btn-primary"} onClick={this.handleSubmit.bind(this)}>添加业务</button>
                     </div>
@@ -469,7 +523,7 @@ class FirstTimeStudentVisa extends Component{
                                     label={"缴费方式"}
                                     value={this.state.detail.payment_method}
                                     name={"payment_method"}
-                                    options={this.state.detail.service_constants_id?["cash", "debit"]:[""]}
+                                    options={this.state.detail.service_constants_id?["", "cash", "debit"]:[""]}
                                     handleChange={this.handleChange}
                                 />
                             </td>
@@ -601,7 +655,7 @@ class FirstTimeStudentVisa extends Component{
             </div>
             <div className={"footer"}>
                     <div className={"form-confirmation button-group"}>
-                        <small>完成值: {Math.round(this.state.total_completion/this.state.max_total*100)}%</small>
+                        <small>完成值: {this.state.skylevel}%</small>
                         <small>目前状态:{this.state.confirmed?"已认证":"未认证"}</small>
                         <button className={"btn btn-primary"} onClick={this.handleSubmit.bind(this)}>添加业务</button>
                     </div>
@@ -815,7 +869,7 @@ class FirstTimeStudentVisa extends Component{
             </div>
             <div className={"footer"}>
                     <div className={"form-confirmation button-group"}>
-                        <small>完成值: {Math.round(this.state.total_completion/this.state.max_total*100)}%</small>
+                        <small>完成值: {this.state.walevel}%</small>
                         <small>目前状态:{this.state.confirmed?"已认证":"未认证"}</small>
                         <button className={"btn btn-primary"} onClick={this.handleSubmit.bind(this)}>添加业务</button>
                     </div>

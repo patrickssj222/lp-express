@@ -18,7 +18,7 @@ class TemporaryVisaRenewal extends Component{
                 other_fee: this.props.parentState.detail.other_fee,
                 total_fee: this.props.parentState.detail.total_fee,
                 misc_fee_payment_method: this.props.parentState.detail.misc_fee_payment_method,
-                government_fee_payment_method: this.props.parentState.detail.government_fee_payment_method,
+                government_fee_payment_method: "",
                 government_fee: this.props.parentState.detail.government_fee,
                 service_fee:"",
                 company_fee:"",
@@ -59,34 +59,17 @@ class TemporaryVisaRenewal extends Component{
         };
         this.ghstable = ["service_type", "service_name", "service_level", "mailing_method","government_fee_payment_method"];
         this.skytable = ["wenan_type","passport_mailed_date","passport_received_date","passport_status"];
-        this.watable = ["progress","visa_submit_date"];
+        this.watable = ["progress", "visa_submit_date", "visa_approved_date"];
     }; 
-
-    // componentDidUpdate(prevProps, prevState, snapshot) {
-    //     if (this.state.detail.progress === "申请递交") {
-    //         this.watable = ["progress","visa_submit_date"];
-    //     } else if (this.state.detail.progress === "签证获批") {
-    //         let prevLen = this.watable.length;
-    //         this.watable = ["progress", "visa_submit_date", "visa_approved_date"];
-    //         this.setState({
-    //             walevel: this.state.walevel / (1 / prevLen * 100) / this.watable.length * 100
-    //         })
-    //     } else {
-    //         this.watable = ['progress']
-    //     }
-    // }
     
     addC = (name) => {
         if (!this.state.clicked[name]) {
-
             const newClicked = update(this.state.clicked, {
                 [name]: {$set: true}
             })
-
             this.setState({
                 clicked: newClicked
             })
-            
             if (this.ghstable.includes(name)) {
                 this.setState({
                     ghslevel: this.state.ghslevel + (1.0 / this.ghstable.length * 100.0)
@@ -96,9 +79,14 @@ class TemporaryVisaRenewal extends Component{
                     skylevel: this.state.skylevel + (1.0 / this.skytable.length * 100.0)
                 }) 
             } else if (this.watable.includes(name)) {
-                this.setState({
-                    walevel: this.state.walevel + (1.0 / this.watable.length * 100.0)
-                })
+                // handle 文案 special case
+                if (name === "progress") {
+                    this.setState({walevel: this.state.walevel + 30})
+                } else if (name === "visa_submit_date") {
+                    this.setState({walevel: this.state.walevel + 30})
+                } else {
+                    this.setState({walevel: this.state.walevel + 40})
+                }
             }
         }
     }
@@ -114,6 +102,7 @@ class TemporaryVisaRenewal extends Component{
             }
         });
     }
+    
     handleServiceChange= (e) =>{
         const { name, value } = e.target;
         this.addC(name);
@@ -173,6 +162,7 @@ class TemporaryVisaRenewal extends Component{
     }
     handleMiscPaymentMethodChange= (e) =>{
         const { name, value } = e.target;
+        this.addC(name);
         if(value === "公司邮寄"){
             this.setState((prevState) => {
                 const parsedValue = parseFloat(prevState.detail.other_fee);
@@ -346,7 +336,7 @@ class TemporaryVisaRenewal extends Component{
                                     value={this.state.detail.government_fee_payment_method}
                                     name={"government_fee_payment_method"}
                                     options={
-                                        this.state.detail.service_constants_id?["公司信用卡","客人信用卡"]:[""]
+                                        this.state.detail.service_constants_id?["", "公司信用卡","客人信用卡"]:[""]
                                     }
                                     handleChange={this.handleGovernmentPaymentMethodChange}
                                 />) : (<DropDown
@@ -392,7 +382,7 @@ class TemporaryVisaRenewal extends Component{
                                     value={this.state.detail.mailing_method}
                                     name={"mailing_method"}
                                     options={
-                                        this.state.detail.service_constants_id?["公司邮寄","客人邮寄"]:[""]
+                                        this.state.detail.service_constants_id?["", "公司邮寄","客人邮寄"]:[""]
                                     }
                                     handleChange={this.handleMiscPaymentMethodChange}
                                 />): (<DropDown
@@ -628,7 +618,7 @@ class TemporaryVisaRenewal extends Component{
                             value={this.state.detail.passport_status}
                             name={"passport_status"}
                             options={
-                                ["收集材料","申请递交","护照获批","护照被拒"]
+                                ["", "收集材料","申请递交","护照获批","护照被拒"]
                             }
                             handleChange={this.handleChange}
                         />):
