@@ -44,7 +44,7 @@ class FirstTimeStudentVisa extends Component{
             service: this.props.parentState.service,
             service_type:"",
             service_name:"",
-            test_role: "文案",
+            test_role: "收款员",
             payment_table: [],            
             clicked: {
                 service_type: false, 
@@ -494,10 +494,11 @@ class FirstTimeStudentVisa extends Component{
             <div className={"footer"}>
                     <div className={"form-confirmation button-group"}>
                         <small>完成值: {this.state.ghslevel}%</small>
-                        <small>目前状态:{this.state.confirmed?"已认证":"未认证"}</small>
                         <button className={"btn btn-primary"} onClick={this.handleSubmit.bind(this)}>添加业务</button>
                     </div>
             </div>
+            {this.state.test_role==="文案"?(
+            <div>
             <div className={"section-wrapper"}>
                 <div className={"section-header"}>
                     <h3>收款员操作</h3>
@@ -656,10 +657,12 @@ class FirstTimeStudentVisa extends Component{
             <div className={"footer"}>
                     <div className={"form-confirmation button-group"}>
                         <small>完成值: {this.state.skylevel}%</small>
-                        <small>目前状态:{this.state.confirmed?"已认证":"未认证"}</small>
                         <button className={"btn btn-primary"} onClick={this.handleSubmit.bind(this)}>添加业务</button>
                     </div>
             </div>
+            </div>):(null)}
+            {this.state.test_role==="文案"?(
+            <div>
             <div className={"section-wrapper"}>
                 <div className={"section-header"}>
                     <h3>文案操作</h3>
@@ -870,10 +873,11 @@ class FirstTimeStudentVisa extends Component{
             <div className={"footer"}>
                     <div className={"form-confirmation button-group"}>
                         <small>完成值: {this.state.walevel}%</small>
-                        <small>目前状态:{this.state.confirmed?"已认证":"未认证"}</small>
                         <button className={"btn btn-primary"} onClick={this.handleSubmit.bind(this)}>添加业务</button>
                     </div>
             </div>
+            </div>):(null)}
+            <small>目前状态:{this.state.confirmed?"已认证":"未认证"}</small>
         </div>
     )};
 }

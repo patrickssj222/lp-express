@@ -307,7 +307,26 @@ class TemporaryVisaRenewal extends Component{
                 handleChange={this.handleOtherFeeChange}
             /> 
         }
-
+        var completion = null
+        if(this.state.detail.progress==="收集材料"){
+            completion = <h2 style={{ color: 'red' }}>Not In Progress</h2>
+        }else if(this.state.detail.progress==="转接文案"){
+            completion = <h2 style={{ color: 'red' }}>In Progress</h2>
+        }else if(this.state.detail.progress==="申请递交"){
+            completion = <h2 style={{ color: 'green' }}>In Progress</h2>
+        }else if(this.state.detail.progress==="签证获批"){
+            if(this.state.mailing_method==="客人邮寄"){
+            completion = <h2 style={{ color: 'blue' }}>Done</h2>
+            }else if(this.state.mailing_method==="客人邮寄"){
+                if(this.state.passport_status==="护照收回"){
+                    completion = <h2 style={{ color: 'blue' }}>Done</h2>
+                } else{
+                    completion = <h2 style={{ color: 'blue' }}>In Progress</h2>
+                }
+            }
+        }else if(this.state.detail.progress==="签证被拒"){
+            completion = <h2 style={{ color: 'white', backgroundColor: 'red', width:"60px", textAlign: "center"}}>Fail</h2>
+        }
         
 
         return(
@@ -493,10 +512,11 @@ class TemporaryVisaRenewal extends Component{
             <div className={"footer"}>
                     <div className={"form-confirmation button-group"}>
                         <small>完成值: {this.state.ghslevel}%</small>
-                        <small>目前状态:{this.state.confirmed?"已认证":"未认证"}</small>
                         <button className={"btn btn-primary"} onClick={this.handleSubmit.bind(this)}>添加业务</button>
                     </div>
             </div>
+            {this.state.test_role!=="规划师"?(
+            <div>
             <div className={"section-wrapper"}>
                 <div className={"section-header"}>
                     <h3>收款员操作</h3>
@@ -654,10 +674,12 @@ class TemporaryVisaRenewal extends Component{
             <div className={"footer"}>
                     <div className={"form-confirmation button-group"}>
                         <small>完成值: {this.state.skylevel}%</small>
-                        <small>目前状态:{this.state.confirmed?"已认证":"未认证"}</small>
                         <button className={"btn btn-primary"} onClick={this.handleSubmit.bind(this)}>确认递交</button>
                     </div>
             </div>
+            </div>):(null)}
+            {this.state.test_role==="文案"?(
+            <div>
             <div className={"section-wrapper"}>
                 <div className={"section-header"}>
                     <h3>文案操作</h3>
@@ -675,7 +697,7 @@ class TemporaryVisaRenewal extends Component{
                                     value={this.state.detail.progress}
                                     name={"progress"}
                                     options={
-                                        ["收集材料","申请递交","签证获批","签证被拒"]
+                                        ["收集材料","转接文案","申请递交","签证获批","签证被拒"]
                                     }
                                     handleChange={this.handleChange}
                                 />):(
@@ -744,11 +766,12 @@ class TemporaryVisaRenewal extends Component{
             <div className={"footer"}>
                     <div className={"form-confirmation button-group"}>
                         <small>完成值: {this.state.walevel}%</small>
-                        <small>目前状态:{this.state.confirmed?"已认证":"未认证"}</small>
                         <button className={"btn btn-primary"} onClick={this.handleSubmit.bind(this)}>确认递交</button>
                     </div>
-            </div>
+            </div></div>):(null)}
+        <small>目前状态:{completion}</small>
         </div>
+
     )};
 }
 
