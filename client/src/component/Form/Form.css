@@ -169,3 +169,19 @@
 .btn-edit{
     margin-right: 100px;
 }
+
+.table-margin{
+    margin-top: 20px;
+}
+
+.fixedWidth {
+    width: 20%;
+}
+
+.ChangePointer{
+    cursor: pointer;
+}
+
+.searchStyle {
+    float: right;
+}

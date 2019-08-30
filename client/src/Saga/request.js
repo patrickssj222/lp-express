@@ -392,9 +392,8 @@ function* checkUser(){
         if(response.data.status>=200 && response.data.status<300){
             const result = response.data.response;
             if(result){
-                yield put({type:actionTypes.LOG_IN,user:result[0],LoginError:null});
             } else {
-                // Do something
+                yield put({type:actionTypes.SIGN_OUT});
             }
         }
         else{
