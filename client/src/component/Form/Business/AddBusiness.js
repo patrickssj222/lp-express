@@ -232,6 +232,9 @@ class addBusiness extends Component{
             else if (this.state.service_name ==="护照换发"){
                 form = <PassportRenewal parentState={this.state} service_level={this.state.detail.service_level || "普通"} location={this.props.location.state} updateState={this.updateStateHandler}></PassportRenewal>
             }
+            else{
+                form = <div style={{textAlign: 'center'}}><h1>暂时没有当前业务表格，请期待下次更新</h1></div>
+            }
         return(
             <div className={"form-wrapper content-wrapper business-detail"}>
                 <div className={"section-wrapper"}>
