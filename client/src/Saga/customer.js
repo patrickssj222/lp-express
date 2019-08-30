@@ -59,7 +59,6 @@ function* populateSet(action){
     let customer_pushed = null;
     if(state.customer!=null){
         rows = [];
-        customer_pushed = [];
         const customer = state.customer;
         Object.keys(customer).forEach((index)=>{
             let visa_due = "";
@@ -100,25 +99,20 @@ function* populateSet(action){
                 }
             }
             if(state.users_list){
-                const user = findNested(state.users_list, "id", customer[index].created_by);
-                if(!findNested(customer_pushed,"id",customer[index].id)) {
-                    customer_pushed.push(customer[index]);
-                    rows.push({
-                            name: customer[index].name,
-                            phone: customer[index].phone != null ? customer[index].phone : "",
-                            passport_due: passport_due,
-                            visa_due: visa_due,
-                            update_time: customer[index].update_time,
-                            created_by: user ? user.name : "",
-                            clickEvent: ()=> {
-                                action.history.push({
-                                    pathname: "/customer/detail",
-                                    state: {index: index}
-                                })
-                            }
+                rows.push({
+                        name: customer[index].name,
+                        phone: customer[index].phone != null ? customer[index].phone : "",
+                        passport_due: passport_due,
+                        visa_due: visa_due,
+                        update_time: customer[index].update_time,
+                        clickEvent: ()=> {
+                            action.history.push({
+                                pathname: "/customer/detail",
+                                state: {index: index}
+                            })
                         }
-                    )
-                }
+                    }
+                )
             }
         });
     }
