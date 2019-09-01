@@ -3,7 +3,7 @@ var router = express.Router();
 
 //Get All Customer
 router.post('/all/', function(req, res, next) {
-    res.locals.pool.query("SELECT c.*, u.name AS user_name, u.id AS created_by FROM customer c INNER JOIN customer_user cu ON cu.customer_id = c.id INNER JOIN user u ON cu.user_id = u.id" , function (error, results, fields) {
+    res.locals.pool.query("SELECT c.*, u.name AS user_name, u.id AS created_by FROM customer c INNER JOIN (SELECT DISTINCT(customer_id), user_id FROM customer_user) cu ON cu.customer_id = c.id INNER JOIN user u ON cu.user_id = u.id" , function (error, results, fields) {
         if(error){
             res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
             //If there is error, we send the error in the error section with 500 status

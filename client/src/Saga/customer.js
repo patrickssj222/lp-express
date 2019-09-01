@@ -105,6 +105,7 @@ function* populateSet(action){
                         passport_due: passport_due,
                         visa_due: visa_due,
                         update_time: customer[index].update_time,
+                        created_by:customer[index].user_name,
                         clickEvent: ()=> {
                             action.history.push({
                                 pathname: "/customer/detail",
