@@ -68,7 +68,7 @@ class Price_Constants_Add extends Component{
                                     name={"type"}
                                     value={this.state.detail.type}
                                     handleChange={this.handleChange}
-                                    options={["签证申请","换发公正","学校申请","移民申请","交通告票 "]}
+                                    options={["签证申请","换发公正","学校申请","移民申请","交通告票"]}
                                     />
                             </td>
                             <td>
