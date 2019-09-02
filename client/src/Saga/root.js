@@ -3,6 +3,7 @@ import {watchSagaRequests} from './request'
 import {watchSagaUserRequests} from "./users";
 import {watchSagaCustomerRequests} from "./customer";
 import {watchSagaPriceConstantsRequests} from "./service_constants";
+import {watchSagaBusinessRequests} from "./business";
 
 
 export default function* rootSaga() {
@@ -10,6 +11,7 @@ export default function* rootSaga() {
         watchSagaRequests(),
         watchSagaUserRequests(),
         watchSagaCustomerRequests(),
+        watchSagaBusinessRequests(),
         watchSagaPriceConstantsRequests(),
     ])
 }

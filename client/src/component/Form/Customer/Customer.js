@@ -171,7 +171,9 @@ class Customer extends Component {
                         name:customer[index].name,
                         phone: customer[index].phone!=null?customer[index].phone:"",
                         passport_due: passport_due,
+                        passport_due_raw: customer[index].passport_due,
                         visa_due: visa_due,
+                        visa_due_raw:customer[index].visa_due,
                         update_time:customer[index].update_time,
                         index: index
                     })

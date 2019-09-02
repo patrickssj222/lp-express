@@ -12,23 +12,13 @@ import PassportRenewal from './PassportRenewal';
 import TemporaryVisaRenewal from './TemporaryVisaRenewal';
 import StudentVisaRenewal from './StudentVisaRenewal';
 import StudentAndTemporaryVisa from './StudentAndTemporaryVisa';
+import {Router, Switch, Route} from "react-router-dom";
 class addBusiness extends Component{
     constructor(props){
         super(props);
         this.state={
             detail:{
-                customer_id: "",
-                service_constants_id:null,
-                other_fee: 0,
-                total_fee: 0,
-                misc_fee_payment_method: "",
-                government_fee_payment_method: "",
-                government_fee:"",
-                misc_fee:"",
-                progress:"收集材料",
-                visa_submit_date:"",
-                visa_expire_date:"",
-                service_level: "普通",
+                customer_id: null,
             },
             service_type:"",
             service_name:"",
@@ -44,8 +34,6 @@ class addBusiness extends Component{
         this.handleOtherFeeChange = this.handleOtherFeeChange.bind(this);
     }
     componentWillMount() {
-        console.log("add business props", this.props);
-        console.log("add business location", this.props.location.state);
         try{
             this.setState({
                 detail:{
@@ -220,20 +208,19 @@ class addBusiness extends Component{
         }
         var form = null;
             if(this.state.service_name ==="首次学签"){
-                form = <FirstTimeStudentVisa parentState={this.state} service_level={this.state.detail.service_level || "普通"} location={this.props.location.state} updateState={this.updateStateHandler}></FirstTimeStudentVisa>
+                form = <FirstTimeStudentVisa add={true} parentState={this.state} service_level={this.state.detail.service_level || "普通"} location={this.props.location.state} updateState={this.updateStateHandler}></FirstTimeStudentVisa>
             }else if (this.state.service_name ==="小签续签"){
-                form = <TemporaryVisaRenewal parentState={this.state} service_level={this.state.detail.service_level || "普通"} location={this.props.location.state} updateState={this.updateStateHandler}></TemporaryVisaRenewal>
+                form = <TemporaryVisaRenewal add={true} parentState={this.state} service_level={this.state.detail.service_level || "普通"} location={this.props.location.state} updateState={this.updateStateHandler}></TemporaryVisaRenewal>
             }else if (this.state.service_name ==="学签续签"){
-                form = <StudentVisaRenewal parentState={this.state} service_level={this.state.detail.service_level || "普通"} location={this.props.location.state} updateState={this.updateStateHandler}></StudentVisaRenewal>
+                form = <StudentVisaRenewal add={true} parentState={this.state} service_level={this.state.detail.service_level || "普通"} location={this.props.location.state} updateState={this.updateStateHandler}></StudentVisaRenewal>
             }
             else if (this.state.service_name ==="学签和小签"){
-                form = <StudentAndTemporaryVisa parentState={this.state} service_level={this.state.detail.service_level || "普通"} location={this.props.location.state} updateState={this.updateStateHandler}></StudentAndTemporaryVisa>
+                form = <StudentAndTemporaryVisa add={true} parentState={this.state} service_level={this.state.detail.service_level || "普通"} location={this.props.location.state} updateState={this.updateStateHandler}></StudentAndTemporaryVisa>
             }
             else if (this.state.service_name ==="护照换发"){
-                form = <PassportRenewal parentState={this.state} service_level={this.state.detail.service_level || "普通"} location={this.props.location.state} updateState={this.updateStateHandler}></PassportRenewal>
+                form = <PassportRenewal add={true} parentState={this.state} service_level={this.state.detail.service_level || "普通"} location={this.props.location.state} updateState={this.updateStateHandler}></PassportRenewal>
             }
             else if(this.state.service_name === ""){
-
             }
             else{
                 form = <div className={"filler"}><h1>暂时没有当前业务表格，请期待下次更新</h1></div>
