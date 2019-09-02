@@ -58,3 +58,7 @@
 .customer-detail .section-wrapper{
     margin-bottom: 50px;
 }
+
+.business-detail .section-header button{
+    margin-bottom: 10px;
+}

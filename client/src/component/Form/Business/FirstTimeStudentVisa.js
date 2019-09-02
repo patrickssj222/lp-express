@@ -277,7 +277,7 @@ class FirstTimeStudentVisa extends Component{
             type={"text"}
             handleChange={this.handleChange}
             disabled={true}
-            />
+        />;
         if (this.props.service_level==="普通"){
             service_level_input = 
             <Input
