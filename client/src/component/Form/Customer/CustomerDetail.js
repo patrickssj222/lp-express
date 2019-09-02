@@ -12,8 +12,23 @@ import CustomFormatInput from "../Input/CustomFormatInput";
 import PhoneInput from "../Input/PhoneInput";
 import { Redirect, withRouter } from "react-router-dom";
 import { saveAs } from 'file-saver';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TablePagination from '@material-ui/core/TablePagination';
+import TableRow from '@material-ui/core/TableRow';
+import TableSortLabel from '@material-ui/core/TableSortLabel';
+import Paper from '@material-ui/core/Paper';
 
 class CustomerDetail extends Component{
+
+    headRows = [
+        {id: "service_name", numeric: false, disablePadding: true, label: "具体业务"},
+        {id: "progress", numeric: true, disablePadding: false, label: "业务状态"},
+        {id: "wenan", numeric: true, disablePadding: false, label: "负责文案"},
+    ];
+
     constructor(props){
         super(props);
         this.state={
@@ -29,32 +44,76 @@ class CustomerDetail extends Component{
                 province:"",
                 region:""
             },
-            pdfCreated: false
+            pdfCreated: false,
+            page: 0,
+            rowsPerPage: 10,
+            order: "asc",
+            orderBy: "name",
+            textValue: "",
         };
-        this.columns = [
-            {
-                label: '具体业务',
-                field: 'service_name',
-                sort: 'asc',
-
-            },
-            {
-                label: '业务状态',
-                field: 'progress',
-                sort: 'asc',
-            },
-            {
-                label: '负责文案',
-                field: 'wenan',
-                sort: 'asc',
-            }
-        ];
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleCityChange = this.handleCityChange.bind(this);
         this.handleBirthCityChange = this.handleBirthCityChange.bind(this);
         this.handleSpecialChange = this.handleSpecialChange.bind(this);
     }
+
+    handleChangePage = (event, newPage) => {
+        this.setState({
+            page: newPage,
+        });
+    };
+
+    handleChangeRowsPerPage = (event) => {
+        this.setState({
+            rowsPerPage: event.target.value,
+            page: 0,
+        });
+    };
+
+    handleChangeSearch = (event) => {
+        this.setState({
+            textValue: event.target.value,
+        });
+    };
+
+    searchbyName(array, text) {
+        var filteredrow = [];
+        Object.keys(array).forEach((index)=>{
+            if (array[index].service_name.includes(text) || array[index].progress.includes(text) || array[index].wenan.includes(text)){
+                filteredrow.push(array[index])
+            }
+        })
+        return filteredrow;
+    }
+
+    stableSort(array, order, orderBy){
+        if (orderBy === 'service_name'){
+            return order === 'asc' ? array.sort((x,y)=>x.service_name.localeCompare(y.service_name, 'zh-CN')) : array.sort((x,y)=>y.service_name.localeCompare(x.service_name, 'zh-CN'));
+        } else if (orderBy === 'progress'){
+            // need change
+            return order === 'asc' ? array.sort((x,y)=>x.service_name.localeCompare(y.service_name, 'zh-CN')) : array.sort((x,y)=>y.service_name.localeCompare(x.service_name, 'zh-CN'));
+        } else if (orderBy === 'wenan'){
+            // need change
+            return order === 'asc' ? array.sort((x,y)=>x.service_name.localeCompare(y.service_name, 'zh-CN')) : array.sort((x,y)=>y.service_name.localeCompare(x.service_name, 'zh-CN'));
+        } else {
+            return order === 'asc' ? array.sort((x,y)=>x.service_name.localeCompare(y.service_name, 'zh-CN')) : array.sort((x,y)=>y.service_name.localeCompare(x.service_name, 'zh-CN'));
+        }
+    }
+
+    createSortHandler = property => event => {
+        this.handleRequestSort(event, property);
+    };
+
+    handleRequestSort(event, property) {
+        const isDesc = this.state.orderBy === property && this.state.order === 'desc';
+        const order = isDesc ? 'asc' : 'desc';
+        this.setState({
+            order: order,
+            orderBy: property,
+        });
+    }
+
     componentWillMount() {
         if(!this.props.china_geo){
             this.props.getChinaGeo();
@@ -168,12 +227,22 @@ class CustomerDetail extends Component{
         }));
     }
 
+    /*
     handleRedirect(path, id){
         this.props.history.push({
             pathname: path,
             state:{id:id}
         })
     }
+    */
+
+    handleClick(event, index){
+        this.props.history.push({
+            pathname: '/business/detail',
+            state: { index:index }
+        })
+    }
+
     handleCityChange(e){
         const { name, value } = e.target;
         const city_info = this.findNested(this.props.china_geo,"city",value);
@@ -272,6 +341,7 @@ class CustomerDetail extends Component{
         let province_value = "";
         let birth_region_value = "";
         let birth_province_value = "";
+        let rows = [];
         try{
             customer = this.props.customer[this.props.location.state.index];
 
@@ -290,22 +360,23 @@ class CustomerDetail extends Component{
                 }
             }
 
-
-            let rows = [];
             if(this.state.business!=null){
                 rows = this.state.business.map((item)=>{
                     return({
                         service_name:item.service_name,
                         progress:item.progress,
                         wenan:item.wenan,
-                        clickEvent: this.handleRedirect.bind(this,"/business/detail",item.id)
+                        index: item.id,
+                        //clickEvent: this.handleRedirect.bind(this,"/business/detail",item.id)
                     })
                 })
             }
+            /*
             data = {
                 columns:this.columns,
                 rows:rows
             };
+            */
         }
         catch{
             return(<Redirect to='/customer'/>);
@@ -637,7 +708,13 @@ class CustomerDetail extends Component{
                 {
                     this.props.user.role==="管理员"?<div className={"section-wrapper"}>
                         <div className={"section-header"}>
-                            <h3>对应业务</h3>
+                            <h3>
+                                对应业务
+                                <input className='searchStyle'
+                                placeholder="Search"
+                                onChange={this.handleChangeSearch}
+                                value={this.state.textValue}/>
+                            </h3>
                         </div>
                         <div className={"footer"}>
                             <div className={"form-confirmation button-group"}>
@@ -645,12 +722,60 @@ class CustomerDetail extends Component{
                             </div>
                         </div>
                         <div className={"section-body"}>
-                            <MDBDataTable
-                                bordered
-                                small
-                                data={data}
-                                entries={10}
-                            />
+                            { rows &&
+                                <TablePagination
+                                    rowsPerPageOptions={[10, 25, 50]}
+                                    component="div"
+                                    count={rows.length}
+                                    rowsPerPage={this.state.rowsPerPage}
+                                    page={this.state.page}
+                                    backIconButtonProps={{
+                                        'aria-label': 'previous page',
+                                    }}
+                                    nextIconButtonProps={{
+                                        'aria-label': 'next page',
+                                    }}
+                                    onChangePage={this.handleChangePage}
+                                    onChangeRowsPerPage={this.handleChangeRowsPerPage}
+                                />
+                            }
+                            <Paper>
+                                <Table>
+                                    <TableHead>
+                                        <TableRow>
+                                            {this.headRows.map(row => (
+                                                <TableCell className='fixedWidth'
+                                                    key={row.id}
+                                                    align={row.numeric ? "left" : "inherit"}
+                                                    sortDirection={this.state.orderBy === row.id ? this.state.order : false}
+                                                >
+                                                { 
+                                                    <TableSortLabel
+                                                        active={this.state.orderBy === row.id}
+                                                        direction={this.state.order}
+                                                        onClick={this.createSortHandler(row.id)}
+                                                        >
+                                                        {row.label}
+                                                    </TableSortLabel>
+                                                }
+                                                </TableCell>
+                                            ))}
+                                        </TableRow>
+                                    </TableHead>
+                                <TableBody>
+                                    {rows &&
+                                    this.stableSort(rows, this.state.order, this.state.orderBy)
+                                    .slice(this.state.page * this.state.rowsPerPage, this.state.page * this.state.rowsPerPage + this.state.rowsPerPage)
+                                    .map(row => (
+                                        <TableRow hover onClick={event => this.handleClick(event, row.index)} className='ChangePointer' key={row.name}>
+                                            <TableCell component="th" scope="row"> {row.service_name}</TableCell>
+                                            <TableCell align="left">{row.progress}</TableCell>
+                                            <TableCell align="left">{row.wenan}</TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                            </Paper>
                         </div>
                     </div>:null
                 }
