@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import connect from "react-redux/es/connect/connect";
 import * as actionTypes from '../../../store/action';
-import { MDBDataTable } from "mdbreact";
 import "../Form.css";
 import {Link, withRouter} from "react-router-dom";
 import Table from '@material-ui/core/Table';
@@ -171,14 +170,15 @@ class Customer extends Component {
                         name:customer[index].name,
                         phone: customer[index].phone!=null?customer[index].phone:"",
                         passport_due: passport_due,
+                        passport_due_raw: customer[index].passport_due,
                         visa_due: visa_due,
+                        visa_due_raw:customer[index].visa_due,
                         update_time:customer[index].update_time,
                         index: index
                     })
                 }
             });
         }
-
         if (rows){
             rows = this.searchbyName(rows, this.state.textValue);
         }
@@ -191,7 +191,8 @@ class Customer extends Component {
                             placeholder="Search"
                             onChange={this.handleChangeSearch}
                             value={this.state.textValue}
-                        /></h3>
+                            />
+                        </h3>
                     </div>
                     <hr className={"style1"}/>
                     <div className={"footer"}>
