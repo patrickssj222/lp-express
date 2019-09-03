@@ -18,17 +18,22 @@ class FirstTimeStudentVisa extends Component{
                 service_constants_id: this.props.parentState.detail.service_constants_id,
                 other_fee: this.props.parentState.detail.other_fee,
                 total_fee: this.props.parentState.detail.total_fee,
-                government_fee_payment_method: "公司信用卡",
-                government_fee_total: this.props.parentState.service.government_fee,
-                service_fee:this.props.parentState.service.service_fee,
+                government_fee_payment_method: this.props.parentState.detail.government_fee_payment_method,
+                government_fee: this.props.parentState.detail.government_fee,
+                service_fee:"",
+                company_fee:"",
+                misc_fee: this.props.parentState.detail.misc_fee,
                 progress:"收集材料",
                 service_creation_date:moment().format('YYYY-MM-DD'),
                 visa_submit_date:"",
                 visa_expire_date:"",
                 service_level: "普通",
-                refundable_amount:0,
             },
             service: this.props.parentState.service,
+            service_type:"",
+            service_name:"",
+            test_role: "收款员",
+            payment_table: [],
             clicked: {
                 service_type: false,
                 service_name: false,
@@ -43,19 +48,30 @@ class FirstTimeStudentVisa extends Component{
 
     addC = (name) => {
         if (!this.state.clicked[name]) {
+
             const newClicked = update(this.state.clicked, {
                 [name]: {$set: true}
-            });
+            })
+
             this.setState({
                 clicked: newClicked
-            });
+            })
+
             if (this.ghstable.includes(name)) {
                 this.setState({
                     ghslevel: this.state.ghslevel + (1.0 / this.ghstable.length * 100.0)
                 })
+            } else if (this.skytable.includes(name)) {
+                this.setState({
+                    skylevel: this.state.skylevel + (1.0 / this.skytable.length * 100.0)
+                })
+            } else if (this.watable.includes(name)) {
+                this.setState({
+                    walevel: this.state.walevel + (1.0 / this.watable.length * 100.0)
+                })
             }
         }
-    };
+    }
     handleServiceTypeChange = (e) =>{
         const { name, value } = e.target;
         this.addC(name);
@@ -96,24 +112,28 @@ class FirstTimeStudentVisa extends Component{
         this.addC(name);
         if(value === "公司信用卡"){
             this.setState((prevState) => {
+                const parsedValue = parseFloat(prevState.detail.other_fee);
                 return{
                     ...prevState,
                     detail:{
                         ...prevState.detail,
                         [name]:value,
-                        government_fee_total:prevState.service.government_fee,
+                        total_fee:prevState.service.service_fee+prevState.service.government_fee+prevState.detail.misc_fee+parsedValue,
+                        government_fee:prevState.service.government_fee,
                     },
                 }
             });
         }
         else{
             this.setState((prevState) => {
+                const parsedValue = parseFloat(prevState.detail.other_fee);
                 return{
                     ...prevState,
                     detail:{
                         ...prevState.detail,
                         [name]:value,
-                        government_fee_total:0,
+                        total_fee:prevState.service.service_fee+prevState.detail.misc_fee+parsedValue,
+                        government_fee:0,
                     },
                 }
             });
@@ -176,7 +196,7 @@ class FirstTimeStudentVisa extends Component{
                 }
             }
         });
-    };
+    }
     handleSpecialChange = (name, value) => {
         this.addC(name);
         this.setState((prevState) => ({
@@ -188,22 +208,21 @@ class FirstTimeStudentVisa extends Component{
         }));
     }
 
-    handleSubmit = (total_fee) =>{
+    handleSubmit = (e) =>{
         if(this.props.add){
-            let detail = {
-                ...this.state.detail,
-                total_fee:total_fee,
-                guihuashi:this.props.user.id
-            };
-            console.log("Adding business: ", detail);
-            this.props.addNewBusiness(detail);
+            console.log("Adding business: ", this.state.detail);
+            this.props.addNewBusiness(this.state.detail);
         }
     };
     render(){
-        let total_fee = (parseFloat(this.state.detail.service_fee)+parseFloat(this.state.detail.other_fee)+parseFloat(this.state.detail.government_fee_total));
         return(
             <div>
                 <div className={"section-wrapper"}>
+                    <div className={"section-header"}>
+                        <h3>收款员操作</h3>
+                        <small>负责收款:{this.state.detail.shoukuan}</small>
+                        <button className={"btn btn-primary float-right"} onClick={this.handlePayment.bind(this)}>添加缴费按键</button>
+                    </div>
                     <div className={"section-body"}>
                         <table className={"business-detail-table"}>
                             <thead/>
@@ -211,139 +230,73 @@ class FirstTimeStudentVisa extends Component{
                             <tr>
                                 <td>
                                     <Input
-                                        label={"政府费"}
-                                        name={"government_fee"}
-                                        value={this.state.service.government_fee}
+                                        label={"缴费金额"}
+                                        value={this.state.detail.payment_amount}
+                                        name={"payment_amount"}
                                         type={"number"}
-                                        step={".01"}
                                         handleChange={this.handleChange}
-                                        disabled={true}
                                     />
                                 </td>
                                 <td>
                                     <DropDown
-                                        label={"支付方式"}
-                                        value={this.state.detail.government_fee_payment_method}
-                                        name={"government_fee_payment_method"}
-                                        options={
-                                            this.state.detail.service_constants_id?["公司信用卡","客人信用卡"]:[""]
-                                        }
-                                        handleChange={this.handleGovernmentPaymentMethodChange}
-                                    />
-                                </td>
-                                <td>
-                                    <Input
-                                        label={"公司收费"}
-                                        name={"government_fee"}
-                                        value={this.state.detail.government_fee_total}
-                                        type={"number"}
-                                        step={".01"}
+                                        label={"缴费方式"}
+                                        value={this.state.detail.payment_method}
+                                        name={"payment_method"}
+                                        options={this.state.detail.service_constants_id?["Cash","Debit"]:[""]}
                                         handleChange={this.handleChange}
-                                        disabled={true}
                                     />
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    <Input
-                                        label={"服务费"}
-                                        value={this.state.detail.service_fee}
-                                        name={"service_fee"}
-                                        type={"number"}
-                                        step={".01"}
-                                        handleChange={this.handleChange}
-                                        disabled={this.props.service_level==="普通"}
-                                    />
+                                    {this.state.test_role==="收款员"?(
+                                            <Input
+                                                label={"选择文案"}
+                                                value={this.state.detail.wenan_type}
+                                                name={"wenan_type"}
+                                                type={"text"}
+                                                handleChange={this.handleChange}
+                                            />):
+                                        (
+                                            <Input
+                                                label={"选择文案"}
+                                                value={"仅收款员可选"}
+                                                name={"wenan_type"}
+                                                type={"text"}
+                                                handleChange={this.handleChange}
+                                                disabled={true}
+                                            />)}
                                 </td>
                                 <td>
                                     <Input
-                                        label={"其他"}
-                                        value={this.state.service?this.state.detail.other_fee:""}
-                                        name={"other_fee"}
-                                        type={"number"}
-                                        step={".01"}
-                                        handleChange={this.handleChange}
-                                        disabled={true}
-                                    />
-                                </td>
-                                <td>
-                                    <Input
-                                        label={"收费总计"}
-                                        value={total_fee}
-                                        name={"total_fee"}
-                                        type={"number"}
-                                        step={".01"}
-                                        handleChange={this.handleChange}
-                                        disabled={true}
-                                    />
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <CustomFormatInput
-                                        label={"签证获批至"}
-                                        name={"visa_expire_date"}
-                                        value={this.state.detail.visa_expire_date.replace(/\//g, '-')}
-                                        format={[
-                                            {char: /\d/, repeat:4},
-                                            { exactly: "-" },
-                                            {char: /\d/, repeat:2},
-                                            { exactly: "-" },
-                                            {char: /\d/, repeat:2},
-                                        ]}
-                                        placeholder={"YYYY-MM-DD"}
-                                        handleChange={this.handleSpecialChange}
-                                    />
-                                </td>
-                                <td>
-                                    <Input
-                                        label={"负责规划师"}
-                                        name={"guihuashi"}
-                                        value={this.props.user.name}
+                                        label={"收款员"}
+                                        value={this.state.detail.shoukuan}
+                                        name={"shoukuan"}
                                         type={"text"}
                                         handleChange={this.handleChange}
                                         disabled={true}
                                     />
                                 </td>
-                                <td>
-                                    <CustomFormatInput
-                                        label={"业务建档时间"}
-                                        name={"service_creation_date"}
-                                        value={this.state.detail.service_creation_date.replace(/\//g, '-')}
-                                        format={[
-                                            {char: /\d/, repeat:4},
-                                            { exactly: "-" },
-                                            {char: /\d/, repeat:2},
-                                            { exactly: "-" },
-                                            {char: /\d/, repeat:2},
-                                        ]}
-                                        placeholder={"YYYY-MM-DD"}
-                                        handleChange={this.handleSpecialChange}
-                                        disabled={true}
-                                    />
-                                </td>
                             </tr>
-                            {this.props.service_level==="特殊" &&
-                                <tr>
-                                    <td>
-                                        <Input
-                                            label={"可退款金额"}
-                                            value={this.refundable_amount}
-                                            type={"number"}
-                                            step={".01"}
-                                            handleChange={this.handleChange}
-                                        />
-                                    </td>
-                                </tr>
-                            }
                             </tbody>
                         </table>
+                        <table className="table">
+                            <tbody>
+                            <tr>
+                                <th scope="col">缴费金额</th>
+                                <th scope="col">缴费方式</th>
+                                <th scope="col">缴费日期</th>
+                                <th scope="col">收款员</th>
+                            </tr>
+                            {this.paymentTable2React(this.state.payment_table)}
+                            </tbody>
+                        </table>
+                        <p> 当前业务余额: {this.state.detail.total_payment - this.state.detail.total_fee} </p>
                     </div>
                 </div>
                 <div className={"footer"}>
                     <div className={"form-confirmation button-group"}>
-                        <small>完成值: {this.state.ghslevel}%</small>
-                        <button className={"btn btn-primary"} onClick={this.handleSubmit.bind(this,total_fee)}>添加业务</button>
+                        <small>完成值: {this.state.skylevel}%</small>
                     </div>
                 </div>
             </div>
