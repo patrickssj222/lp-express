@@ -196,7 +196,7 @@ class Business extends Component{
                                 this.stableSort(rows, this.state.order, this.state.orderBy)
                                 .slice(this.state.page * this.state.rowsPerPage, this.state.page * this.state.rowsPerPage + this.state.rowsPerPage)
                                 .map(row => (
-                                    <TableRow hover onClick={event => this.handleClick(event, row.index)} className='ChangePointer' key={row.name}>
+                                    <TableRow hover onClick={event => this.handleClick(event, row.index)} className='ChangePointer' key={row.index}>
                                         <TableCell component="th" scope="row"> {row.customer_name}</TableCell>
                                         <TableCell align="left">{row.service_type}</TableCell>
                                         <TableCell align="left">{row.service_name}</TableCell>

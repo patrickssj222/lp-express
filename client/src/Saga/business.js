@@ -56,19 +56,13 @@ function* getBusinessDetail(action){
             method: 'POST',
             url: '/api/business/one',
             data:{
-                id:action.id
+                customer_id:action.id
             }
         });
         if(response.data.status>=200 && response.data.status<300){
-            let result = response.data.response[0];
-            const keys = Object.keys(result);
-            keys.forEach((key)=>{
-                if(result[key]==null){
-                    result[key] = "";
-                }
-            });
-            yield put({type:actionTypes.UPDATE_BUSINESS_DETAIL, business_detail:result});/*
-            yield put({type:actionTypes.REMOVE_POP_UP});*/
+            let result = response.data.response;
+            yield put({type:actionTypes.UPDATE_BUSINESS_DETAIL, business_detail:result});
+            yield put({type:actionTypes.REMOVE_POP_UP});
         }
         else{
             yield put({type:actionTypes.REMOVE_POP_UP});

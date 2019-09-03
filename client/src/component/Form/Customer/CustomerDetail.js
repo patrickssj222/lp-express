@@ -119,23 +119,7 @@ class CustomerDetail extends Component{
             this.props.getChinaGeo();
         }
         try{
-            axios({
-                method: 'POST',
-                url: '/api/customers/business',
-                data:{
-                    id:this.props.customer[this.props.location.state.index].id
-                }
-            }).then(response=>{
-                if(response.data.status>=200 && response.data.status<300){
-                    const result = response.data.response;
-                    console.log("CUSTOMER BUSINESS RESULT", result);
-                    this.setState({
-                        business:result
-                    });
-                }
-                else{
-                }
-            });
+            this.props.getBusinessDetail(this.props.customer[this.props.location.state.index].id);
             this.setState({
                 detail:this.props.location.state?this.props.customer[this.props.location.state.index]:null,
             });
@@ -144,7 +128,9 @@ class CustomerDetail extends Component{
             }
         }
         catch(e){
-            console.log(e);
+            this.props.history.push({
+                pathname: '/customer'
+            })
         }
 
 
@@ -172,7 +158,10 @@ class CustomerDetail extends Component{
         }
     }
     componentWillReceiveProps(nextProps, nextContext) {
-        if(nextProps.customer){
+        if(nextProps.business_detail){
+            this.setState({
+                business:nextProps.business_detail
+            })
 
         }
     }
@@ -367,16 +356,9 @@ class CustomerDetail extends Component{
                         progress:item.progress,
                         wenan:item.wenan,
                         index: item.id,
-                        //clickEvent: this.handleRedirect.bind(this,"/business/detail",item.id)
                     })
                 })
             }
-            /*
-            data = {
-                columns:this.columns,
-                rows:rows
-            };
-            */
         }
         catch{
             return(<Redirect to='/customer'/>);
@@ -767,7 +749,7 @@ class CustomerDetail extends Component{
                                     this.stableSort(rows, this.state.order, this.state.orderBy)
                                     .slice(this.state.page * this.state.rowsPerPage, this.state.page * this.state.rowsPerPage + this.state.rowsPerPage)
                                     .map(row => (
-                                        <TableRow hover onClick={event => this.handleClick(event, row.index)} className='ChangePointer' key={row.name}>
+                                        <TableRow hover onClick={event => this.handleClick(event, row.index)} className='ChangePointer' key={row.index}>
                                             <TableCell component="th" scope="row"> {row.service_name}</TableCell>
                                             <TableCell align="left">{row.progress}</TableCell>
                                             <TableCell align="left">{row.wenan}</TableCell>
@@ -791,6 +773,7 @@ const mapStateToProps = state => {
         user:state.user,
         customer:state.customer,
         china_geo:state.china_geo,
+        business_detail:state.business_detail
     };
 };
 
@@ -798,6 +781,7 @@ const mapDispatchToProps = dispatch =>{
     return{
         updateCustomer:(customer)=>dispatch({type:actionTypes.SAGA_UPDATE_CUSTOMERS,customer: customer}),
         updateView:(component, payload)=>dispatch({type:actionTypes.SWITCH_VIEW, component:component, payload:payload}),
+        getBusinessDetail:(id)=>dispatch({type:actionTypes.SAGA_GET_BUSINESS_DETAIL, id:id}),
         getChinaGeo:()=>dispatch({type:actionTypes.SAGA_GET_CHINA_GEO}),
         optionPopUp:(message,option)=>dispatch({type:actionTypes.OPTION_POP_UP, message:message,option:option}),
         forceDeleteCustomer:(customer)=>dispatch({type:actionTypes.SAGA_FORCE_DELETE_CUSTOMER,customer:customer})
