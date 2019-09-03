@@ -42,6 +42,15 @@ class FirstTimeStudentVisa extends Component{
         this.ghstable = ["service_type", "service_name", "service_level", "government_fee_payment_method"];
     };
 
+    componentWillMount() {
+        if(!this.props.add){
+            console.log("business detail props", this.props.parentState.detail);
+            this.setState({
+                detail:this.props.parentState.detail
+            })
+        }
+    }
+
     addC = (name) => {
         if (!this.state.clicked[name]) {
             const newClicked = update(this.state.clicked, {
@@ -190,14 +199,18 @@ class FirstTimeStudentVisa extends Component{
     }
 
     handleSubmit = (total_fee) =>{
+        let detail = {
+            ...this.state.detail,
+            total_fee:total_fee,
+            guihuashi:this.props.user.id
+        };
         if(this.props.add){
-            let detail = {
-                ...this.state.detail,
-                total_fee:total_fee,
-                guihuashi:this.props.user.id
-            };
             console.log("Adding business: ", detail);
             this.props.addNewBusiness(detail);
+        }
+        else{
+            console.log("Updating business", detail);
+            this.props.updateBusiness(detail);
         }
     };
     render(){
@@ -205,6 +218,7 @@ class FirstTimeStudentVisa extends Component{
         return(
             <div>
                 <div className={"section-wrapper"}>
+
                     <div className={"section-body"}>
                         <table className={"business-detail-table"}>
                             <thead/>
@@ -284,7 +298,7 @@ class FirstTimeStudentVisa extends Component{
                                     <CustomFormatInput
                                         label={"签证获批至"}
                                         name={"visa_expire_date"}
-                                        value={this.state.detail.visa_expire_date.replace(/\//g, '-')}
+                                        value={this.state.detail.visa_expire_date}
                                         format={[
                                             {char: /\d/, repeat:4},
                                             { exactly: "-" },
@@ -310,7 +324,7 @@ class FirstTimeStudentVisa extends Component{
                                     <CustomFormatInput
                                         label={"业务建档时间"}
                                         name={"service_creation_date"}
-                                        value={this.state.detail.service_creation_date.replace(/\//g, '-')}
+                                        value={this.state.detail.service_creation_date}
                                         format={[
                                             {char: /\d/, repeat:4},
                                             { exactly: "-" },
@@ -344,7 +358,7 @@ class FirstTimeStudentVisa extends Component{
                 <div className={"footer"}>
                     <div className={"form-confirmation button-group"}>
                         <small>完成值: {this.state.ghslevel}%</small>
-                        <button className={"btn btn-primary"} onClick={this.handleSubmit.bind(this,total_fee)}>添加业务</button>
+                        <button className={"btn btn-primary"} onClick={this.handleSubmit.bind(this,total_fee)}>{this.props.add?"添加业务":"更新规划"}</button>
                     </div>
                 </div>
             </div>
@@ -354,12 +368,14 @@ class FirstTimeStudentVisa extends Component{
 const mapStateToProps = state => {
     return{
         user: state.user,
+        business_detail: state.business_detail
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return{
-        addNewBusiness:(detail,customer_id)=>dispatch({type:actionTypes.SAGA_ADD_BUSINESS, detail:detail, customer_id:customer_id})
+        addNewBusiness:(detail)=>dispatch({type:actionTypes.SAGA_ADD_BUSINESS, detail:detail}),
+        updateBusiness:(detail)=>dispatch({type:actionTypes.SAGA_UPDATE_BUSINESS, detail:detail})
     }
 };
 export default connect(mapStateToProps,mapDispatchToProps)(FirstTimeStudentVisa);

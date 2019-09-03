@@ -119,7 +119,7 @@ class CustomerDetail extends Component{
             this.props.getChinaGeo();
         }
         try{
-            this.props.getBusinessDetail(this.props.customer[this.props.location.state.index].id);
+            this.props.getCustomerBusiness(this.props.customer[this.props.location.state.index].id);
             this.setState({
                 detail:this.props.location.state?this.props.customer[this.props.location.state.index]:null,
             });
@@ -134,7 +134,7 @@ class CustomerDetail extends Component{
         }
 
 
-        if(this.props.customer){
+        if(this.props.customer && this.props.china_geo){
             let city_info = this.findNested(this.props.china_geo,"id",this.props.customer[this.props.location.state.index].birth_city_id);
             if(city_info){
                 this.setState({
@@ -158,9 +158,9 @@ class CustomerDetail extends Component{
         }
     }
     componentWillReceiveProps(nextProps, nextContext) {
-        if(nextProps.business_detail){
+        if(nextProps.customer_business){
             this.setState({
-                business:nextProps.business_detail
+                business:nextProps.customer_business
             })
 
         }
@@ -225,10 +225,10 @@ class CustomerDetail extends Component{
     }
     */
 
-    handleClick(event, index){
+    handleClick(event, id){
         this.props.history.push({
             pathname: '/business/detail',
-            state: { index:index }
+            state: { id:id }
         })
     }
 
@@ -773,7 +773,7 @@ const mapStateToProps = state => {
         user:state.user,
         customer:state.customer,
         china_geo:state.china_geo,
-        business_detail:state.business_detail
+        customer_business:state.customer_business
     };
 };
 
@@ -781,7 +781,7 @@ const mapDispatchToProps = dispatch =>{
     return{
         updateCustomer:(customer)=>dispatch({type:actionTypes.SAGA_UPDATE_CUSTOMERS,customer: customer}),
         updateView:(component, payload)=>dispatch({type:actionTypes.SWITCH_VIEW, component:component, payload:payload}),
-        getBusinessDetail:(id)=>dispatch({type:actionTypes.SAGA_GET_BUSINESS_DETAIL, id:id}),
+        getCustomerBusiness:(id)=>dispatch({type:actionTypes.SAGA_GET_CUSTOMER_BUSINESS, id:id}),
         getChinaGeo:()=>dispatch({type:actionTypes.SAGA_GET_CHINA_GEO}),
         optionPopUp:(message,option)=>dispatch({type:actionTypes.OPTION_POP_UP, message:message,option:option}),
         forceDeleteCustomer:(customer)=>dispatch({type:actionTypes.SAGA_FORCE_DELETE_CUSTOMER,customer:customer})

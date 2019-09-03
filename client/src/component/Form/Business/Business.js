@@ -3,7 +3,7 @@ import connect from "react-redux/es/connect/connect";
 import * as actionTypes from '../../../store/action';
 import { MDBDataTable } from "mdbreact";
 import "../Form.css";
-import {Link, withRouter} from "react-router-dom";
+import {withRouter} from "react-router-dom";
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -112,10 +112,10 @@ class Business extends Component{
             state:{id:id}
         })
     }*/
-    handleClick(event, index){
+    handleClick(event, id){
         this.props.history.push({
             pathname: '/business/detail',
-            state: { index:index }
+            state: { id:id }
         })
     }
 
@@ -132,6 +132,7 @@ class Business extends Component{
                     progress: business[index].progress!=null?business[index].progress:"",
                     wenan: business[index].wenan!=null?business[index].wenan:"",
                     index: index,
+                    id: business[index].id,
                 })
             });
         }
@@ -196,7 +197,7 @@ class Business extends Component{
                                 this.stableSort(rows, this.state.order, this.state.orderBy)
                                 .slice(this.state.page * this.state.rowsPerPage, this.state.page * this.state.rowsPerPage + this.state.rowsPerPage)
                                 .map(row => (
-                                    <TableRow hover onClick={event => this.handleClick(event, row.index)} className='ChangePointer' key={row.index}>
+                                    <TableRow hover onClick={event => this.handleClick(event, row.id)} className='ChangePointer' key={row.index}>
                                         <TableCell component="th" scope="row"> {row.customer_name}</TableCell>
                                         <TableCell align="left">{row.service_type}</TableCell>
                                         <TableCell align="left">{row.service_name}</TableCell>
@@ -228,4 +229,4 @@ const mapDispatchToProps = dispatch =>{
         popUp: (status, message, action) => dispatch({type:actionTypes.POP_UP, message:message, status:status, action:action}),
     };
 };
-export default connect(mapStateToProps, mapDispatchToProps)(Business);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Business));

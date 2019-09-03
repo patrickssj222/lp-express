@@ -44,7 +44,7 @@ class addBusiness extends Component{
             })
         }
         catch{
-            this.props.history.push("/customer");
+            this.props.history.goBack();
         }
         if(!this.props.constants.fee){
             this.props.getPriceConstants();
@@ -206,7 +206,7 @@ class addBusiness extends Component{
             });
             service_option.unshift("");
         }
-        var form = null;
+        let form = null;
             if(this.state.service_name ==="首次学签"){
                 form = <FirstTimeStudentVisa add={true} parentState={this.state} service_level={this.state.detail.service_level || "普通"} location={this.props.location.state} updateState={this.updateStateHandler}></FirstTimeStudentVisa>
             }else if (this.state.service_name ==="小签续签"){
@@ -288,4 +288,4 @@ const mapDispatchToProps = dispatch =>{
         addNewBusiness:(detail,customer_id)=>dispatch({type:actionTypes.SAGA_ADD_BUSINESS, detail:detail, customer_id:customer_id})
     }
 };
-export default connect(mapStateToProps, mapDispatchToProps)(addBusiness);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(addBusiness));

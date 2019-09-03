@@ -12,6 +12,7 @@ const initialState = {
     },
     customer:null,
     business:null,
+    customer_business:null,
     business_detail:null,
     business_payment:null,
     china_geo:null,
@@ -91,6 +92,11 @@ const reducer = (store = initialState, action) => {
             return{
                 ...store,
                 users_list:action.users_list
+            };
+        case actionTypes.UPDATE_CUSTOMER_BUSINESS:
+            return{
+                ...store,
+                customer_business: action.customer_business
             };
         case actionTypes.UPDATE_BUSINESS_DETAIL:
             return{
