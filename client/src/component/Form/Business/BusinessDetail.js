@@ -204,7 +204,7 @@ class BusinessDetail extends Component{
         this.props.updateBusiness(this.state.detail);
     }
     handleNewPaymentButton(e){
-        this.setState({new_payment:{amount:"", payment_method: "", comment:""}})
+        this.setState({new_payment:{payment_amount:"", payment_method: "", comment:""}})
     }
     handleNewPaymentInfoChange(e){
         const { name, value } = e.target;
@@ -219,7 +219,11 @@ class BusinessDetail extends Component{
         });
     }
     handleAddPayment(e){
-        this.props.addPayment(this.state.detail.id, this.state.new_payment);
+        const payment_detail = {
+            ...this.state.new_payment,
+            business_id:this.state.detail.id
+        };
+        this.props.addPayment(payment_detail);
     }
     render(){
         console.log("state",this.state);
@@ -242,10 +246,11 @@ class BusinessDetail extends Component{
             service_option.unshift("");
         }
         let remaining_payment = this.state.detail.total_fee;
+
         const payment_columns = [
             {
                 label: '缴费',
-                field: 'amount',
+                field: 'payment_amount',
                 sort: 'asc',
 
             },
@@ -270,17 +275,17 @@ class BusinessDetail extends Component{
             }
         ];
         let payment_rows = null;
-        if(this.state.payment!=null){
-            this.state.payment.forEach((payment)=>{
-                remaining_payment = remaining_payment - payment.amount;
+        if(this.state.detail.payment_detail!=null){
+            this.state.detail.payment_detail.forEach((payment)=>{
+                remaining_payment = remaining_payment - payment.payment_amount;
             });
-            payment_rows = this.state.payment.map((payment, index)=>{
+            payment_rows = this.state.detail.payment_detail.map((payment, index)=>{
                 return({
-                    amount: payment.amount,
+                    payment_amount: payment.payment_amount,
                     payment_method: payment.payment_method,
                     payment_date: payment.payment_date,
                     comment: payment.comment,
-                    delete: <button className={"btn btn-danger"} onClick={this.props.deletePayment.bind(this, payment.id, this.state.detail.id)}>删除</button>
+                    delete: <button className={"btn btn-danger"} onClick={this.props.deletePayment.bind(this, payment)}>删除</button>
                 });
             })
         }
@@ -293,8 +298,8 @@ class BusinessDetail extends Component{
                         <td>
                             <Input
                                 label={"缴费"}
-                                name={"amount"}
-                                value={this.state.new_payment.amount}
+                                name={"payment_amount"}
+                                value={this.state.new_payment.payment_amount}
                                 step={".01"}
                                 type={"number"}
                                 handleChange={this.handleNewPaymentInfoChange}
@@ -423,8 +428,8 @@ const mapDispatchToProps = dispatch =>{
     return{
         updateBusiness:(business)=>dispatch({type:actionTypes.SAGA_UPDATE_BUSINESS,business: business}),
         getBusinessDetail:(id)=>dispatch({type:actionTypes.SAGA_GET_BUSINESS_DETAIL,id:id}),
-        deletePayment:(id, business_id)=>dispatch({type:actionTypes.SAGA_DELETE_PAYMENT_TRANSACTION,id:id, business_id:business_id}),
-        addPayment:(id, payment_info)=>dispatch({type:actionTypes.SAGA_ADD_PAYMENT_TRANSACTION,id:id, payment_info:payment_info}),
+        deletePayment:(payment)=>dispatch({type:actionTypes.SAGA_DELETE_PAYMENT_TRANSACTION,payment:payment}),
+        addPayment:(payment)=>dispatch({type:actionTypes.SAGA_ADD_PAYMENT_TRANSACTION,payment:payment}),
     }
 };
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(BusinessDetail));

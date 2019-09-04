@@ -101,20 +101,21 @@ function* getWenAnDetail(action){
         console.log(e);
     }
 }
+
 function* getBusinessPayment(action){
     yield put({type:actionTypes.POP_UP, status:"loading", message:["获取缴款信息..."],onExit:null});
     try{
         const response = yield call (axios, {
             method: 'POST',
-            url: '/api/business/payment_transaction/one',
+            url: '/api/business/payment/all',
             data:{
-                id:action.id
+                business_id:action.id
             }
         });
         if(response.data.status>=200 && response.data.status<300){
             const result = response.data.response;
-            yield put({type:actionTypes.UPDATE_BUSINESS_PAYMENT, business_payment:result});
             yield put({type:actionTypes.REMOVE_POP_UP});
+            return result;
         }
         else{
             yield put({type:actionTypes.REMOVE_POP_UP});
@@ -126,20 +127,16 @@ function* getBusinessPayment(action){
         console.log(e);
     }
 }
-
 function* addBusinessPayment(action){
     yield put({type:actionTypes.POP_UP, status:"loading", message:["正在添加新缴费..."],onExit:null});
     try{
         const response = yield call (axios, {
             method: 'POST',
-            url: '/api/business/payment_transaction/add',
-            data:{
-                id:action.id,
-                payment_info: action.payment_info
-            }
+            url: '/api/business/payment/add',
+            data:action.payment
         });
         if(response.data.status>=200 && response.data.status<300){
-            yield call(getBusinessPayment, action);
+            yield initBusinessDetail({id:action.payment.business_id});
             yield put({type:actionTypes.REMOVE_POP_UP});
         }
         else{
@@ -152,22 +149,18 @@ function* addBusinessPayment(action){
         console.log(e);
     }
 }
-
 function* deleteBusinessPayment(action){
     yield put({type:actionTypes.POP_UP, status:"loading", message:["正在删除新缴费..."],onExit:null});
     try{
         const response = yield call (axios, {
             method: 'POST',
-            url: '/api/business/payment_transaction/delete',
+            url: '/api/business/payment/delete',
             data:{
-                id:action.id,
+                id:action.payment.id,
             }
         });
         if(response.data.status>=200 && response.data.status<300){
-            const payload = {
-                id: action.business_id
-            };
-            yield call(getBusinessPayment, payload);
+            yield initBusinessDetail({id:action.payment.business_id});
             yield put({type:actionTypes.REMOVE_POP_UP});
         }
         else{
@@ -282,15 +275,19 @@ function* initBusinessDetail(action){
                 businessResponse[key]="";
             }
         });
-        const wenAnResponse = yield getWenAnDetail(action);
+        let wenAnResponse = yield getWenAnDetail(action);
         Object.keys(wenAnResponse).forEach((key)=>{
             if(wenAnResponse[key]===null){
                 wenAnResponse[key]="";
             }
         });
+
+        let paymentResponse = yield getBusinessPayment(action);
+
         let result = {
             ...businessResponse,
-            wenan_detail:wenAnResponse
+            wenan_detail:wenAnResponse,
+            payment_detail: paymentResponse
         };
 
         yield put({type:actionTypes.UPDATE_BUSINESS_DETAIL, business_detail:result});
