@@ -22,7 +22,7 @@
     "express": "~4.17.1",
     "express-pdf": "^1.2.2",
     "express-session": "^1.16.2",
-    "html-pdf": "^2.2.0",
+    "html-pdf": "^3.0.1",
     "http-errors": "~1.7.3",
     "i": "^0.3.6",
     "jade": "~1.11.0",
